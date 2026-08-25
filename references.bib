@@ -1,0 +1,65 @@
+%% This BibTeX bibliography file was created using BibDesk.
+%% https://bibdesk.sourceforge.io/
+
+%% Created for Alfonso Castillo González at 2026-08-25 00:20:04 -0500 
+
+
+%% Saved with string encoding Unicode (UTF-8) 
+
+
+
+@article{shah2023qudpy,
+	annote = {Main idea:
+Introduces QuDPy, a Python package for calculating nonlinear optical
+response functions of model quantum systems, including open systems.
+
+Method:
+Uses double-sided Feynman diagrams to specify optical response pathways.
+Quantum dynamics are propagated using QuTiP. UFSS is used for automatic
+diagram generation.
+
+Why important for this project:
+QuDPy provides a conventional time-domain/pathway-based implementation
+of nonlinear spectroscopy and is therefore an important benchmark for
+our direct Liouvillian frequency-domain formulation.
+
+Comparison with our approach:
+QuDPy explicitly constructs optical response pathways and propagates
+the density matrix in time. Our current method instead evaluates the
+coherence-frequency dimensions directly using Liouvillian resolvents.
+
+Things to check:
+- Exact Fourier-transform convention
+- Definition of rephasing and nonrephasing signals
+- Treatment of Lindblad/open-system dynamics
+- Pulse assumptions
+- How response pathways are generated
+- Numerical grids and Fourier transforms used for 2D spectra
+
+Status:
+Need detailed read for benchmark implementation.},
+	author = {Shah, S. A. and Li, Hao and Bittner, Eric R. and Silva, Carlos and Piryatinski, Andrei},
+	date-added = {2026-08-25 00:07:18 -0500},
+	date-modified = {2026-08-25 00:19:16 -0500},
+	doi = {10.1016/j.cpc.2023.108891},
+	journal = {Computer Physics Communications},
+	keywords = {Quantum dynamics Nonlinear responses Quantum dynamics, Nonlinear responses, Ultra-fast coherent spectroscopy},
+	month = {November},
+	pages = {108891},
+	rss-description = {Nonlinear Optical Spectroscopy is a well-developed field with theoretical and experimental advances that
+have benefited multiple disciplines, including chemistry, biology, and physics. However, for the accurate
+interpretation of the corresponding multi-dimensional spectra, there is a need for precise quantum
+dynamical simulations based on model Hamiltonians. In this article, we present the initial release
+of our code, QuDPy (Quantum Dynamics in Python), which provides a robust numerical platform for
+performing quantum dynamics simulations based on model systems, including open quantum systems.
+A distinguishing feature of our approach is the ability to specify various high-order optical response
+pathways in the form of double-sided Feynman diagrams through a straightforward input syntax. This
+syntax outlines the time-ordering of ket-sided or bra-sided optical interactions acting on the time-
+evolving density matrix of the system. We utilize the quantum dynamics capabilities of QuTip to simulate
+the spectral response of complex systems, allowing us to compute virtually any n-th order optical
+response of the model system. To illustrate the utility of our approach, we provide a series of example
+calculations.},
+	title = {QuDPy: A Python-based tool for computing ultrafast non-linear optical responses},
+	volume = {292},
+	year = {2023},
+	bdsk-file-1 = {YnBsaXN0MDDSAQIDBFxyZWxhdGl2ZVBhdGhYYm9va21hcmtfEDouLi8uLi8uLi8uLi8uLi9Eb3dubG9hZHMvMS1zMi4wLVMwMDEwNDY1NTIzMDAyMzY5LW1haW4ucGRmTxEEMGJvb2swBAAAAAAFEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAQAwAABQAAAAEBAABVc2VycwAAABcAAAABAQAAYWxmb25zb2Nhc3RpbGxvZ29uemFsZXoACQAAAAEBAABEb3dubG9hZHMAAAAhAAAAAQEAADEtczIuMC1TMDAxMDQ2NTUyMzAwMjM2OS1tYWluLnBkZgAAABAAAAABBgAABAAAABQAAAA0AAAASAAAAAgAAAAEAwAANEgAAAAAAAAIAAAABAMAANzWBgAAAAAACAAAAAQDAADq2QYAAAAAAAgAAAAEAwAAwk4gAAAAAAAQAAAAAQYAAIwAAACcAAAArAAAALwAAAAIAAAAAAQAAEHIHq3V55xHGAAAAAECAAABAAAAAAAAAA8AAAAAAAAAAAAAAAAAAAAIAAAABAMAAAIAAAAAAAAABAAAAAMDAAD1AQAACAAAAAEJAABmaWxlOi8vLwwAAAABAQAATWFjaW50b3NoIEhECAAAAAQDAAAAUIEYcwAAAAgAAAAABAAAQcgIuiQAAAAkAAAAAQEAADBBRjI0MUQwLTg2N0EtNEREQi04RjJCLTBBMzAxRDkyREY4MRgAAAABAgAAgQAAAAEAAADvEwAAAQAAAAAAAAAAAAAAAQAAAAEBAAAvAAAAAAAAAAEFAAD8AAAAAQIAADA0MGI2MzBhYTNlZGMxYjA2OWU2YjMwN2EyMTc4MGQzMDMzMDFlNTkwNDA0Yjg4NDUxNmIwNDI5OTFmMjZmNmM7MDA7MDAwMDAwMDA7MDAwMDAwMDA7MDAwMDAwMDA7MDAwMDAwMDAwMDAwMDAyMDtjb20uYXBwbGUuYXBwLXNhbmRib3gucmVhZC13cml0ZTswMTswMTAwMDAwZjswMDAwMDAwMDAwMjA0ZWMyOzU3Oy91c2Vycy9hbGZvbnNvY2FzdGlsbG9nb256YWxlei9kb3dubG9hZHMvMS1zMi4wLXMwMDEwNDY1NTIzMDAyMzY5LW1haW4ucGRmAC8AAAABAQAATlNVUkxCb29rbWFya1F1YXJhbnRpbmVNb3VudGVkTmV0d29ya1ZvbHVtZXNLZXkA2AAAAP7///8BAAAAAAAAABEAAAAEEAAAdAAAAAAAAAAFEAAAzAAAAAAAAAAQEAAA9AAAAAAAAABAEAAA5AAAAAAAAAACIAAAwAEAAAAAAAAFIAAAMAEAAAAAAAAQIAAAQAEAAAAAAAARIAAAdAEAAAAAAAASIAAAVAEAAAAAAAATIAAAZAEAAAAAAAAgIAAAoAEAAAAAAAAwIAAAzAEAAAAAAAABwAAAFAEAAAAAAAARwAAAFAAAAAAAAAASwAAAJAEAAAAAAACA8AAA1AEAAAAAAADYAgCAzAEAAAAAAAAACAANABoAIwBgAAAAAAAAAgEAAAAAAAAABQAAAAAAAAAAAAAAAAAABJQ=}}
