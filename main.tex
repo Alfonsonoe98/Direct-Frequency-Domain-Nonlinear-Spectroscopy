@@ -592,6 +592,14 @@ V
 \label{eq:third_order_response_T}
 \end{equation}
 
+The response function above is referenced to the first interaction,
+which defines the time origin. Therefore, the initial state
+$\rho_0$ need not be stationary under $\mathcal{L}$ for the impulsive
+molecular-response calculation. In particular, one may consider a
+prepared initial state satisfying
+$\mathcal{L}\rho_0\neq 0$, provided that the first interaction is
+understood to occur immediately after preparation.
+
 Equation~\eqref{eq:third_order_response_T} contains only the molecular
 dynamics. The laser envelopes, carrier frequencies, phases, and
 phase-matching conditions will be introduced in
@@ -867,6 +875,7 @@ In the following section, the molecular response
 $M^{(3)}(\omega_3,T,\omega_1)$ will be combined with the three laser
 fields. We first consider the limit of short and temporally separated
 pulses, for which the laser spectra factorize from the molecular
+response.
 
 
 \section{Short and Separated Pulses}
@@ -882,6 +891,102 @@ separated and sufficiently short that the molecular evolution occurring
 during their duration can be neglected. The short-pulse approximation
 will be relaxed in Sec.~\ref{sec:finite_pulses}.
 
+For the finite-pulse convolution developed below, the treatment of the
+initial state requires an additional qualification.  If the state
+immediately preceding the pulse sequence is stationary under the
+field-free Liouvillian,
+%
+\begin{equation}
+\boxed{
+\mathcal{L}|\rho_0\rangle\rangle=0,
+}
+\label{eq:stationary_initial_state}
+\end{equation}
+%
+then
+%
+\begin{equation}
+e^{\mathcal{L}\tau}|\rho_0\rangle\rangle
+=
+|\rho_0\rangle\rangle
+\end{equation}
+%
+for any $\tau$.  Shifting the absolute time of the first interaction
+therefore does not change the state on which the first pulse acts, and
+the unperturbed response is time-translation invariant.
+
+For a nonstationary prepared state,
+%
+\begin{equation}
+\mathcal{L}|\rho_0\rangle\rangle\neq0,
+\end{equation}
+%
+the response generally depends on the absolute time of the first
+interaction in addition to the intervals between interactions.  Let
+$t_{\mathrm{prep}}$ denote the preparation time and $\tau_1$ the center
+of the first pulse.  We define the preparation-to-pulse delay as
+%
+\begin{equation}
+\boxed{
+\tau_{\mathrm{prep}}
+=
+\tau_1-t_{\mathrm{prep}}.
+}
+\label{eq:preparation_delay}
+\end{equation}
+
+A useful measure of the initial field-free drift is
+%
+\begin{equation}
+\boxed{
+\kappa_0
+=
+\frac{
+\left\|
+\mathcal{L}|\rho_0\rangle\rangle
+\right\|
+}{
+\left\|
+|\rho_0\rangle\rangle
+\right\|
+}.
+}
+\label{eq:initial_drift_rate}
+\end{equation}
+%
+The dimensionless quantities
+%
+\begin{equation}
+\chi_{\mathrm{delay}}
+=
+\tau_{\mathrm{prep}}\kappa_0,
+\qquad
+\chi_{\mathrm{width}}
+=
+\sigma_1\kappa_0
+\end{equation}
+%
+provide useful estimates of the evolution accumulated before the pulse
+center and across the duration of the first pulse, respectively.
+
+More fundamentally, the frozen-preparation approximation requires
+%
+\begin{equation}
+\boxed{
+e^{\mathcal{L}(\tau_{\mathrm{prep}}+u_1)}
+|\rho_0\rangle\rangle
+\simeq
+|\rho_0\rangle\rangle
+}
+\label{eq:frozen_prepared_state_condition}
+\end{equation}
+%
+over the temporal region in which the first-pulse envelope has
+appreciable weight.  When this condition holds, the nonstationary
+prepared state may be treated as effectively fixed during the first
+interaction.  In the strict impulsive limit with the first interaction
+occurring at the preparation time, this approximation becomes exact
+with respect to the pre-pulse evolution.
 
 % ============================================================
 \subsection{Gaussian laser pulses}
@@ -1321,10 +1426,17 @@ interactions occur in the order
 1\rightarrow2\rightarrow3.
 \end{equation}
 
+We now assume either that the initial state is stationary,
+Eq.~\eqref{eq:stationary_initial_state}, or that the frozen-preparation
+condition in Eq.~\eqref{eq:frozen_prepared_state_condition} is
+satisfied.  Under either condition, the state on which the first
+interaction acts may be taken to be $|\rho_0\rangle\rangle$ throughout
+the relevant support of the first pulse.
+
 After Fourier transforming the nominal coherence and detection delays
 and changing variables to the pulse-centered coordinates
-$u_1$, $u_2$, and $u_3$, the contribution associated with a selected
-field signature
+$u_1$, $u_2$, and $u_3$, the chronological contribution associated
+with a selected field signature
 %
 \begin{equation}
 \mathbf{s}
@@ -1332,7 +1444,7 @@ field signature
 (s_1,s_2,s_3)
 \end{equation}
 %
-takes the form
+then takes the form
 %
 \begin{align}
 P_{\mathbf{s}}^{(3)}
@@ -1390,7 +1502,8 @@ T+u_3-u_2,
 %
 rather than exactly $T$.
 
-The $u_1$ dependence is completely factorized in
+Under the stationary-state or frozen-preparation assumption introduced
+above, the $u_1$ dependence is completely factorized in
 Eq.~\eqref{eq:finite_pulse_before_approx}. Therefore,
 %
 \begin{equation}
@@ -1402,6 +1515,7 @@ E_1^{(s_1)}(u_1)
 E_1^{(s_1)}(\omega_1),
 \end{equation}
 %
+
 and
 %
 \begin{align}
@@ -1434,7 +1548,11 @@ V
 \label{eq:after_u1_integral}
 \end{align}
 
-
+For a genuinely nonstationary preparation outside the regime of
+Eq.~\eqref{eq:frozen_prepared_state_condition}, this factorization is
+no longer exact.  The field-free evolution prior to the first
+interaction depends on $u_1$ and must be retained explicitly inside the
+first-pulse integral.
 % ============================================================
 \subsection{Separated-pulse approximation}
 % ============================================================
@@ -1704,17 +1822,52 @@ B_{NR,\mathrm{short}}.
 \label{eq:PNR_short}
 \end{equation}
 
-
 % ============================================================
 \subsection{Conditions of validity}
 % ============================================================
 
 The scalar factorization in
-Eq.~\eqref{eq:short_pulse_polarization} relies on two conceptually
-distinct assumptions.
+Eq.~\eqref{eq:short_pulse_polarization} relies on three conceptually
+distinct ingredients.
 
-First, the pulses must be sufficiently separated that their temporal
-ordering is well defined,
+First, the state on which the first pulse acts must be independent, to
+the required accuracy, of the absolute first-interaction time.  This is
+exact when
+%
+\begin{equation}
+\boxed{
+\mathcal{L}|\rho_0\rangle\rangle=0,
+}
+\end{equation}
+%
+and is approximately valid for a nonstationary prepared state when
+%
+\begin{equation}
+\boxed{
+e^{\mathcal{L}(\tau_{\mathrm{prep}}+u_1)}
+|\rho_0\rangle\rangle
+\simeq
+|\rho_0\rangle\rangle
+}
+\end{equation}
+%
+over the temporal support of the first pulse.  The quantities
+%
+\begin{equation}
+\chi_{\mathrm{delay}}
+=
+\tau_{\mathrm{prep}}\kappa_0,
+\qquad
+\chi_{\mathrm{width}}
+=
+\sigma_1\kappa_0,
+\end{equation}
+%
+with $\kappa_0$ defined in Eq.~\eqref{eq:initial_drift_rate}, provide
+useful dimensionless diagnostics of this approximation.
+
+Second, the pulses must be sufficiently separated that their
+chronological ordering is well defined,
 %
 \begin{equation}
 \boxed{
@@ -1722,9 +1875,18 @@ ordering is well defined,
 \approx1.
 }
 \end{equation}
+%
+For Gaussian pulses, this requires the waiting time $T$ to be large
+compared with the characteristic width
+%
+\begin{equation}
+\sqrt{\sigma_2^2+\sigma_3^2}
+\end{equation}
+%
+of the relative pulse-center offsets.
 
-Second, the molecular evolution during the temporal extent of the pulses
-must be negligible,
+Third, the molecular evolution associated with the finite temporal
+offsets inside the separated pulses must be negligible,
 %
 \begin{equation}
 \boxed{
@@ -1733,15 +1895,15 @@ e^{\mathcal{L}(u_3-u_2)}
 }
 \end{equation}
 
-The second condition can be estimated using the relevant Liouvillian
-eigenvalues. If
+The latter condition can be estimated from the relevant Liouvillian
+eigenvalues.  If
 %
 \begin{equation}
 \mathcal{L}
 |r_\alpha\rangle\rangle
 =
 \lambda_\alpha
-|r_\alpha\rangle\rangle ,
+|r_\alpha\rangle\rangle,
 \end{equation}
 %
 then a sufficient short-pulse condition for a contributing mode is
@@ -1754,36 +1916,33 @@ then a sufficient short-pulse condition for a contributing mode is
 \label{eq:short_pulse_condition}
 \end{equation}
 
-The two approximations are independent. Two pulses may be separated by
-many pulse widths and therefore have negligible temporal overlap, while
-the pulse duration may still be long enough for appreciable molecular
-evolution to occur during the pulse.
+These conditions describe different physical effects and should not be
+conflated.  A nonstationary initial state may evolve appreciably before
+the first pulse even when the pulse itself is extremely short.
+Likewise, two pulses may be separated by many pulse widths and
+therefore have negligible temporal overlap while still being long
+enough for appreciable molecular evolution to occur during each pulse.
 
-When Eq.~\eqref{eq:short_pulse_approximation} fails but the pulses
-remain temporally separated, the $u_2$ and $u_3$ integrations no longer
-reduce to scalar laser spectra. Instead, they become matrix-valued
-functions of the Liouvillian. These finite-width pulse operators are
-derived in the following section.
+When the initial-state condition is satisfied and the pulses remain
+temporally separated, but
+Eq.~\eqref{eq:short_pulse_condition} fails, the $u_2$ and $u_3$
+integrations no longer reduce to scalar laser spectra.  Instead, they
+become matrix-valued functions of the Liouvillian.  These finite-width
+pulse operators are derived in the following section.
 
 \section{Finite-Width Gaussian Pulses}
 \label{sec:finite_pulses}
 
-The short-pulse result derived in Sec.~\ref{sec:short_pulses} assumes
-that the molecular state changes negligibly during the temporal width
-of the laser pulses,
-%
-\begin{equation}
-e^{\mathcal{L}(u_3-u_2)}
-\approx I.
-\end{equation}
-%
-We now relax this approximation while retaining the assumption that
-the pulses are sufficiently separated for the chronological ordering
-$1\rightarrow2\rightarrow3$ to be well defined.
+The scalar short-pulse approximation of
+Sec.~\ref{sec:short_pulses} neglects the molecular evolution occurring
+over the temporal widths of pulses 2 and 3.  We now relax this
+approximation while retaining the separated-pulse condition.
 
-The resulting expressions retain the molecular dynamics occurring
-during the finite pulse width without returning to explicit propagation
-over the coherence-time grids.
+The derivation in this section also inherits the initial-state
+condition introduced in Sec.~\ref{sec:short_pulses}: the initial state
+is either stationary under the field-free Liouvillian or satisfies the
+frozen-preparation approximation over the temporal support of the
+first pulse.
 
 
 % ============================================================
@@ -1972,10 +2131,16 @@ light--matter interaction superoperators.
 
 The appearance of a scalar $E_1^{(s_1)}(\omega_1)$ rather than a third
 operator $F_1$ follows from the particular mixed
-$(\omega_3,T,\omega_1)$ representation and the chosen chronological
-ordering. In Eq.~\eqref{eq:finite_pulse_start}, the $u_1$ dependence
-factorizes exactly, whereas the offsets $u_2$ and $u_3$ modify the
+$(\omega_3,T,\omega_1)$ representation, the chosen chronological
+ordering, and the initial-state assumption introduced in
+Sec.~\ref{sec:short_pulses}.  Under the stationary-state or
+frozen-preparation condition, the $u_1$ dependence factorizes from the
+molecular dynamics, whereas the offsets $u_2$ and $u_3$ modify the
 actual interval between the second and third interactions.
+
+For a nonstationary preparation outside the frozen-preparation regime,
+the evolution preceding the first interaction must instead be retained
+inside the $u_1$ integration.
 
 
 % ============================================================
@@ -3361,10 +3526,24 @@ For the present two-system model,
 \subsection{Choice of initial state}
 % ============================================================
 
-The frequency-domain formalism does not require the initial density
-matrix to be a stationary or equilibrium state. The response functions
-derived in the previous sections are valid for an arbitrary physical
-initial density matrix $\rho_0$.
+For the impulsive molecular-response formulation introduced in
+Sec.~3, the initial density matrix need not be stationary or in
+thermal equilibrium.  The first light--matter interaction defines the
+time origin, so an arbitrary physical initial state $\rho_0$ may be
+used provided that the first interaction is understood to occur
+immediately after preparation.
+
+The finite-pulse convolution developed in Sec.~4 requires an
+additional qualification.  For a stationary initial state,
+%
+\begin{equation}
+\mathcal{L}|\rho_0\rangle\rangle=0,
+\end{equation}
+%
+time-translation invariance is exact and the response depends only on
+the time intervals between interactions.  For a nonstationary prepared
+state, the evolution preceding the first interaction must in general
+be retained explicitly.
 
 For the first numerical benchmark, we choose the joint ground state,
 %
@@ -3405,10 +3584,46 @@ ground state immediately before the spectroscopic sequence begins.
 After the sequence begins, the finite-temperature environmental
 dynamics are fully included through $\mathcal{L}$.
 
-This initial condition provides a useful first benchmark because it
-separates the effects of the thermal Liouvillian during the
-spectroscopic dynamics from the additional complication of a thermally
-populated initial state.
+For a finite-width first pulse applied to a nonstationary prepared
+state, both the delay between preparation and the pulse and the pulse
+duration itself can contribute to the field-free evolution of the
+initial state.
+
+Using the drift rate $\kappa_0$ defined in
+Eq.~\eqref{eq:initial_drift_rate}, and the preparation-to-pulse delay
+$\tau_{\mathrm{prep}}$ defined in Eq.~\eqref{eq:preparation_delay}, the
+useful dimensionless diagnostics are
+%
+\begin{equation}
+\boxed{
+\chi_{\mathrm{delay}}
+=
+\tau_{\mathrm{prep}}\kappa_0,
+\qquad
+\chi_{\mathrm{width}}
+=
+\sigma_1\kappa_0.
+}
+\end{equation}
+%
+When both quantities are small, the prepared state can be treated as
+approximately frozen during the first interaction.  More generally,
+the relevant condition is
+%
+\begin{equation}
+e^{\mathcal{L}(\tau_{\mathrm{prep}}+u_1)}
+|\rho_0\rangle\rangle
+\simeq
+|\rho_0\rangle\rangle
+\end{equation}
+%
+throughout the temporal region in which the first-pulse envelope has
+appreciable weight.
+
+In the strict impulsive limit, with the first interaction occurring at
+the preparation time, the prepared-state molecular response of
+Sec.~\ref{sec:frequency_response} is recovered without requiring
+$\mathcal{L}|\rho_0\rangle\rangle=0$.
 
 
 % ============================================================
@@ -3483,6 +3698,24 @@ and
 represent different physical preparations rather than different
 versions of the spectroscopy formalism.
 
+
+The stationary preparation is particularly useful for validating the
+finite-pulse convolution developed in Sec.~4.  Since
+%
+\begin{equation}
+e^{\mathcal{L}\tau}
+|\rho_{\mathrm{ss}}\rangle\rangle
+=
+|\rho_{\mathrm{ss}}\rangle\rangle,
+\end{equation}
+%
+shifting the absolute time of the first interaction does not change the
+state on which the pulse acts.  The response is therefore
+time-translation invariant and can be expressed entirely in terms of
+the time intervals between interactions.  This makes
+$\rho_{\mathrm{ss}}$ the cleanest finite-temperature initial condition
+for testing the scalar pulse spectra and the finite-width
+Liouvillian pulse operators introduced in Secs.~4 and 5.
 
 % ============================================================
 \subsection{Zero-temperature limit}
@@ -3569,9 +3802,9 @@ states,
 \boxed{
 \rho_{\mathrm{ss}}
 =
-\rho_{\mathrm{th}}^{(a)}
+\rho_{\mathrm{th}}^{(b)}
 \otimes
-\rho_{\mathrm{th}}^{(b)}.
+\rho_{\mathrm{th}}^{(a)}.
 }
 \label{eq:uncoupled_thermal_state}
 \end{equation}
@@ -3611,10 +3844,14 @@ eigenbasis of $H_S$ can later be used as an additional robustness test.
 \subsection{Benchmark strategy}
 % ============================================================
 
-The coupled thermal dimer will be tested in stages.
+The coupled thermal dimer will be tested in stages so that the
+Liouvillian construction, the direct resolvent formulation, the
+initial-state preparation, and the treatment of finite pulse widths
+can be validated separately.
 
 First, the Hamiltonian, Liouvillian, and numerical propagation will be
-validated independently. The initial benchmark will use
+validated independently.  The initial benchmark will use the prepared
+ground state
 %
 \begin{equation}
 \boxed{
@@ -3624,37 +3861,80 @@ validated independently. The initial benchmark will use
 }
 \end{equation}
 %
-while retaining finite thermal occupations in the Liouvillian.
+while retaining finite thermal occupations in the Liouvillian.  The
+first interaction is taken to define the time origin and to occur
+immediately after preparation.
 
-The linear spectrum will then be calculated using both Liouvillian
-resolvents and explicit time-domain propagation.
+The linear impulsive response will then be calculated using both
+explicit time-domain propagation and the direct Liouvillian resolvent.
+The comparison will test
+%
+\begin{equation}
+\langle\!\langle\mu|
+e^{\mathcal{L}t}
+V
+|\rho_0\rangle\rangle
+\end{equation}
+%
+against its direct frequency-domain representation
+%
+\begin{equation}
+\langle\!\langle\mu|
+G(\omega)
+V
+|\rho_0\rangle\rangle.
+\end{equation}
 
-Next, the short-pulse third-order rephasing and nonrephasing signals
-will be compared between the direct frequency-domain method and
-conventional propagation of
+The same strategy will subsequently be applied to the third-order
+impulsive molecular response,
 %
 \begin{equation}
 R^{(3)}(t_3,T,t_1)
+=
+\langle\!\langle\mu|
+e^{\mathcal{L}t_3}
+V
+e^{\mathcal{L}T}
+V
+e^{\mathcal{L}t_1}
+V
+|\rho_0\rangle\rangle,
 \end{equation}
 %
-followed by numerical Fourier transformation.
+which will be compared with the direct mixed-frequency representation
+obtained from Liouvillian resolvents.
 
-An additional external benchmark will be performed using
-QuDPy~\cite{shah2023qudpy}, which provides an independent implementation
-of nonlinear optical response calculations based on explicit
-Liouville-space response pathways and time-domain quantum dynamics.
+After the internal time-domain validation, an additional external
+benchmark will be performed using
+QuDPy~\cite{shah2023qudpy}, which provides an independent
+implementation of nonlinear optical response calculations based on
+explicit Liouville-space response pathways and time-domain quantum
+dynamics.
 
-The same calculations will subsequently be repeated using
+A second set of calculations will use the stationary state
 %
 \begin{equation}
-\rho_0=\rho_{\mathrm{ss}},
+\boxed{
+\rho_0
+=
+\rho_{\mathrm{ss}}.
+}
 \end{equation}
 %
-providing a second test with a thermally populated stationary initial
-state.
+This preparation provides the cleanest finite-temperature benchmark
+for the time-translation-invariant finite-pulse convolution because
+%
+\begin{equation}
+\mathcal{L}
+|\rho_{\mathrm{ss}}\rangle\rangle
+=
+0.
+\end{equation}
 
-Finally, finite-width Gaussian pulses will be introduced. For each
-pulse width, we will compare
+Finite-width Gaussian pulses will then be introduced.  For the
+stationary preparation, the scalar short-pulse result, the
+Liouvillian pulse-operator formulation, and explicit finite-pulse
+propagation will be compared directly:
 %
 \begin{equation}
 \boxed{
@@ -3662,24 +3942,62 @@ P_{\mathrm{scalar}}^{(3)},
 \qquad
 P_{F}^{(3)},
 \qquad
-P_{\mathrm{explicit}}^{(3)},
+P_{\mathrm{explicit}}^{(3)}.
 }
 \end{equation}
 %
-where $P_{\mathrm{scalar}}^{(3)}$ denotes the short-pulse spectral
-factorization, $P_F^{(3)}$ denotes the Liouvillian pulse-operator
-treatment, and $P_{\mathrm{explicit}}^{(3)}$ denotes an explicit
-finite-pulse calculation.
+Here, $P_{\mathrm{scalar}}^{(3)}$ denotes the short-pulse spectral
+factorization, $P_F^{(3)}$ denotes the finite-width Liouvillian
+pulse-operator treatment, and $P_{\mathrm{explicit}}^{(3)}$ denotes
+direct propagation in the presence of the time-dependent laser fields.
 
-This hierarchy separates three questions:
+The finite-width calculation will also be repeated for the prepared
+ground state.  In this case, the validity of treating the first pulse
+as acting on a fixed initial state will be tested with respect to both
+the preparation-to-pulse delay and the pulse duration.  Since
+%
+\begin{equation}
+\mathcal{L}|\rho_0\rangle\rangle\neq0,
+\end{equation}
+%
+both quantities can contribute to the error.
+
+The relevant dimensionless diagnostics are
+%
+\begin{equation}
+\boxed{
+\chi_{\mathrm{delay}}
+=
+\tau_{\mathrm{prep}}\kappa_0,
+\qquad
+\chi_{\mathrm{width}}
+=
+\sigma_1\kappa_0.
+}
+\end{equation}
+%
+The preparation-delay and pulse-width effects will be examined
+separately so that the two sources of nonstationary evolution are not
+conflated.
+
+This hierarchy separates the following questions:
 
 \begin{enumerate}
 
-\item Does the direct resolvent formulation reproduce conventional
-time-domain spectroscopy?
+\item Does the Liouville-space representation reproduce direct
+integration of the Lindblad master equation?
 
-\item Does the finite-width operator formulation reproduce explicit
-finite-pulse propagation when the pulses remain temporally separated?
+\item Does the direct resolvent formulation reproduce conventional
+time-domain linear and third-order spectroscopy?
+
+\item Does the finite-width Liouvillian pulse-operator formulation
+reproduce explicit propagation with finite Gaussian laser pulses when
+the initial state is stationary and the pulses remain temporally
+separated?
+
+\item Over what range of preparation delays and first-pulse widths can
+a nonstationary prepared state such as $|gg\rangle\langle gg|$ be
+treated as effectively frozen during the first interaction?
 
 \item How does the initial preparation,
 $|gg\rangle\langle gg|$ versus $\rho_{\mathrm{ss}}$, modify the
