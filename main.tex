@@ -2824,16 +2824,36 @@ For a single two-level system, we define
 |g\rangle\langle e|.
 \end{equation}
 
+We use the tensor-product convention
+%
+\begin{equation}
+\mathcal{H}
+=
+\mathcal{H}_b\otimes\mathcal{H}_a,
+\end{equation}
+%
+while labeling the product states in the order $(a,b)$. With this
+convention, the numerical basis is
+%
+\begin{equation}
+\{
+|gg\rangle,
+|eg\rangle,
+|ge\rangle,
+|ee\rangle
+\}.
+\end{equation}
+
 The corresponding operators acting on the composite Hilbert space are
 %
 \begin{align}
 \sigma_a^\pm
 &=
-\sigma^\pm\otimes I,
+I\otimes\sigma^\pm,
 \\
 \sigma_b^\pm
 &=
-I\otimes\sigma^\pm.
+\sigma^\pm\otimes I.
 \end{align}
 
 The system Hamiltonian is
