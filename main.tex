@@ -4630,9 +4630,487 @@ the finite-pulse convolution for a stationary preparation, and the
 treatment of a nonstationary prepared state.  These results provide the
 numerical foundation for the third-order validation developed next.
 
-\subsection{Short-pulse third-order response}
-\subsection{Finite-width pulse response}
-\subsection{Rephasing and nonrephasing spectra}
+\subsection{Third-Order Spectroscopy in Different Pulse Regimes}
+
+\subsection{Impulsive limit}
+\label{subsec:third_order_impulsive}
+
+We first consider the impulsive limit, in which the three optical
+interactions are taken to occur at well-defined times and the temporal
+widths of the pulses are neglected.  This limit isolates the intrinsic
+third-order molecular response before introducing the spectral and
+temporal structure of finite laser pulses.
+
+For three interactions separated by the coherence time $t_1$, waiting
+time $T$, and detection time $t_3$, the third-order response is
+
+\begin{equation}
+R^{(3)}(t_3,T,t_1)
+=
+\langle\!\langle \mu |
+e^{\mathcal{L}t_3}
+V
+e^{\mathcal{L}T}
+V
+e^{\mathcal{L}t_1}
+V
+|\rho_0\rangle\!\rangle ,
+\label{eq:third_order_impulsive_td}
+\end{equation}
+
+where
+
+\begin{equation}
+V
+=
+\frac{i}{\hbar}
+\left(
+I\otimes\mu-\mu^{T}\otimes I
+\right)
+\end{equation}
+
+is the dipole interaction superoperator and $\mathcal{L}$ is the
+field-free Liouvillian.
+
+Using the causal Fourier convention
+
+\begin{equation}
+f(\omega)
+=
+\int_0^\infty dt\,
+e^{+i\omega t}f(t),
+\end{equation}
+
+together with a small positive damping parameter $\eta$, we define the
+Liouvillian resolvent
+
+\begin{equation}
+G_\eta(\omega)
+=
+\left[
+(\eta-i\omega)I-\mathcal{L}
+\right]^{-1}.
+\label{eq:liouvillian_resolvent}
+\end{equation}
+
+The corresponding mixed frequency-time-frequency third-order response
+can then be evaluated directly as
+
+\begin{equation}
+M^{(3)}(\omega_3,T,\omega_1)
+=
+\langle\!\langle\mu|
+G_\eta(\omega_3)
+V
+e^{\mathcal{L}T}
+V
+G_\eta(\omega_1)
+V
+|\rho_0\rangle\!\rangle .
+\label{eq:third_order_impulsive_fd}
+\end{equation}
+
+Equation~\eqref{eq:third_order_impulsive_fd} avoids explicit propagation
+over the two coherence-time axes.  Numerically, the action of the
+resolvent is evaluated by solving the corresponding linear systems
+rather than constructing the matrix inverse explicitly.
+
+
+\subsubsection{Direct time-domain and resolvent equivalence}
+
+To verify Eq.~\eqref{eq:third_order_impulsive_fd}, we independently
+constructed the full time-domain response
+$R^{(3)}(t_3,T,t_1)$ and performed the damped two-dimensional transform
+
+\begin{equation}
+M_{\mathrm{TD}}^{(3)}
+=
+\int_0^\infty dt_3
+\int_0^\infty dt_1\,
+e^{(i\omega_3-\eta)t_3}
+e^{(i\omega_1-\eta)t_1}
+R^{(3)}(t_3,T,t_1).
+\label{eq:third_order_td_transform}
+\end{equation}
+
+The transformed time-domain response was then compared point by point
+with the direct two-resolvent expression in
+Eq.~\eqref{eq:third_order_impulsive_fd}.  For the dimer model considered
+here, the relative two-dimensional error,
+
+\begin{equation}
+\epsilon
+=
+\frac{
+\left\|
+M_{\mathrm{TD}}^{(3)}
+-
+M_{\mathrm{FD}}^{(3)}
+\right\|_2
+}{
+\left\|
+M_{\mathrm{FD}}^{(3)}
+\right\|_2
+},
+\end{equation}
+
+was found to be approximately
+
+\begin{equation}
+\epsilon
+\simeq
+5.4\times10^{-5}.
+\end{equation}
+
+The agreement demonstrates the numerical equivalence between explicit
+causal time propagation followed by Fourier transformation and direct
+evaluation through the Liouvillian resolvent.
+
+\begin{figure}[htbp]
+    \centering
+
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]
+        {figures/third_order_impulsive_td.pdf}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]
+        {figures/third_order_direct_2d_resolvent.pdf}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]
+        {figures/third_order_2d_validation_difference.pdf}
+    \end{minipage}
+
+    \caption{
+    Comparison of the impulsive third-order spectrum obtained from
+    explicit two-dimensional time-domain propagation and Fourier
+    transformation (left), direct Liouvillian-resolvent evaluation
+    (center), and their difference (right).
+    The relative two-dimensional error is
+    $\epsilon\simeq5.4\times10^{-5}$.
+    }
+    \label{fig:third_order_td_vs_resolvent}
+\end{figure}
+
+
+\subsubsection{RWA and rephasing/nonrephasing response}
+
+To separate the phase-matched contributions, the dipole operator is
+decomposed into excitation-raising and excitation-lowering components,
+
+\begin{equation}
+\mu
+=
+\mu_{\uparrow}
++
+\mu_{\downarrow},
+\qquad
+\mu_{\downarrow}
+=
+\mu_{\uparrow}^{\dagger}.
+\end{equation}
+
+The corresponding interaction superoperators are
+
+\begin{equation}
+V_{\uparrow}
+=
+\frac{i}{\hbar}
+\left(
+I\otimes\mu_{\uparrow}
+-
+\mu_{\uparrow}^{T}\otimes I
+\right),
+\end{equation}
+
+and
+
+\begin{equation}
+V_{\downarrow}
+=
+\frac{i}{\hbar}
+\left(
+I\otimes\mu_{\downarrow}
+-
+\mu_{\downarrow}^{T}\otimes I
+\right).
+\end{equation}
+
+For a positive-frequency optical field component,
+$E^{(+)}(t)\propto e^{-i\omega_L t}$, the rotating-wave approximation
+associates $E^{(+)}$ with $\mu_{\uparrow}$ and $E^{(-)}$ with
+$\mu_{\downarrow}$.
+
+Using the coherence-order convention in which
+$V_{\uparrow}$ increases the optical coherence order by one and
+$V_{\downarrow}$ decreases it by one, the nonrephasing sequence
+$(+,-,+)$ gives
+
+\begin{equation}
+M_{NR}^{(3)}
+(\omega_3,T,\omega_1)
+=
+\langle\!\langle\mu|
+G_\eta(\omega_3)
+V_{\uparrow}
+e^{\mathcal{L}T}
+V_{\downarrow}
+G_\eta(\omega_1)
+V_{\uparrow}
+|\rho_0\rangle\!\rangle ,
+\label{eq:M3_NR}
+\end{equation}
+
+with $\omega_1>0$.
+
+The rephasing sequence $(-,+,+)$ instead gives
+
+\begin{equation}
+M_R^{(3)}
+(\omega_3,T,\nu_1)
+=
+\langle\!\langle\mu|
+G_\eta(\omega_3)
+V_{\uparrow}
+e^{\mathcal{L}T}
+V_{\uparrow}
+G_\eta(\nu_1)
+V_{\downarrow}
+|\rho_0\rangle\!\rangle ,
+\label{eq:M3_R}
+\end{equation}
+
+where the raw first coherence frequency satisfies $\nu_1<0$ under the
+Fourier convention used here.
+
+For an initial state with zero optical coherence order, both pathways
+return to the population sector after the second interaction and end in
+the positive-frequency optical-coherence sector after the third
+interaction.  Consequently, the full dipole detection operator
+$\langle\!\langle\mu|$ automatically selects the physically allowed
+final coherence for these branches.
+
+For the dimer benchmark at $T=5$, the strongest features occur close to
+the upper excitonic transition, with approximately
+
+\begin{equation}
+(\omega_1,\omega_3)
+\simeq
+(1.24,1.24)
+\end{equation}
+
+for the nonrephasing branch and
+
+\begin{equation}
+(\nu_1,\omega_3)
+\simeq
+(-1.24,1.24)
+\end{equation}
+
+for the rephasing branch.
+
+\begin{figure}[htbp]
+    \centering
+
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]
+        {figures/third_order_impulsive_rephasing.pdf}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]
+        {figures/third_order_impulsive_nonrephasing.pdf}
+    \end{minipage}
+
+    \caption{
+    Impulsive rephasing (left) and nonrephasing (right) third-order
+    spectra obtained directly from the RWA-resolved Liouvillian
+    resolvent at $T=5$.  Under the Fourier convention used here, the
+    raw first-frequency axis is negative for the rephasing branch and
+    positive for the nonrephasing branch.
+    }
+    \label{fig:third_order_impulsive_rnr}
+\end{figure}
+
+
+\subsubsection{Independent validation against QuDPy}
+
+As an independent check of the RWA-resolved third-order calculation, we
+also evaluated the same dimer response using the time-domain pathway
+propagation implemented in QuDPy.
+% Add the appropriate QuDPy reference here.
+
+QuDPy represents the individual left- and right-acting dipole
+interactions through the operations
+
+\begin{equation}
+K_u\rho
+=
+\mu_{\uparrow}\rho,
+\qquad
+B_d\rho
+=
+\rho\mu_{\uparrow},
+\end{equation}
+
+and
+
+\begin{equation}
+K_d\rho
+=
+\mu_{\downarrow}\rho,
+\qquad
+B_u\rho
+=
+\rho\mu_{\downarrow}.
+\end{equation}
+
+The RWA interaction superoperators therefore satisfy
+
+\begin{equation}
+V_{\uparrow}
+=
+\frac{i}{\hbar}
+(K_u-B_d),
+\qquad
+V_{\downarrow}
+=
+\frac{i}{\hbar}
+(K_d-B_u).
+\label{eq:qudpy_commutator_connection}
+\end{equation}
+
+For the benchmark we choose the ground-state initial condition
+
+\begin{equation}
+\rho_0
+=
+|gg\rangle\langle gg|,
+\end{equation}
+
+for which the standard three rephasing and three nonrephasing
+double-sided pathways provide the complete RWA response.  With
+$\hbar=1$, expansion of the commutator superoperators gives
+
+\begin{equation}
+R_R^{(3)}
+=
+i
+\left(
+R_3-R_1-R_2
+\right),
+\label{eq:qudpy_rephasing_combination}
+\end{equation}
+
+and
+
+\begin{equation}
+R_{NR}^{(3)}
+=
+i
+\left(
+R_4-R_5-R_6
+\right).
+\label{eq:qudpy_nonrephasing_combination}
+\end{equation}
+
+The individual QuDPy pathways were propagated explicitly in time.
+Rather than using the built-in QuDPy Fourier-transform and plotting
+conventions, the resulting complex time-domain responses were
+transformed using precisely the same damped causal Fourier convention
+as in Eq.~\eqref{eq:third_order_td_transform}.  This provides a direct
+comparison of the two independent dynamical implementations without
+introducing additional FFT sign or phase conventions.
+
+Using a QuDPy propagation window of $t_{\max}=100$ and a temporal
+spacing of approximately $\Delta t=0.251$, the complete complex
+two-dimensional spectra give relative errors
+
+\begin{equation}
+\epsilon_{NR}
+=
+1.45\times10^{-2},
+\end{equation}
+
+and
+
+\begin{equation}
+\epsilon_R
+=
+1.43\times10^{-2}.
+\end{equation}
+
+No amplitude normalization or global phase adjustment was applied.
+
+As an additional diagnostic, the global complex overlap factors were
+
+\begin{equation}
+\alpha_{NR}
+=
+1.0075+0.0019i,
+\end{equation}
+
+and
+
+\begin{equation}
+\alpha_R
+=
+1.0069-0.0021i,
+\end{equation}
+
+which are both close to unity.  After removing these small global
+differences only as a diagnostic, the residual spectral-shape
+discrepancies are approximately $1.22\%$ for the nonrephasing branch
+and $1.23\%$ for the rephasing branch.
+
+The agreement therefore verifies not only the direct resolvent
+construction, but also the RWA interaction signs, the mapping between
+commutator superoperators and double-sided pathways, and the
+rephasing/nonrephasing decomposition.
+
+\begin{figure}[htbp]
+    \centering
+
+    \includegraphics[width=0.98\textwidth]
+    {figures/third_order_qudpy_nonrephasing_comparison.pdf}
+
+    \vspace{0.5em}
+
+    \includegraphics[width=0.98\textwidth]
+    {figures/third_order_qudpy_rephasing_comparison.pdf}
+
+    \caption{
+    Independent comparison of the direct frequency-domain resolvent
+    calculation with explicit QuDPy time-domain pathway propagation.
+    The upper row shows the nonrephasing response and the lower row the
+    rephasing response.  Within each row, the panels show the direct
+    resolvent result, the QuDPy time-domain result transformed using the
+    same Fourier convention, and their difference.  No amplitude
+    normalization or phase correction was applied.  The full complex
+    two-dimensional relative errors are $1.45\%$ and $1.43\%$ for the
+    nonrephasing and rephasing branches, respectively.
+    }
+    \label{fig:third_order_qudpy_validation}
+\end{figure}
+
+\subsubsection{Short-pulse approximation}
+% finite pulse spectra
+% neglect molecular evolution across pulse offsets
+% P_short = E3 E2 E1 M
+
+\subsubsection{Finite-width pulses}
+% retain evolution during pulse offsets
+% F2 and F3 operators
+% Gaussian closed forms
+\subsubsection{Summary of the third-order validation}
 
 \section{Benchmark Results}
 \subsection{Frequency-domain versus time-domain}
