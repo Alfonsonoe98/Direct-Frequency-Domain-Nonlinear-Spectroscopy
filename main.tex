@@ -5101,10 +5101,196 @@ rephasing/nonrephasing decomposition.
     \label{fig:third_order_qudpy_validation}
 \end{figure}
 
-\subsubsection{Short-pulse approximation}
-% finite pulse spectra
-% neglect molecular evolution across pulse offsets
-% P_short = E3 E2 E1 M
+\subsection{Short-pulse approximation}
+\label{sec:validation_short_pulse}
+
+We next test the short-pulse approximation introduced above, in which
+the finite pulse envelopes enter through scalar frequency-domain
+factors while molecular evolution during the pulse offsets is
+neglected.  For the nonrephasing branch considered here, the
+frequency-domain signal is
+
+\begin{equation}
+P_{NR,\mathrm{short}}^{(3)}
+(\omega_3,T,\omega_1)
+=
+E_3^{(+)}(\omega_3)
+E_2^{(-)}(-\omega_1)
+E_1^{(+)}(\omega_1)
+M_{NR}^{(3)}
+(\omega_3,T,\omega_1),
+\end{equation}
+
+where $M_{NR}^{(3)}$ is the impulsive molecular response obtained from
+the Liouvillian resolvents.
+
+The approximation is tested independently using directly driven
+time-domain equations with finite Gaussian pulses.  Rather than
+extracting a weak cubic contribution from the complete driven density
+matrix, the third-order nonrephasing contribution is generated using
+the perturbative hierarchy
+
+\begin{align}
+\dot{\rho}^{(1)}
+&=
+\mathcal{L}\rho^{(1)}
++
+E_1^{(+)}(t)
+V_{\uparrow}\rho_{\mathrm{ss}},
+\\
+\dot{\rho}^{(2)}
+&=
+\mathcal{L}\rho^{(2)}
++
+E_2^{(-)}(t)
+V_{\downarrow}\rho^{(1)},
+\\
+\dot{\rho}^{(3)}
+&=
+\mathcal{L}\rho^{(3)}
++
+E_3^{(+)}(t)
+V_{\uparrow}\rho^{(2)}.
+\end{align}
+
+For each coherence delay $\tau_1$ between the centers of the first two
+pulses, the third-order polarization is propagated directly in time.
+The resulting signal is transformed along the coherence and detection
+coordinates using the same damped causal Fourier convention employed
+in the resolvent calculation.
+
+For separated Gaussian pulses, the leading correction to the
+short-pulse approximation is quadratic in the pulse width.  Writing
+the pulse-time difference as $\Delta=u_3-u_2$, the molecular factor may
+be expanded as
+
+\begin{equation}
+S(\Delta)
+=
+S(0)
++
+\Delta S'(0)
++
+\frac{\Delta^2}{2}S''(0)
++\cdots.
+\end{equation}
+
+Because the Gaussian distribution of $\Delta$ is even, the odd moments
+vanish and the leading correction is
+
+\begin{equation}
+P_{\mathrm{sep}}^{(3)}
+=
+P_{\mathrm{short}}^{(3)}
++
+\sigma^2 S''(0)
++
+\mathcal{O}(\sigma^4).
+\end{equation}
+
+The driven-ODE calculations confirm this behavior.  When pulse overlap
+is suppressed by restricting the coherence delay to
+$\tau_1\geq4\sigma$, the fitted error scales as
+
+\begin{equation}
+\epsilon_{\mathrm{sep}}
+\propto
+\sigma^{2.010}.
+\end{equation}
+
+In contrast, the complete coherence-delay scan includes the
+$\tau_1\simeq0$ region, where the first two finite pulses overlap.
+The corresponding discrepancy scales approximately linearly,
+
+\begin{equation}
+\epsilon_{\mathrm{full}}
+\propto
+\sigma^{0.991}.
+\end{equation}
+
+Figure~\ref{fig:short_pulse_ode_sigma} shows both regimes.  For the
+upper-upper nonrephasing resonance, the complete ODE error increases
+from approximately $0.15\%$ at $\sigma=0.05$ to approximately
+$1.18\%$ at $\sigma=0.4$.  When pulse overlap is excluded, the
+corresponding errors are only approximately $0.003\%$ and $0.18\%$.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.78\linewidth]
+    {figures/short_pulse_ode_validation_vs_sigma.pdf}
+    \caption{
+    Driven-ODE validation of the scalar short-pulse approximation at
+    the upper-upper nonrephasing resonance.  The complete
+    coherence-delay scan includes the pulse-overlap region near
+    $\tau_1=0$, whereas the separated-pulse result retains only
+    $\tau_1\geq4\sigma$.  The separated-pulse discrepancy exhibits the
+    expected quadratic dependence on the Gaussian pulse width.
+    }
+    \label{fig:short_pulse_ode_sigma}
+\end{figure}
+
+To demonstrate that the short-pulse expression captures nontrivial
+finite-pulse spectral filtering rather than simply reproducing the
+impulsive spectrum, we additionally consider
+$\sigma=0.4$, $\omega_L=0.78$, and a minimum pulse-center separation
+$\Delta_{\mathrm{sep}}=4\sigma$.  For these parameters, the complete
+complex two-dimensional spectra satisfy
+
+\begin{equation}
+\frac{
+\|P_{\mathrm{ODE}}^{(3)}
+-
+P_{\mathrm{short}}^{(3)}\|_2
+}{
+\|P_{\mathrm{ODE}}^{(3)}\|_2
+}
+=
+1.33\%,
+\end{equation}
+
+whereas comparison with the impulsive molecular response gives
+
+\begin{equation}
+\frac{
+\|P_{\mathrm{ODE}}^{(3)}
+-
+M_{NR}^{(3)}\|_2
+}{
+\|P_{\mathrm{ODE}}^{(3)}\|_2
+}
+=
+5.10\%.
+\end{equation}
+
+The scalar short-pulse spectrum therefore reproduces the directly
+driven finite-pulse response substantially better than the impulsive
+limit while retaining the spectral weighting imposed by the finite
+laser bandwidth, as shown in
+Fig.~\ref{fig:short_pulse_2d_comparison}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]
+    {figures/selected_ode_short_impulsive_sigma04_wL078.pdf}
+    \caption{
+    Nonrephasing two-dimensional spectra obtained from directly driven
+    finite Gaussian pulses (left), the scalar short-pulse resolvent
+    expression (center), and the corresponding impulsive molecular
+    response (right).  Parameters are $\sigma=0.4$,
+    $\omega_L=0.78$, and
+    $\Delta_{\mathrm{sep}}=4\sigma$.  The short-pulse spectrum differs
+    from the driven ODE result by $1.33\%$ in the full complex
+    two-dimensional norm, compared with a $5.10\%$ discrepancy for the
+    impulsive limit.
+    }
+    \label{fig:short_pulse_2d_comparison}
+\end{figure}
+
+These calculations establish the regime in which the effects of the
+finite pulses may be represented accurately by scalar spectral
+factors.  As the pulse duration increases further, molecular evolution
+during the pulse offsets can no longer be neglected, motivating the
+operator-valued finite-width treatment considered next.
 
 \subsubsection{Finite-width pulses}
 % retain evolution during pulse offsets
