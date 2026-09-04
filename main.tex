@@ -102,19 +102,34 @@
 We develop a direct frequency-domain formulation of third-order
 nonlinear spectroscopy for finite-dimensional open quantum systems.
 The method expresses the molecular response in terms of Liouvillian
-resolvents and avoids explicit propagation over the coherence times
-$t_1$ and $t_3$.
+resolvents, avoiding explicit propagation over the coherence times
+$t_1$ and $t_3$ and the subsequent two-dimensional Fourier transform.
 
-For short and separated laser pulses, the polarization factorizes
-into scalar pulse spectra and a molecular response function.
-For finite-width Gaussian pulses, retaining the Liouvillian evolution
-during the pulse produces operator-valued spectral filters
-$F_j(\mathcal{L},\omega)$.
+We consider three pulse regimes. In the impulsive limit, the intrinsic
+third-order molecular response is evaluated directly from Liouvillian
+resolvents. For short and temporally separated pulses, the
+rotating-wave approximation and the neglect of molecular evolution
+across the pulse envelopes lead to a factorization of the
+phase-matched rephasing and nonrephasing signals into scalar laser
+spectra and the corresponding RWA-resolved molecular responses. For
+finite-width separated pulses, the evolution associated with
+interactions occurring away from the pulse centers is retained,
+leading to operator-valued spectral filters
+$F_j(\mathcal{L},\omega)$ that act directly in Liouville space.
 
-The method is validated and benchmarked using two coupled two-level
-systems interacting with thermal environments, by comparison with
-conventional time-domain propagation and explicit finite-pulse
-calculations.
+The finite-width formulation retains the complete light--matter
+interaction superoperator and does not require the rotating-wave
+approximation. The pulse operators therefore preserve the
+Liouvillian-mode-dependent oscillatory dynamics occurring across the
+pulse duration, allowing rapidly varying contributions to be
+suppressed through the finite-pulse integrations themselves.
+
+The three regimes are tested using two coupled two-level systems
+interacting with thermal environments. Direct frequency-domain
+calculations are compared with conventional time-domain propagation,
+RWA-resolved pathway calculations, and explicit finite-pulse
+simulations to establish the validity and range of applicability of
+the different descriptions.
 
 \end{abstract}
 
@@ -126,87 +141,175 @@ calculations.
 
 Multidimensional nonlinear spectroscopy is commonly formulated in the
 time domain. In a third-order calculation, the molecular response is
-evaluated as a function of the coherence times $t_1$ and $t_3$ and the
-waiting time $T$,
+propagated over the coherence times $t_1$ and $t_3$ and the waiting
+time $T$, followed by Fourier transformation with respect to the two
+coherence intervals. The goal of the present work is to replace the
+explicit propagation and Fourier transformation along $t_1$ and $t_3$
+by direct calculations at the desired frequencies. Using the causal
+Fourier convention adopted throughout this work, the transformation of
+a Liouvillian propagator introduces the resolvent
 %
 \begin{equation}
-R^{(3)}(t_3,T,t_1)
-=
-\langle\!\langle \mu |
-e^{\mathcal{L}t_3}
-V
-e^{\mathcal{L}T}
-V
-e^{\mathcal{L}t_1}
-V
-|\rho_0\rangle\!\rangle ,
-\end{equation}
-%
-followed by Fourier transformation with respect to $t_1$ and $t_3$.
-Here, $\mathcal{L}$ is the Liouvillian superoperator describing the
-open-system dynamics and $V$ is the light--matter interaction
-superoperator.
-
-The purpose of this work is to formulate the same third-order response
-directly in the frequency domain. Fourier transformation of the
-Liouvillian propagators introduces the resolvent
-%
-\begin{equation}
+\boxed{
 G(\omega)
 =
 \left[
 (0^{+}-i\omega)I-\mathcal{L}
 \right]^{-1},
+}
 \end{equation}
 %
-so that the molecular response can be evaluated directly at the desired
-frequencies $(\omega_1,\omega_3)$ without explicitly constructing a
-two-dimensional grid in $(t_1,t_3)$ and Fourier transforming it
-afterwards.
+where $\mathcal{L}$ is the field-free Liouvillian. The frequency-domain
+response can therefore be evaluated by solving linear systems at
+$(\omega_1,\omega_3)$ rather than constructing a two-dimensional
+time-domain grid.
 
-For sufficiently short and temporally separated laser pulses, the
-third-order polarization factorizes into the molecular response and
-scalar laser spectra,
+The first regime considered is the impulsive response. To construct
+the conventional phase-matched rephasing and nonrephasing signals, we
+decompose the molecular dipole interaction into excitation-raising and
+excitation-lowering components. We write
 %
 \begin{equation}
-P^{(3)}
-\approx
-E_3(\omega_3)
-E_2(-\omega_1)
-E_1(\omega_1)
-M^{(3)}(\omega_3,T,\omega_1).
+V_{+}\equiv V_{\uparrow},
+\qquad
+V_{-}\equiv V_{\downarrow},
 \end{equation}
 %
-This approximation assumes not only that the pulses are separated, but
-also that the molecular state changes negligibly during the duration of
-each pulse.
-
-For finite-width Gaussian pulses, this latter approximation can fail.
-Retaining the Liouvillian evolution during the pulse leads instead to
-operator-valued spectral factors
+so that a selected field signature
+$\mathbf{s}=(s_1,s_2,s_3)$ has the corresponding RWA-resolved
+impulsive molecular response
 %
 \begin{equation}
-E_j(\omega)
-\longrightarrow
-F_j(\mathcal{L},\omega),
+\boxed{
+M_{\mathbf{s}}^{(3)}
+(\omega_3,T,\omega_1)
+=
+\langle\!\langle\mu|
+G(\omega_3)
+V_{s_3}
+e^{\mathcal{L}T}
+V_{s_2}
+G(\omega_1)
+V_{s_1}
+|\rho_0\rangle\rangle .
+}
 \end{equation}
 %
-which act as Liouvillian-mode-dependent complex filters. These operators
-retain the molecular dynamics occurring during the finite pulse while
-preserving a direct frequency-domain formulation.
+For example, the positive-frequency nonrephasing signature
+$(+,-,+)$ gives the molecular sequence
+$V_{\uparrow}V_{\downarrow}V_{\uparrow}$, while the rephasing
+signature $(-,+,+)$ gives
+$V_{\downarrow}V_{\uparrow}V_{\uparrow}$ in chronological order.
 
-The finite-pulse formalism has been tested using simple few-level
-systems, where the scalar short-pulse approximation was found to become
-inaccurate for sufficiently broad temporal pulses, particularly for
-some nonrephasing spectral features. The operator-dressed formulation
-reproduced explicit finite-pulse calculations to numerical accuracy.
+The second regime is that of short and temporally separated pulses.
+Once the RWA-resolved impulsive molecular response has been identified,
+the pulse envelopes may be included as scalar spectral factors when the
+remaining molecular dynamics vary negligibly over the pulse-centered
+time offsets. The corresponding polarization factorizes as
+%
+\begin{equation}
+\boxed{
+P_{\mathbf{s},\mathrm{short}}^{(3)}
+=
+E_3^{(s_3)}(\omega_3)
+E_2^{(s_2)}(-\omega_1)
+E_1^{(s_1)}(\omega_1)
+M_{\mathbf{s}}^{(3)}
+(\omega_3,T,\omega_1).
+}
+\end{equation}
+%
+Thus, in this regime the phase-matching information is carried by the
+selected positive- and negative-frequency components of the three
+laser fields, while the molecular response is the corresponding
+RWA-resolved impulsive response.
 
-The next stage of the project is a systematic validation and benchmark
-using two coupled two-level systems interacting with thermal
-environments. This model provides a nontrivial open quantum system while
-remaining small enough for direct comparison between frequency-domain
-resolvent calculations, conventional time-domain propagation, and
-explicit finite-pulse simulations.
+The third regime retains the finite temporal widths of the pulses
+without imposing the rotating-wave approximation on the molecular
+interaction. For temporally separated pulses, the complete interaction
+superoperator
+%
+\begin{equation}
+V
+=
+V_{\uparrow}+V_{\downarrow}
+\end{equation}
+%
+is retained, together with the Liouvillian evolution associated with
+interactions occurring away from the pulse centers. The resulting
+pulse integrals define operator-valued spectral filters
+%
+\begin{equation}
+F_3^{(s_3)}(\omega_3)
+=
+\int du_3\,
+e^{i\omega_3u_3}
+E_3^{(s_3)}(u_3)
+e^{\mathcal{L}u_3},
+\end{equation}
+%
+and
+%
+\begin{equation}
+F_2^{(s_2)}(\omega_1)
+=
+\int du_2\,
+e^{-i\omega_1u_2}
+E_2^{(s_2)}(u_2)
+e^{-\mathcal{L}u_2}.
+\end{equation}
+%
+The finite-width polarization then takes the form
+%
+\begin{equation}
+\boxed{
+\begin{aligned}
+P_{\mathbf{s},\mathrm{finite}}^{(3)}
+={}&
+E_1^{(s_1)}(\omega_1)
+\\
+&\times
+\langle\!\langle\mu|
+G(\omega_3)
+V
+e^{\mathcal{L}T}
+F_3^{(s_3)}(\omega_3)
+F_2^{(s_2)}(\omega_1)
+V
+G(\omega_1)
+V
+|\rho_0\rangle\rangle .
+\end{aligned}
+}
+\end{equation}
+%
+Because the $F_j$ are matrix functions of the Liouvillian, different
+populations and coherences acquire different amplitudes and phases.
+Rapidly oscillating molecular contributions may therefore be suppressed
+directly by the finite-pulse integrations rather than being removed by
+an RWA imposed beforehand.
+
+The three descriptions consequently address different physical
+limits. The impulsive calculation isolates the intrinsic
+RWA-resolved rephasing and nonrephasing molecular response. The
+short-pulse treatment adds scalar laser spectra when the RWA-selected
+molecular dynamics are effectively frozen across the pulse envelopes.
+The finite-width formulation instead retains the complete molecular
+interaction and the Liouvillian evolution across the pulses through the
+operators $F_2$ and $F_3$. Comparing these regimes provides a direct
+way to determine when the conventional short-pulse RWA description is
+adequate and when finite-pulse dynamical filtering must be retained.
+
+The formalism is benchmarked using two coupled two-level systems
+interacting with thermal environments. The Liouvillian and direct
+resolvent construction are first validated against explicit
+time-domain propagation. The impulsive rephasing and nonrephasing
+responses are independently compared with conventional RWA pathway
+calculations, including QuDPy. Finally, the short-pulse and finite-width
+frequency-domain descriptions are compared with explicit finite-pulse
+propagation while varying the pulse duration. This hierarchy provides
+separate tests of the resolvent formulation, the RWA short-pulse
+description, and the finite-width Liouvillian pulse operators.
 
 \section{Liouville-Space Formulation}
 \label{sec:liouville}
@@ -876,118 +979,250 @@ $M^{(3)}(\omega_3,T,\omega_1)$ will be combined with the three laser
 fields. We first consider the limit of short and temporally separated
 pulses, for which the laser spectra factorize from the molecular
 response.
+% ============================================================
+\subsection{Impulsive rephasing and nonrephasing response}
+\label{subsec:impulsive_rnr}
+% ============================================================
 
+Equation~\eqref{eq:direct_frequency_response},
+%
+\begin{equation}
+M^{(3)}(\omega_3,T,\omega_1)
+=
+\langle\!\langle\mu|
+G(\omega_3)
+V
+e^{\mathcal{L}T}
+V
+G(\omega_1)
+V
+|\rho_0\rangle\rangle ,
+\end{equation}
+%
+is the complete impulsive third-order molecular response associated
+with the dipole interaction superoperator
+%
+\begin{equation}
+V
+=
+V_{\uparrow}
++
+V_{\downarrow}.
+\end{equation}
+%
+It contains all excitation-raising and excitation-lowering molecular
+interaction sequences generated by the full dipole commutator.
+
+In the impulsive limit, the three laser interactions are taken to occur
+at well-defined times. The temporal pulse envelopes are therefore not
+resolved, and ideal delta-function pulses contribute only overall field
+amplitudes and phases. Consequently, the frequency dependence of the
+impulsive third-order polarization is determined directly by the
+corresponding molecular response.
+
+To construct the conventional phase-matched rephasing and
+nonrephasing optical signals, we additionally apply the rotating-wave
+approximation. We decompose the dipole operator as
+%
+\begin{equation}
+\mu
+=
+\mu_{\uparrow}
++
+\mu_{\downarrow},
+\qquad
+\mu_{\downarrow}
+=
+\mu_{\uparrow}^{\dagger},
+\end{equation}
+%
+with interaction superoperators
+%
+\begin{equation}
+V_{\uparrow}
+=
+\frac{i}{\hbar}
+\left(
+I\otimes\mu_{\uparrow}
+-
+\mu_{\uparrow}^{T}\otimes I
+\right),
+\end{equation}
+%
+and
+%
+\begin{equation}
+V_{\downarrow}
+=
+\frac{i}{\hbar}
+\left(
+I\otimes\mu_{\downarrow}
+-
+\mu_{\downarrow}^{T}\otimes I
+\right).
+\end{equation}
+
+For compactness, we define
+%
+\begin{equation}
+V_{+}
+\equiv
+V_{\uparrow},
+\qquad
+V_{-}
+\equiv
+V_{\downarrow}.
+\end{equation}
+
+For the positive-frequency nonrephasing field signature
+%
+\begin{equation}
+(+,-,+),
+\end{equation}
+%
+the corresponding impulsive RWA molecular response is
+%
+\begin{equation}
+\boxed{
+\begin{aligned}
+M_{NR}^{(3)}
+(\omega_3,T,\omega_1)
+=
+\langle\!\langle\mu|
+G(\omega_3)
+V_{\uparrow}
+e^{\mathcal{L}T}
+V_{\downarrow}
+G(\omega_1)
+V_{\uparrow}
+|\rho_0\rangle\rangle .
+\end{aligned}
+}
+\label{eq:impulsive_NR_response}
+\end{equation}
+
+Under the Fourier convention used here, the first coherence frequency
+of the rephasing branch is negative. Writing it as $\nu_1<0$, the
+positive-frequency rephasing signature
+%
+\begin{equation}
+(-,+,+)
+\end{equation}
+%
+gives
+%
+\begin{equation}
+\boxed{
+\begin{aligned}
+M_{R}^{(3)}
+(\omega_3,T,\nu_1)
+=
+\langle\!\langle\mu|
+G(\omega_3)
+V_{\uparrow}
+e^{\mathcal{L}T}
+V_{\uparrow}
+G(\nu_1)
+V_{\downarrow}
+|\rho_0\rangle\rangle .
+\end{aligned}
+}
+\label{eq:impulsive_R_response}
+\end{equation}
+
+Thus, the complete response
+$M^{(3)}$ of Eq.~\eqref{eq:direct_frequency_response} and the
+RWA-resolved responses $M_R^{(3)}$ and $M_{NR}^{(3)}$ describe
+different levels of the impulsive theory. The former retains the full
+dipole interaction, whereas the latter select the resonant molecular
+interaction sequences associated with the conventional rephasing and
+nonrephasing signals.
+
+For ideal impulsive pulses, the pulse spectra are constant over the
+molecular bandwidth. The measured phase-matched impulsive spectra are
+therefore proportional, up to the corresponding field amplitudes and
+phases, to $M_R^{(3)}$ and $M_{NR}^{(3)}$. Finite pulse envelopes and
+their spectral dependence are introduced in the following sections.
 
 \section{Short and Separated Pulses}
 \label{sec:short_pulses}
 
-The molecular response derived in Sec.~\ref{sec:frequency_response}
-contains the open-system dynamics but does not yet include the temporal
-envelopes, carrier frequencies, wavevectors, or phases of the laser
-pulses. We now introduce these quantities explicitly.
+We now include the temporal envelopes, carrier frequencies, wavevectors,
+and phases of the three laser pulses.
 
-We first consider three Gaussian laser pulses that are temporally
-separated and sufficiently short that the molecular evolution occurring
-during their duration can be neglected. The short-pulse approximation
-will be relaxed in Sec.~\ref{sec:finite_pulses}.
-
-For the finite-pulse convolution developed below, the treatment of the
-initial state requires an additional qualification.  If the state
-immediately preceding the pulse sequence is stationary under the
-field-free Liouvillian,
+The starting point is the impulsive rephasing and nonrephasing
+molecular responses derived in
+Sec.~\ref{subsec:impulsive_rnr}.  Within the rotating-wave
+approximation, the positive-frequency nonrephasing response is
 %
 \begin{equation}
-\boxed{
-\mathcal{L}|\rho_0\rangle\rangle=0,
-}
-\label{eq:stationary_initial_state}
-\end{equation}
-%
-then
-%
-\begin{equation}
-e^{\mathcal{L}\tau}|\rho_0\rangle\rangle
+M_{NR}^{(3)}
+(\omega_3,T,\omega_1)
 =
-|\rho_0\rangle\rangle
+\langle\!\langle\mu|
+G(\omega_3)
+V_{\uparrow}
+e^{\mathcal{L}T}
+V_{\downarrow}
+G(\omega_1)
+V_{\uparrow}
+|\rho_0\rangle\rangle ,
 \end{equation}
 %
-for any $\tau$.  Shifting the absolute time of the first interaction
-therefore does not change the state on which the first pulse acts, and
-the unperturbed response is time-translation invariant.
-
-For a nonstationary prepared state,
+while the positive-frequency rephasing response is
 %
 \begin{equation}
-\mathcal{L}|\rho_0\rangle\rangle\neq0,
-\end{equation}
-%
-the response generally depends on the absolute time of the first
-interaction in addition to the intervals between interactions.  Let
-$t_{\mathrm{prep}}$ denote the preparation time and $\tau_1$ the center
-of the first pulse.  We define the preparation-to-pulse delay as
-%
-\begin{equation}
-\boxed{
-\tau_{\mathrm{prep}}
+M_{R}^{(3)}
+(\omega_3,T,\nu_1)
 =
-\tau_1-t_{\mathrm{prep}}.
-}
-\label{eq:preparation_delay}
-\end{equation}
-
-A useful measure of the initial field-free drift is
-%
-\begin{equation}
-\boxed{
-\kappa_0
-=
-\frac{
-\left\|
-\mathcal{L}|\rho_0\rangle\rangle
-\right\|
-}{
-\left\|
-|\rho_0\rangle\rangle
-\right\|
-}.
-}
-\label{eq:initial_drift_rate}
-\end{equation}
-%
-The dimensionless quantities
-%
-\begin{equation}
-\chi_{\mathrm{delay}}
-=
-\tau_{\mathrm{prep}}\kappa_0,
+\langle\!\langle\mu|
+G(\omega_3)
+V_{\uparrow}
+e^{\mathcal{L}T}
+V_{\uparrow}
+G(\nu_1)
+V_{\downarrow}
+|\rho_0\rangle\rangle ,
 \qquad
-\chi_{\mathrm{width}}
-=
-\sigma_1\kappa_0
+\nu_1<0.
 \end{equation}
-%
-provide useful estimates of the evolution accumulated before the pulse
-center and across the duration of the first pulse, respectively.
 
-More fundamentally, the frozen-preparation approximation requires
+In the present section, these impulsive molecular responses are dressed
+by finite laser spectra under two additional assumptions.
+
+First, the pulses are temporally separated, so that the chronological
+ordering of the three interactions is well defined and pulse overlap
+may be neglected.
+
+Second, the pulses are sufficiently short that the molecular dynamics
+remaining after the rotating-wave approximation change negligibly over
+the temporal width of each pulse.  Under this short-envelope
+approximation, the pulse dependence factorizes from the molecular
+response and appears through ordinary scalar laser spectra.
+
+The resulting short-pulse polarization therefore has the schematic
+form
 %
 \begin{equation}
 \boxed{
-e^{\mathcal{L}(\tau_{\mathrm{prep}}+u_1)}
-|\rho_0\rangle\rangle
-\simeq
-|\rho_0\rangle\rangle
+P_{\mathbf{s},\mathrm{short}}^{(3)}
+\propto
+E_3^{(s_3)}
+E_2^{(s_2)}
+E_1^{(s_1)}
+M_{\mathbf{s}}^{(3)},
 }
-\label{eq:frozen_prepared_state_condition}
 \end{equation}
 %
-over the temporal region in which the first-pulse envelope has
-appreciable weight.  When this condition holds, the nonstationary
-prepared state may be treated as effectively fixed during the first
-interaction.  In the strict impulsive limit with the first interaction
-occurring at the preparation time, this approximation becomes exact
-with respect to the pre-pulse evolution.
+where $\mathbf{s}=(s_1,s_2,s_3)$ specifies the selected
+positive- and negative-frequency components of the three fields, and
+$M_{\mathbf{s}}^{(3)}$ denotes the corresponding RWA-resolved
+impulsive molecular response.
 
+We first define the Gaussian laser fields and their spectra, then
+identify the rephasing and nonrephasing phase signatures, and finally
+derive the scalar short-pulse factorization and its conditions of
+validity.
 % ============================================================
 \subsection{Gaussian laser pulses}
 % ============================================================
@@ -1176,14 +1411,14 @@ Thus, short pulses in the time domain have broad spectra in the
 frequency domain, while longer pulses have narrower spectral
 distributions.
 
-
 % ============================================================
 \subsection{Rephasing and nonrephasing phase signatures}
+\label{subsec:phase_signatures}
 % ============================================================
 
-Each of the three interactions may involve either the positive- or
-negative-frequency component of the corresponding electric field.
-A contribution can therefore be labeled by
+Each of the three laser interactions may involve either the positive-
+or negative-frequency component of the corresponding field.  A field
+contribution is therefore labeled by the sign signature
 %
 \begin{equation}
 \mathbf{s}
@@ -1193,7 +1428,7 @@ A contribution can therefore be labeled by
 s_j=\pm1.
 \end{equation}
 
-The spatial phase associated with a given contribution is
+For a given signature, the spatial phase carried by the three fields is
 %
 \begin{equation}
 \exp
@@ -1210,7 +1445,7 @@ s_3\mathbf{k}_3
 \right],
 \end{equation}
 %
-while the carrier-phase dependence is
+and the corresponding carrier-phase dependence is
 %
 \begin{equation}
 \exp
@@ -1226,12 +1461,33 @@ s_3\phi_3
 \right].
 \end{equation}
 
+The decomposition of the real electric fields into positive- and
+negative-frequency components is exact.  In the short-pulse regime
+considered in this section, we additionally use the rotating-wave
+approximation introduced in
+Sec.~\ref{subsec:impulsive_rnr}, so that
+%
+\begin{equation}
+\boxed{
+E^{(+)}
+\leftrightarrow
+V_{\uparrow},
+\qquad
+E^{(-)}
+\leftrightarrow
+V_{\downarrow}.
+}
+\label{eq:short_rwa_pairing}
+\end{equation}
+
+Thus, once a field-sign combination is selected, the corresponding
+RWA molecular interaction sequence is fixed.
 
 % ------------------------------------------------------------
-\subsubsection{Rephasing polarization}
+\subsubsection{Rephasing signal}
 % ------------------------------------------------------------
 
-The positive-frequency rephasing branch corresponds to
+The positive-frequency rephasing contribution has the field signature
 %
 \begin{equation}
 \boxed{
@@ -1250,7 +1506,7 @@ Its spatial phase is
 e^{i\mathbf{k}_R\cdot\mathbf{R}},
 \end{equation}
 %
-where
+with
 %
 \begin{equation}
 \boxed{
@@ -1265,64 +1521,48 @@ where
 \label{eq:k_rephasing}
 \end{equation}
 
-Because the physical polarization is real, the conjugate branch must
-also be present. It has the sign signature
+Within the RWA, the corresponding chronological molecular sequence is
+%
+\begin{equation}
+\boxed{
+V_{\downarrow}
+\rightarrow
+V_{\uparrow}
+\rightarrow
+V_{\uparrow}.
+}
+\end{equation}
+
+The associated impulsive molecular response is therefore the
+rephasing response $M_R^{(3)}$ defined in
+Eq.~\eqref{eq:impulsive_R_response}.
+
+The conjugate field branch has signature
 %
 \begin{equation}
 \boxed{
 B_R:
 \qquad
-(s_1,s_2,s_3)
-=
 (+,-,-),
 }
-\label{eq:BR_signature}
 \end{equation}
 %
-and carries the opposite spatial phase,
+and carries the opposite spatial phase
 %
 \begin{equation}
-e^{-i\mathbf{k}_R\cdot\mathbf{R}},
-\end{equation}
-%
-with
-%
-\begin{equation}
-\boxed{
--\mathbf{k}_R
-=
-+\mathbf{k}_1
--
-\mathbf{k}_2
--
-\mathbf{k}_3.
-}
+e^{-i\mathbf{k}_R\cdot\mathbf{R}}.
 \end{equation}
 
-The complete real-space rephasing polarization therefore contains both
-conjugate branches,
-%
-\begin{equation}
-\boxed{
-P_R^{(3)}
-=
-A_R+B_R.
-}
-\label{eq:full_rephasing}
-\end{equation}
-
-In a phase-matched experiment detecting specifically in the
-$+\mathbf{k}_R$ direction, the measured complex signal is associated
-with $A_R$. The branch $B_R$ propagates in the opposite direction and
-is its conjugate partner required to reconstruct the complete real
-polarization field.
-
+In a phase-matched experiment detecting along
+$+\mathbf{k}_R$, the measured complex rephasing signal is associated
+with $A_R$.
 
 % ------------------------------------------------------------
-\subsubsection{Nonrephasing polarization}
+\subsubsection{Nonrephasing signal}
 % ------------------------------------------------------------
 
-The positive-frequency nonrephasing branch corresponds to
+The positive-frequency nonrephasing contribution has the field
+signature
 %
 \begin{equation}
 \boxed{
@@ -1335,7 +1575,13 @@ A_{NR}:
 \label{eq:ANR_signature}
 \end{equation}
 
-Its wavevector is
+Its spatial phase is
+%
+\begin{equation}
+e^{i\mathbf{k}_{NR}\cdot\mathbf{R}},
+\end{equation}
+%
+with
 %
 \begin{equation}
 \boxed{
@@ -1350,161 +1596,97 @@ Its wavevector is
 \label{eq:k_nonrephasing}
 \end{equation}
 
-The conjugate branch is
+Within the RWA, the corresponding chronological molecular sequence is
+%
+\begin{equation}
+\boxed{
+V_{\uparrow}
+\rightarrow
+V_{\downarrow}
+\rightarrow
+V_{\uparrow}.
+}
+\end{equation}
+
+The associated impulsive molecular response is therefore the
+nonrephasing response $M_{NR}^{(3)}$ defined in
+Eq.~\eqref{eq:impulsive_NR_response}.
+
+The conjugate field branch has signature
 %
 \begin{equation}
 \boxed{
 B_{NR}:
 \qquad
-(s_1,s_2,s_3)
-=
 (-,+,-),
 }
-\label{eq:BNR_signature}
 \end{equation}
 %
-with
-%
-\begin{equation}
-\boxed{
--\mathbf{k}_{NR}
-=
--\mathbf{k}_1
-+
-\mathbf{k}_2
--
-\mathbf{k}_3.
-}
-\end{equation}
-
-The complete real-space nonrephasing polarization is therefore
+and carries the opposite spatial phase
 %
 \begin{equation}
-\boxed{
-P_{NR}^{(3)}
-=
-A_{NR}+B_{NR}.
-}
-\label{eq:full_nonrephasing}
+e^{-i\mathbf{k}_{NR}\cdot\mathbf{R}}.
 \end{equation}
 
-Again, detection along $+\mathbf{k}_{NR}$ isolates the $A_{NR}$
-component, while $B_{NR}$ is its conjugate branch propagating along
-$-\mathbf{k}_{NR}$.
+In a phase-matched experiment detecting along
+$+\mathbf{k}_{NR}$, the measured complex nonrephasing signal is
+associated with $A_{NR}$.
 
-The four relevant field signatures can be summarized as
+The relevant field signatures may be summarized as
 %
 \begin{equation}
 \boxed{
 \begin{array}{c|ccc|c}
  & s_1 & s_2 & s_3 & \text{wavevector} \\
 \hline
-A_R    & - & + & + & +\mathbf{k}_R \\
-B_R    & + & - & - & -\mathbf{k}_R \\
-A_{NR} & + & - & + & +\mathbf{k}_{NR} \\
-B_{NR} & - & + & - & -\mathbf{k}_{NR}
+A_R
+& - & + & + & +\mathbf{k}_R \\
+B_R
+& + & - & - & -\mathbf{k}_R \\
+A_{NR}
+& + & - & + & +\mathbf{k}_{NR} \\
+B_{NR}
+& - & + & - & -\mathbf{k}_{NR}
 \end{array}
 }
 \label{eq:phase_signature_table}
 \end{equation}
 
-The decomposition of the real electric field into positive- and
-negative-frequency components is exact and does not itself require the
-rotating-wave approximation. Any additional restriction of the
-molecular transitions to resonant raising or lowering processes is a
-separate approximation.
+For the short-pulse treatment developed below, we focus on the
+phase-matched positive-frequency branches $A_R$ and $A_{NR}$. Their
+molecular parts are the RWA-resolved impulsive responses
+$M_R^{(3)}$ and $M_{NR}^{(3)}$, while the finite pulse durations enter
+through the scalar laser spectra derived in the preceding subsection.
 
 
 % ============================================================
-\subsection{Finite-pulse expression before the short-pulse approximation}
+\subsection{Short-pulse factorization}
+\label{subsec:short_pulse_factorization}
 % ============================================================
+The impulsive molecular responses derived in
+Sec.~\ref{subsec:impulsive_rnr} assume that each light--matter
+interaction occurs at a well-defined time. For laser pulses of finite
+duration, the interactions may instead occur over a range of times
+around the corresponding pulse centers.
 
-We now consider the chronological contribution in which the pulse
-interactions occur in the order
-%
-\begin{equation}
-1\rightarrow2\rightarrow3.
-\end{equation}
+In the present short-pulse regime, we assume that the pulses remain
+temporally separated and that, after the rotating-wave approximation
+has selected the resonant molecular interaction sequence, the
+remaining molecular dynamics change negligibly over the temporal
+widths of the pulses. The molecular response may then be evaluated at
+the nominal pulse centers and taken outside the pulse-envelope
+integrations.
 
-We now assume either that the initial state is stationary,
-Eq.~\eqref{eq:stationary_initial_state}, or that the frozen-preparation
-condition in Eq.~\eqref{eq:frozen_prepared_state_condition} is
-satisfied.  Under either condition, the state on which the first
-interaction acts may be taken to be $|\rho_0\rangle\rangle$ throughout
-the relevant support of the first pulse.
-
-After Fourier transforming the nominal coherence and detection delays
-and changing variables to the pulse-centered coordinates
-$u_1$, $u_2$, and $u_3$, the chronological contribution associated
-with a selected field signature
+For a field-sign signature
 %
 \begin{equation}
 \mathbf{s}
 =
-(s_1,s_2,s_3)
+(s_1,s_2,s_3),
 \end{equation}
 %
-then takes the form
-%
-\begin{align}
-P_{\mathbf{s}}^{(3)}
-(\omega_3,T,\omega_1)
-={}&
-\int_{-\infty}^{+\infty}
-du_3
-\int_{-\infty}^{+\infty}
-du_2
-\int_{-\infty}^{+\infty}
-du_1
-\nonumber\\
-&\times
-e^{i\omega_3u_3}
-e^{-i\omega_1u_2}
-e^{i\omega_1u_1}
-\nonumber\\
-&\times
-E_3^{(s_3)}(u_3)
-E_2^{(s_2)}(u_2)
-E_1^{(s_1)}(u_1)
-\nonumber\\
-&\times
-\Theta(T+u_3-u_2)
-\nonumber\\
-&\times
-\langle\!\langle\mu|
-G(\omega_3)
-V
-e^{\mathcal{L}(T+u_3-u_2)}
-V
-G(\omega_1)
-V
-|\rho_0\rangle\rangle .
-\label{eq:finite_pulse_before_approx}
-\end{align}
-
-The factor
-%
-\begin{equation}
-\Theta(T+u_3-u_2)
-\end{equation}
-%
-enforces chronological ordering between the second and third
-interactions. Their actual separation is
-%
-\begin{equation}
-\boxed{
-T_{\mathrm{actual}}
-=
-T+u_3-u_2,
-}
-\label{eq:actual_waiting_time}
-\end{equation}
-%
-rather than exactly $T$.
-
-Under the stationary-state or frozen-preparation assumption introduced
-above, the $u_1$ dependence is completely factorized in
-Eq.~\eqref{eq:finite_pulse_before_approx}. Therefore,
+the three pulse integrations then reduce to the corresponding scalar
+laser spectra,
 %
 \begin{equation}
 \int_{-\infty}^{+\infty}
@@ -1515,120 +1697,16 @@ E_1^{(s_1)}(u_1)
 E_1^{(s_1)}(\omega_1),
 \end{equation}
 %
-
-and
-%
-\begin{align}
-P_{\mathbf{s}}^{(3)}
-={}&
-E_1^{(s_1)}(\omega_1)
+\begin{equation}
 \int_{-\infty}^{+\infty}
-du_3
-\int_{-\infty}^{+\infty}
-du_2
-\nonumber\\
-&\times
-e^{i\omega_3u_3}
+du_2\,
 e^{-i\omega_1u_2}
-E_3^{(s_3)}(u_3)
 E_2^{(s_2)}(u_2)
-\nonumber\\
-&\times
-\Theta(T+u_3-u_2)
-\nonumber\\
-&\times
-\langle\!\langle\mu|
-G(\omega_3)
-V
-e^{\mathcal{L}(T+u_3-u_2)}
-V
-G(\omega_1)
-V
-|\rho_0\rangle\rangle .
-\label{eq:after_u1_integral}
-\end{align}
-
-For a genuinely nonstationary preparation outside the regime of
-Eq.~\eqref{eq:frozen_prepared_state_condition}, this factorization is
-no longer exact.  The field-free evolution prior to the first
-interaction depends on $u_1$ and must be retained explicitly inside the
-first-pulse integral.
-% ============================================================
-\subsection{Separated-pulse approximation}
-% ============================================================
-
-We first assume that pulses 2 and 3 are sufficiently well separated
-that their Gaussian envelopes have negligible weight in the region
-where the third interaction would occur before the second.
-
-In this limit,
-%
-\begin{equation}
-\boxed{
-\Theta(T+u_3-u_2)
-\approx1.
-}
-\label{eq:theta_separated}
-\end{equation}
-
-For Gaussian envelopes, the difference $u_3-u_2$ has a characteristic
-width
-%
-\begin{equation}
-\sqrt{\sigma_2^2+\sigma_3^2}.
-\end{equation}
-%
-Thus, temporal ordering becomes increasingly well defined when $T$ is
-large compared with this width.
-
-Importantly, this condition concerns only pulse overlap and temporal
-ordering. It does not imply that the pulses are short compared with the
-intrinsic molecular dynamics.
-
-
-% ============================================================
-\subsection{Short-pulse approximation}
-% ============================================================
-
-The propagator between the second and third interactions can be written
-as
-%
-\begin{equation}
-\boxed{
-e^{\mathcal{L}(T+u_3-u_2)}
 =
-e^{\mathcal{L}T}
-e^{\mathcal{L}(u_3-u_2)}.
-}
-\label{eq:waiting_factorization}
+E_2^{(s_2)}(-\omega_1),
 \end{equation}
-
-Since all terms are generated by the same Liouvillian,
 %
-\begin{equation}
-e^{\mathcal{L}(u_3-u_2)}
-=
-e^{\mathcal{L}u_3}
-e^{-\mathcal{L}u_2}.
-\end{equation}
-
-The short-pulse approximation assumes that the molecular state changes
-negligibly during these pulse-centered time offsets,
-%
-\begin{equation}
-\boxed{
-e^{\mathcal{L}(u_3-u_2)}
-\approx I.
-}
-\label{eq:short_pulse_approximation}
-\end{equation}
-
-Under both the separated-pulse approximation,
-Eq.~\eqref{eq:theta_separated}, and the short-pulse approximation,
-Eq.~\eqref{eq:short_pulse_approximation}, the molecular part becomes
-independent of $u_2$ and $u_3$.
-
-The remaining integrals reduce to the ordinary pulse spectra,
+and
 %
 \begin{equation}
 \int_{-\infty}^{+\infty}
@@ -1636,22 +1714,10 @@ du_3\,
 e^{i\omega_3u_3}
 E_3^{(s_3)}(u_3)
 =
-E_3^{(s_3)}(\omega_3),
-\end{equation}
-%
-and
-%
-\begin{equation}
-\int_{-\infty}^{+\infty}
-du_2\,
-e^{-i\omega_1u_2}
-E_2^{(s_2)}(u_2)
-=
-E_2^{(s_2)}(-\omega_1).
+E_3^{(s_3)}(\omega_3).
 \end{equation}
 
-Using Eq.~\eqref{eq:direct_frequency_response}, the short-pulse
-polarization for an arbitrary sign signature becomes
+The short-pulse polarization therefore factorizes as
 %
 \begin{equation}
 \boxed{
@@ -1664,317 +1730,387 @@ E_2^{(s_2)}(-\omega_1)
 E_1^{(s_1)}(\omega_1)
 \\
 &\times
-M^{(3)}(\omega_3,T,\omega_1).
+M_{\mathbf{s}}^{(3)}
+(\omega_3,T,\omega_1),
 \end{aligned}
 }
-\label{eq:short_pulse_polarization}
+\label{eq:short_pulse_factorization}
 \end{equation}
+%
+where $M_{\mathbf{s}}^{(3)}$ is the corresponding RWA-resolved
+impulsive molecular response defined in
+Sec.~\ref{subsec:impulsive_rnr}.
 
-Thus, in the short- and separated-pulse regime, the laser dependence
-appears entirely through scalar spectral factors, while the molecular
-dynamics are contained in $M^{(3)}$.
+Thus, in the short-pulse regime, the laser spectra determine the
+spectral amplitude and phase supplied by the three pulses, while the
+molecular dynamics are contained in the corresponding impulsive
+rephasing or nonrephasing response.
 
-
-% ============================================================
-\subsection{Short-pulse rephasing and nonrephasing components}
-% ============================================================
-
-We now apply Eq.~\eqref{eq:short_pulse_polarization} to the four field
-signatures introduced above.
-
+We now apply the general short-pulse factorization,
+Eq.~\eqref{eq:short_pulse_factorization}, to the phase-matched
+rephasing and nonrephasing signals introduced in
+Sec.~\ref{subsec:phase_signatures}.
 
 % ------------------------------------------------------------
-\subsubsection{Rephasing}
+\subsubsection{Rephasing signal}
 % ------------------------------------------------------------
 
-For
+For the positive-frequency rephasing branch,
 %
 \begin{equation}
 A_R:
 \qquad
+(s_1,s_2,s_3)
+=
 (-,+,+),
 \end{equation}
 %
-we obtain
+the first coherence frequency is negative under the Fourier convention
+used here.  Writing this signed frequency as
+%
+\begin{equation}
+\nu_1<0,
+\end{equation}
+%
+the short-pulse rephasing polarization is
 %
 \begin{equation}
 \boxed{
 \begin{aligned}
-A_{R,\mathrm{short}}
+A_{R,\mathrm{short}}^{(3)}
+(\omega_3,T,\nu_1)
 ={}&
 E_3^{(+)}(\omega_3)
-E_2^{(+)}(-\omega_1)
-E_1^{(-)}(\omega_1)
+E_2^{(+)}(-\nu_1)
+E_1^{(-)}(\nu_1)
 \\
 &\times
-M^{(3)}(\omega_3,T,\omega_1).
+M_R^{(3)}
+(\omega_3,T,\nu_1).
 \end{aligned}
 }
 \label{eq:AR_short}
 \end{equation}
 
-For the conjugate branch
+Here,
 %
 \begin{equation}
-B_R:
-\qquad
-(+,-,-),
-\end{equation}
-%
-we obtain
-%
-\begin{equation}
-\boxed{
-\begin{aligned}
-B_{R,\mathrm{short}}
-={}&
-E_3^{(-)}(\omega_3)
-E_2^{(-)}(-\omega_1)
-E_1^{(+)}(\omega_1)
-\\
-&\times
-M^{(3)}(\omega_3,T,\omega_1).
-\end{aligned}
-}
-\label{eq:BR_short}
-\end{equation}
-
-The complete real-space rephasing polarization is
-%
-\begin{equation}
-\boxed{
-P_{R,\mathrm{short}}^{(3)}
+M_R^{(3)}
+(\omega_3,T,\nu_1)
 =
-A_{R,\mathrm{short}}
-+
-B_{R,\mathrm{short}}.
-}
-\label{eq:PR_short}
+\langle\!\langle\mu|
+G(\omega_3)
+V_{\uparrow}
+e^{\mathcal{L}T}
+V_{\uparrow}
+G(\nu_1)
+V_{\downarrow}
+|\rho_0\rangle\rangle
+\end{equation}
+%
+is the impulsive RWA rephasing molecular response defined in
+Sec.~\ref{subsec:impulsive_rnr}.
+
+The spatial phase of this contribution is
+%
+\begin{equation}
+e^{i\mathbf{k}_R\cdot\mathbf{R}},
+\qquad
+\mathbf{k}_R
+=
+-\mathbf{k}_1+\mathbf{k}_2+\mathbf{k}_3.
 \end{equation}
 
+Thus, detection along $+\mathbf{k}_R$ isolates
+$A_{R,\mathrm{short}}^{(3)}$.
 
 % ------------------------------------------------------------
-\subsubsection{Nonrephasing}
+\subsubsection{Nonrephasing signal}
 % ------------------------------------------------------------
 
-For
+For the positive-frequency nonrephasing branch,
 %
 \begin{equation}
 A_{NR}:
 \qquad
+(s_1,s_2,s_3)
+=
 (+,-,+),
 \end{equation}
 %
-we obtain
+the first coherence frequency is positive,
+%
+\begin{equation}
+\omega_1>0.
+\end{equation}
+%
+The short-pulse nonrephasing polarization is therefore
 %
 \begin{equation}
 \boxed{
 \begin{aligned}
-A_{NR,\mathrm{short}}
+A_{NR,\mathrm{short}}^{(3)}
+(\omega_3,T,\omega_1)
 ={}&
 E_3^{(+)}(\omega_3)
 E_2^{(-)}(-\omega_1)
 E_1^{(+)}(\omega_1)
 \\
 &\times
-M^{(3)}(\omega_3,T,\omega_1).
+M_{NR}^{(3)}
+(\omega_3,T,\omega_1).
 \end{aligned}
 }
 \label{eq:ANR_short}
 \end{equation}
 
-For the conjugate branch
+Here,
 %
 \begin{equation}
-B_{NR}:
-\qquad
-(-,+,-),
+M_{NR}^{(3)}
+(\omega_3,T,\omega_1)
+=
+\langle\!\langle\mu|
+G(\omega_3)
+V_{\uparrow}
+e^{\mathcal{L}T}
+V_{\downarrow}
+G(\omega_1)
+V_{\uparrow}
+|\rho_0\rangle\rangle
 \end{equation}
 %
-we obtain
+is the impulsive RWA nonrephasing molecular response defined in
+Sec.~\ref{subsec:impulsive_rnr}.
+
+The corresponding spatial phase is
 %
 \begin{equation}
-\boxed{
-\begin{aligned}
-B_{NR,\mathrm{short}}
-={}&
-E_3^{(-)}(\omega_3)
-E_2^{(+)}(-\omega_1)
-E_1^{(-)}(\omega_1)
-\\
-&\times
-M^{(3)}(\omega_3,T,\omega_1).
-\end{aligned}
-}
-\label{eq:BNR_short}
+e^{i\mathbf{k}_{NR}\cdot\mathbf{R}},
+\qquad
+\mathbf{k}_{NR}
+=
++\mathbf{k}_1-\mathbf{k}_2+\mathbf{k}_3.
 \end{equation}
 
-The complete real-space nonrephasing polarization is
-%
-\begin{equation}
-\boxed{
-P_{NR,\mathrm{short}}^{(3)}
-=
-A_{NR,\mathrm{short}}
-+
-B_{NR,\mathrm{short}}.
-}
-\label{eq:PNR_short}
-\end{equation}
+Thus, detection along $+\mathbf{k}_{NR}$ isolates
+$A_{NR,\mathrm{short}}^{(3)}$.
+
+Equations~\eqref{eq:AR_short} and
+\eqref{eq:ANR_short} show that, in the short-pulse regime, the pulse
+spectra modify the amplitude and phase of the corresponding impulsive
+RWA molecular responses without introducing additional molecular
+dynamics across the pulse envelopes.
 
 % ============================================================
 \subsection{Conditions of validity}
+\label{subsec:short_pulse_validity}
 % ============================================================
 
-The scalar factorization in
-Eq.~\eqref{eq:short_pulse_polarization} relies on three conceptually
-distinct ingredients.
+The short-pulse expressions derived above rely on three distinct
+physical conditions.
 
-First, the state on which the first pulse acts must be independent, to
-the required accuracy, of the absolute first-interaction time.  This is
-exact when
+First, the laser pulses must be temporally separated.  If
+$\tau_1<\tau_2<\tau_3$ denote the pulse centers, their separations must
+be sufficiently large compared with their temporal widths that pulse
+overlap is negligible.  Schematically,
 %
 \begin{equation}
-\boxed{
-\mathcal{L}|\rho_0\rangle\rangle=0,
-}
-\end{equation}
-%
-and is approximately valid for a nonstationary prepared state when
-%
-\begin{equation}
-\boxed{
-e^{\mathcal{L}(\tau_{\mathrm{prep}}+u_1)}
-|\rho_0\rangle\rangle
-\simeq
-|\rho_0\rangle\rangle
-}
-\end{equation}
-%
-over the temporal support of the first pulse.  The quantities
-%
-\begin{equation}
-\chi_{\mathrm{delay}}
-=
-\tau_{\mathrm{prep}}\kappa_0,
+|\tau_2-\tau_1|
+\gg
+\sigma_1,\sigma_2,
 \qquad
-\chi_{\mathrm{width}}
+|\tau_3-\tau_2|
+\gg
+\sigma_2,\sigma_3.
+\end{equation}
+%
+This allows the chronological sequence of the three light--matter
+interactions to be treated independently.
+
+Second, the rotating-wave approximation must be valid.  The molecular
+interaction generated by the full dipole superoperator contains both
+resonant and counter-rotating contributions.  For a transition with
+frequency $\Omega$, the resonant terms vary with a small frequency
+mismatch of the form
+%
+\begin{equation}
+\Delta_{\mathrm{res}}
 =
-\sigma_1\kappa_0,
+\Omega-\omega_L,
 \end{equation}
 %
-with $\kappa_0$ defined in Eq.~\eqref{eq:initial_drift_rate}, provide
-useful dimensionless diagnostics of this approximation.
-
-Second, the pulses must be sufficiently separated that their
-chronological ordering is well defined,
+whereas counter-rotating terms contain the much larger mismatch
 %
 \begin{equation}
-\boxed{
-\Theta(T+u_3-u_2)
-\approx1.
-}
-\end{equation}
-%
-For Gaussian pulses, this requires the waiting time $T$ to be large
-compared with the characteristic width
-%
-\begin{equation}
-\sqrt{\sigma_2^2+\sigma_3^2}
-\end{equation}
-%
-of the relative pulse-center offsets.
-
-Third, the molecular evolution associated with the finite temporal
-offsets inside the separated pulses must be negligible,
-%
-\begin{equation}
-\boxed{
-e^{\mathcal{L}(u_3-u_2)}
-\approx I.
-}
-\end{equation}
-
-The latter condition can be estimated from the relevant Liouvillian
-eigenvalues.  If
-%
-\begin{equation}
-\mathcal{L}
-|r_\alpha\rangle\rangle
+\Delta_{\mathrm{cr}}
 =
-\lambda_\alpha
-|r_\alpha\rangle\rangle,
+\Omega+\omega_L.
 \end{equation}
 %
-then a sufficient short-pulse condition for a contributing mode is
+The pulse duration must be long enough on the optical timescale for
+the rapidly oscillating counter-rotating contributions to average
+out.  For a Gaussian pulse this condition may be expressed
+schematically as
 %
 \begin{equation}
 \boxed{
-|\lambda_\alpha|\sigma_j
-\ll1.
+|\Delta_{\mathrm{cr}}|\sigma_j
+\gg
+1.
 }
-\label{eq:short_pulse_condition}
+\label{eq:rwa_validity}
 \end{equation}
 
-These conditions describe different physical effects and should not be
-conflated.  A nonstationary initial state may evolve appreciably before
-the first pulse even when the pulse itself is extremely short.
-Likewise, two pulses may be separated by many pulse widths and
-therefore have negligible temporal overlap while still being long
-enough for appreciable molecular evolution to occur during each pulse.
+Third, after the RWA has selected the resonant molecular interaction
+sequence, the remaining molecular dynamics must vary negligibly over
+the duration of each pulse.  If $\Delta_{\mathrm{res}}$ denotes a
+relevant resonant detuning and $\Gamma$ a characteristic relaxation or
+dephasing rate, the short-envelope approximation requires
+%
+\begin{equation}
+\boxed{
+|\Delta_{\mathrm{res}}|\sigma_j
+\ll
+1,
+\qquad
+\Gamma\sigma_j
+\ll
+1.
+}
+\label{eq:short_envelope_validity}
+\end{equation}
+%
+The RWA and short-envelope approximations therefore correspond to
+different timescale requirements.  Together they define an
+intermediate regime in which the pulse is long compared with the fast
+optical oscillations but short compared with the slower resonant
+molecular dynamics,
+%
+\begin{equation}
+\boxed{
+\frac{1}{|\Delta_{\mathrm{cr}}|}
+\ll
+\sigma_j
+\ll
+\min
+\left(
+\frac{1}{|\Delta_{\mathrm{res}}|},
+\frac{1}{\Gamma}
+\right).
+}
+\label{eq:short_pulse_window}
+\end{equation}
 
-When the initial-state condition is satisfied and the pulses remain
-temporally separated, but
-Eq.~\eqref{eq:short_pulse_condition} fails, the $u_2$ and $u_3$
-integrations no longer reduce to scalar laser spectra.  Instead, they
-become matrix-valued functions of the Liouvillian.  These finite-width
-pulse operators are derived in the following section.
+Finally, the factorization involving the first pulse assumes that the
+initial state is stationary under the field-free Liouvillian,
+%
+\begin{equation}
+\mathcal{L}|\rho_0\rangle\rangle=0,
+\end{equation}
+%
+or, more generally, that the preparation may be treated as frozen over
+the temporal width of the first pulse.
 
+When these conditions are satisfied, the pulse envelopes enter only
+through the scalar spectra
+$E_j^{(s_j)}(\omega)$, while the molecular contribution is given by
+the impulsive RWA responses $M_R^{(3)}$ and $M_{NR}^{(3)}$.  If the
+pulses remain separated but the molecular evolution across their
+finite temporal widths can no longer be neglected, the scalar
+factorization is insufficient.  The following section develops the
+finite-width formulation in which this evolution is retained explicitly
+through Liouville-space pulse operators.
+
+
+% ============================================================
 \section{Finite-Width Gaussian Pulses}
 \label{sec:finite_pulses}
+% ============================================================
 
-The scalar short-pulse approximation of
-Sec.~\ref{sec:short_pulses} neglects the molecular evolution occurring
-over the temporal widths of pulses 2 and 3.  We now relax this
-approximation while retaining the separated-pulse condition.
+The short-pulse treatment of Sec.~\ref{sec:short_pulses} describes
+finite laser bandwidths through scalar pulse spectra while using
+RWA-resolved impulsive molecular responses. We now consider a more
+general finite-width formulation in which the molecular evolution
+associated with interactions occurring away from the pulse centers is
+retained explicitly.
 
-The derivation in this section also inherits the initial-state
-condition introduced in Sec.~\ref{sec:short_pulses}: the initial state
-is either stationary under the field-free Liouvillian or satisfies the
-frozen-preparation approximation over the temporal support of the
-first pulse.
+In this section we return to the complete light--matter interaction
+superoperator
+%
+\begin{equation}
+\boxed{
+V
+=
+V_{\uparrow}
++
+V_{\downarrow},
+}
+\end{equation}
+%
+and do not impose the rotating-wave approximation on the molecular
+interaction sequence. The positive- and negative-frequency components
+of the laser fields continue to determine the spatial phase signature
+of a contribution, but each selected field component acts through the
+full molecular interaction $V$.
+
+We continue to assume that the three pulses are temporally separated,
+so that their chronological ordering is well defined and pulse overlap
+may be neglected. Unlike the short-pulse treatment, however, the
+field-free molecular evolution over the temporal widths of the pulses
+is retained.
 
 
 % ============================================================
-\subsection{Retaining the finite-pulse Liouvillian evolution}
+\subsection{General finite-width expression}
+\label{subsec:finite_general}
 % ============================================================
 
-From Eq.~\eqref{eq:after_u1_integral}, after performing the $u_1$
-integration, the third-order polarization for a selected field
-signature
+Let the temporal offset of interaction $j$ from the center of pulse
+$j$ be
+%
+\begin{equation}
+u_j=t_j-\tau_j,
+\end{equation}
+%
+and let
 %
 \begin{equation}
 \mathbf{s}
 =
-(s_1,s_2,s_3)
+(s_1,s_2,s_3),
+\qquad
+s_j=\pm1,
 \end{equation}
 %
-is
+denote a selected combination of positive- and negative-frequency
+field components.
+
+We first allow the state present before pulse 1 to be a general
+prepared state $|\rho_{\mathrm{ref}}\rangle\rangle$. The state is not
+assumed to be stationary under the field-free Liouvillian.
+
+For the chronological third-order contribution considered here, the
+Fourier transformations over the first and third coherence intervals
+produce the resolvents $G(\omega_1)$ and $G(\omega_3)$. Retaining the
+pulse-centered temporal offsets gives
 %
 \begin{align}
 P_{\mathbf{s}}^{(3)}
 ={}&
-E_1^{(s_1)}(\omega_1)
-\int_{-\infty}^{+\infty}
-du_3
-\int_{-\infty}^{+\infty}
-du_2
+\int_{-\infty}^{+\infty}du_3
+\int_{-\infty}^{+\infty}du_2
+\int_{-\infty}^{+\infty}du_1
 \nonumber\\
 &\times
 e^{i\omega_3u_3}
 e^{-i\omega_1u_2}
+e^{i\omega_1u_1}
+\nonumber\\
+&\times
 E_3^{(s_3)}(u_3)
 E_2^{(s_2)}(u_2)
+E_1^{(s_1)}(u_1)
 \nonumber\\
 &\times
 \Theta(T+u_3-u_2)
@@ -1987,50 +2123,67 @@ e^{\mathcal{L}(T+u_3-u_2)}
 V
 G(\omega_1)
 V
-|\rho_0\rangle\rangle .
-\label{eq:finite_pulse_start}
+e^{\mathcal{L}u_1}
+|\rho_{\mathrm{ref}}\rangle\rangle .
+\label{eq:finite_pulse_general_integral}
 \end{align}
 
-For temporally separated pulses,
+The factor $e^{\mathcal{L}u_1}$ describes the field-free evolution of
+the prepared state when the first interaction occurs away from the
+center of pulse 1. For a nonstationary preparation this factor cannot,
+in general, be removed from the $u_1$ integration.
+
+The causality factor
 %
 \begin{equation}
 \Theta(T+u_3-u_2)
-\approx1.
 \end{equation}
-
-However, unlike the short-pulse treatment, we retain the complete
-Liouvillian evolution
+%
+ensures that the third interaction occurs after the second. For
+temporally well-separated pulses, $T+u_3-u_2$ remains positive over
+the region in which the pulse envelopes have appreciable weight, and
+we use
 %
 \begin{equation}
+\boxed{
+\Theta(T+u_3-u_2)
+\approx1.
+}
+\label{eq:finite_separated_condition}
+\end{equation}
+
+This approximation imposes temporal separation but does not neglect
+molecular evolution across the pulse widths.
+
+Using
+%
+\begin{equation}
+\boxed{
 e^{\mathcal{L}(T+u_3-u_2)}
 =
 e^{\mathcal{L}T}
 e^{\mathcal{L}u_3}
-e^{-\mathcal{L}u_2}.
+e^{-\mathcal{L}u_2},
+}
 \label{eq:finite_waiting_factorization}
 \end{equation}
-
-Equation~\eqref{eq:finite_waiting_factorization} is the central
-difference between the short- and finite-width treatments. The factors
-$e^{\mathcal{L}u_3}$ and $e^{-\mathcal{L}u_2}$ describe the change in
-molecular evolution caused by interactions occurring away from the
-centers of pulses 3 and 2, respectively.
-
-Substituting Eq.~\eqref{eq:finite_waiting_factorization} into
-Eq.~\eqref{eq:finite_pulse_start} gives
+%
+Eq.~\eqref{eq:finite_pulse_general_integral} becomes
 %
 \begin{align}
 P_{\mathbf{s}}^{(3)}
 ={}&
-E_1^{(s_1)}(\omega_1)
 \int du_3
-\int du_2\,
+\int du_2
+\int du_1\,
 e^{i\omega_3u_3}
 e^{-i\omega_1u_2}
+e^{i\omega_1u_1}
 \nonumber\\
 &\times
 E_3^{(s_3)}(u_3)
 E_2^{(s_2)}(u_2)
+E_1^{(s_1)}(u_1)
 \nonumber\\
 &\times
 \langle\!\langle\mu|
@@ -2042,36 +2195,36 @@ e^{-\mathcal{L}u_2}
 V
 G(\omega_1)
 V
-|\rho_0\rangle\rangle .
+e^{\mathcal{L}u_1}
+|\rho_{\mathrm{ref}}\rangle\rangle .
 \label{eq:finite_pulse_factorized}
 \end{align}
 
-All propagators appearing between the second and third interactions are
-functions of the same Liouvillian $\mathcal{L}$. They therefore commute
-with one another, allowing the $u_2$ and $u_3$ integrations to be
-performed independently.
+The three pulse-offset integrations can now be collected into
+Liouville-space pulse operators.
 
 
 % ============================================================
 \subsection{Liouvillian pulse operators}
+\label{subsec:liouvillian_pulse_operators}
 % ============================================================
 
-We define the finite-width operator associated with pulse 3 as
+We define the finite-width operator associated with pulse 1 as
 %
 \begin{equation}
 \boxed{
-F_3^{(s_3)}(\omega_3)
+F_1^{(s_1)}(\omega_1)
 =
 \int_{-\infty}^{+\infty}
-du_3\,
-e^{i\omega_3u_3}
-E_3^{(s_3)}(u_3)
-e^{\mathcal{L}u_3}.
+du_1\,
+e^{i\omega_1u_1}
+E_1^{(s_1)}(u_1)
+e^{\mathcal{L}u_1}.
 }
-\label{eq:F3_definition}
+\label{eq:F1_definition}
 \end{equation}
 
-Similarly, the operator associated with pulse 2 is
+For pulse 2,
 %
 \begin{equation}
 \boxed{
@@ -2086,19 +2239,153 @@ e^{-\mathcal{L}u_2}.
 \label{eq:F2_definition}
 \end{equation}
 
-These quantities differ fundamentally from the ordinary pulse spectra
-$E_j^{(s)}(\omega)$. The latter are scalar functions of frequency,
-whereas $F_2$ and $F_3$ are matrix functions of the Liouvillian and
-therefore act directly on the molecular density matrix in Liouville
-space.
+For pulse 3,
+%
+\begin{equation}
+\boxed{
+F_3^{(s_3)}(\omega_3)
+=
+\int_{-\infty}^{+\infty}
+du_3\,
+e^{i\omega_3u_3}
+E_3^{(s_3)}(u_3)
+e^{\mathcal{L}u_3}.
+}
+\label{eq:F3_definition}
+\end{equation}
 
-With these definitions, Eq.~\eqref{eq:finite_pulse_factorized} becomes
+Unlike the ordinary pulse spectra $E_j^{(s)}(\omega)$, the operators
+$F_j$ are matrix functions of the Liouvillian and act directly on the
+molecular state in Liouville space.
+
+Equation~\eqref{eq:finite_pulse_factorized} can therefore be written
+as
 %
 \begin{equation}
 \boxed{
 \begin{aligned}
 P_{\mathbf{s},\mathrm{finite}}^{(3)}
 (\omega_3,T,\omega_1)
+=
+\langle\!\langle\mu|
+&G(\omega_3)
+V
+e^{\mathcal{L}T}
+F_3^{(s_3)}(\omega_3)
+F_2^{(s_2)}(\omega_1)
+V
+\\
+&\times
+G(\omega_1)
+V
+F_1^{(s_1)}(\omega_1)
+|\rho_{\mathrm{ref}}\rangle\rangle .
+\end{aligned}
+}
+\label{eq:finite_general_F123}
+\end{equation}
+
+The three pulse operators are functions of the same Liouvillian and
+therefore commute with one another. They also commute with
+$e^{\mathcal{L}T}$. In general, however,
+%
+\begin{equation}
+\boxed{
+[F_j,V]\neq0.
+}
+\end{equation}
+
+Their positions relative to the light--matter interactions therefore
+carry physical information and cannot be changed arbitrarily.
+
+
+% ============================================================
+\subsection{Stationary-state simplification}
+\label{subsec:stationary_F1}
+% ============================================================
+
+The general expression above simplifies when the state present before
+pulse 1 is stationary under the field-free Liouvillian,
+%
+\begin{equation}
+\boxed{
+\mathcal{L}
+|\rho_{\mathrm{ss}}\rangle\rangle
+=
+0.
+}
+\label{eq:stationary_state_condition}
+\end{equation}
+
+In that case,
+%
+\begin{equation}
+e^{\mathcal{L}u_1}
+|\rho_{\mathrm{ss}}\rangle\rangle
+=
+|\rho_{\mathrm{ss}}\rangle\rangle
+\end{equation}
+%
+for every value of $u_1$. Therefore,
+%
+\begin{align}
+F_1^{(s_1)}(\omega_1)
+|\rho_{\mathrm{ss}}\rangle\rangle
+={}&
+\int du_1\,
+e^{i\omega_1u_1}
+E_1^{(s_1)}(u_1)
+|\rho_{\mathrm{ss}}\rangle\rangle
+\\
+={}&
+E_1^{(s_1)}(\omega_1)
+|\rho_{\mathrm{ss}}\rangle\rangle .
+\end{align}
+
+Thus,
+%
+\begin{equation}
+\boxed{
+F_1^{(s_1)}(\omega_1)
+|\rho_{\mathrm{ss}}\rangle\rangle
+=
+E_1^{(s_1)}(\omega_1)
+|\rho_{\mathrm{ss}}\rangle\rangle .
+}
+\label{eq:F1_stationary}
+\end{equation}
+
+The reduction of $F_1$ to an ordinary laser spectrum is therefore not
+a fundamental asymmetry between the three pulses. It follows from the
+fact that pulse 1 acts on a Liouvillian zero mode.
+
+A pure ground state also obeys
+Eq.~\eqref{eq:F1_stationary} if it is itself stationary under
+$\mathcal{L}$. Conversely, a ground state placed in a finite-temperature
+environment, a prepared excited-state population, or a prepared
+coherence generally satisfies
+%
+\begin{equation}
+\mathcal{L}|\rho_{\mathrm{ref}}\rangle\rangle
+\neq0,
+\end{equation}
+%
+and the full operator $F_1$ must then be retained.
+
+It is important that the same simplification does not generally apply
+to $F_2$ and $F_3$. Even when the initial state is stationary, the
+first and second light--matter interactions generate populations and
+coherences that are not Liouvillian zero modes. The finite-width
+operators acting later in the sequence can therefore modify these
+modes nontrivially.
+
+For a stationary initial state,
+Eq.~\eqref{eq:finite_general_F123} reduces to
+%
+\begin{equation}
+\boxed{
+\begin{aligned}
+P_{\mathbf{s},\mathrm{finite}}^{(3)}
 ={}&
 E_1^{(s_1)}(\omega_1)
 \\
@@ -2112,167 +2399,20 @@ F_2^{(s_2)}(\omega_1)
 V
 G(\omega_1)
 V
-|\rho_0\rangle\rangle .
+|\rho_{\mathrm{ss}}\rangle\rangle .
 \end{aligned}
 }
-\label{eq:finite_pulse_general}
-\end{equation}
-
-The ordering in Eq.~\eqref{eq:finite_pulse_general} is important.
-Although $F_2$, $F_3$, and $e^{\mathcal{L}T}$ are all functions of
-$\mathcal{L}$ and therefore commute with one another, in general
-%
-\begin{equation}
-[F_j,V]\neq0.
-\end{equation}
-%
-The pulse operators therefore cannot be moved arbitrarily across the
-light--matter interaction superoperators.
-
-The appearance of a scalar $E_1^{(s_1)}(\omega_1)$ rather than a third
-operator $F_1$ follows from the particular mixed
-$(\omega_3,T,\omega_1)$ representation, the chosen chronological
-ordering, and the initial-state assumption introduced in
-Sec.~\ref{sec:short_pulses}.  Under the stationary-state or
-frozen-preparation condition, the $u_1$ dependence factorizes from the
-molecular dynamics, whereas the offsets $u_2$ and $u_3$ modify the
-actual interval between the second and third interactions.
-
-For a nonstationary preparation outside the frozen-preparation regime,
-the evolution preceding the first interaction must instead be retained
-inside the $u_1$ integration.
-
-
-% ============================================================
-\subsection{Evaluation for Gaussian pulses}
-% ============================================================
-
-For the Gaussian field component introduced in
-Eq.~\eqref{eq:field_sign_component},
-%
-\begin{equation}
-E_j^{(s)}(u)
-=
-\frac{E_{0j}}{2}
-e^{-u^2/(2\sigma_j^2)}
-e^{is\Phi_j(\mathbf{R})}
-e^{-is\omega_{Lj}u},
-\end{equation}
-%
-the two Liouvillian pulse operators can be evaluated analytically.
-
-
-% ------------------------------------------------------------
-\subsubsection{Pulse 3}
-% ------------------------------------------------------------
-
-Substituting the Gaussian field into Eq.~\eqref{eq:F3_definition},
-%
-\begin{align}
-F_3^{(s)}(\omega_3)
-={}&
-\frac{E_{03}}{2}
-e^{is\Phi_3(\mathbf{R})}
-\nonumber\\
-&\times
-\int_{-\infty}^{+\infty}
-du_3\,
-e^{-u_3^2/(2\sigma_3^2)}
-e^{i(\omega_3-s\omega_{L3})u_3}
-e^{\mathcal{L}u_3}.
-\end{align}
-
-Since the scalar frequency factor commutes with the Liouvillian,
-%
-\begin{equation}
-e^{i(\omega_3-s\omega_{L3})u_3}
-e^{\mathcal{L}u_3}
-=
-\exp
-\left[
-\left(
-\mathcal{L}
-+
-i(\omega_3-s\omega_{L3})I
-\right)u_3
-\right].
-\end{equation}
-
-Defining
-%
-\begin{equation}
-A_3^{(s)}
-=
-\mathcal{L}
-+
-i(\omega_3-s\omega_{L3})I,
-\label{eq:A3_definition}
-\end{equation}
-%
-we obtain
-%
-\begin{equation}
-F_3^{(s)}
-=
-\frac{E_{03}}{2}
-e^{is\Phi_3}
-\int_{-\infty}^{+\infty}
-du_3\,
-e^{-u_3^2/(2\sigma_3^2)}
-e^{A_3^{(s)}u_3}.
-\end{equation}
-
-
-% ------------------------------------------------------------
-\subsubsection{Pulse 2}
-% ------------------------------------------------------------
-
-Similarly, substitution into Eq.~\eqref{eq:F2_definition} gives
-%
-\begin{align}
-F_2^{(s)}(\omega_1)
-={}&
-\frac{E_{02}}{2}
-e^{is\Phi_2(\mathbf{R})}
-\nonumber\\
-&\times
-\int_{-\infty}^{+\infty}
-du_2\,
-e^{-u_2^2/(2\sigma_2^2)}
-e^{-i(\omega_1+s\omega_{L2})u_2}
-e^{-\mathcal{L}u_2}.
-\end{align}
-
-Defining
-%
-\begin{equation}
-A_2^{(s)}
-=
--\mathcal{L}
--
-i(\omega_1+s\omega_{L2})I,
-\label{eq:A2_definition}
-\end{equation}
-%
-we obtain
-%
-\begin{equation}
-F_2^{(s)}
-=
-\frac{E_{02}}{2}
-e^{is\Phi_2}
-\int_{-\infty}^{+\infty}
-du_2\,
-e^{-u_2^2/(2\sigma_2^2)}
-e^{A_2^{(s)}u_2}.
+\label{eq:finite_stationary}
 \end{equation}
 
 
 % ============================================================
 \subsection{Gaussian matrix integral}
+\label{subsec:gaussian_matrix_integral}
 % ============================================================
 
-Both pulse operators reduce to the matrix-valued Gaussian integral
+For the Gaussian pulses considered here, each $F_j$ can be evaluated
+analytically using the matrix-valued Gaussian integral
 %
 \begin{equation}
 I(A)
@@ -2284,7 +2424,7 @@ e^{Au}.
 \label{eq:matrix_gaussian_integral}
 \end{equation}
 
-Expanding the matrix exponential,
+Expanding the matrix exponential gives
 %
 \begin{equation}
 e^{Au}
@@ -2293,7 +2433,7 @@ e^{Au}
 \frac{A^n u^n}{n!},
 \end{equation}
 %
-gives
+and therefore
 %
 \begin{equation}
 I(A)
@@ -2302,8 +2442,7 @@ I(A)
 \frac{A^n}{n!}
 \int_{-\infty}^{+\infty}
 du\,
-u^n
-e^{-u^2/(2\sigma^2)}.
+u^n e^{-u^2/(2\sigma^2)}.
 \end{equation}
 
 All odd Gaussian moments vanish. For $n=2m$,
@@ -2319,7 +2458,7 @@ e^{-u^2/(2\sigma^2)}
 \sigma^{2m}.
 \end{equation}
 
-Therefore,
+Consequently,
 %
 \begin{align}
 I(A)
@@ -2342,54 +2481,57 @@ I(A)
 \label{eq:matrix_gaussian_identity}
 \end{align}
 
-Using the scalar prefactor $C_j$ defined in
-Eq.~\eqref{eq:laser_prefactor}, the two Gaussian pulse operators are
-therefore
 
+% ============================================================
+\subsection{Gaussian Liouvillian pulse operators}
+\label{subsec:gaussian_F_operators}
+% ============================================================
 
-% ------------------------------------------------------------
-\subsubsection{Finite-width operator for pulse 3}
-% ------------------------------------------------------------
+Using the Gaussian field component defined in
+Eq.~\eqref{eq:field_sign_component},
+%
+\begin{equation}
+E_j^{(s)}(u)
+=
+\frac{E_{0j}}{2}
+e^{-u^2/(2\sigma_j^2)}
+e^{is\Phi_j(\mathbf{R})}
+e^{-is\omega_{Lj}u},
+\end{equation}
+%
+and the prefactor
+%
+\begin{equation}
+C_j
+=
+\frac{E_{0j}}{2}
+\sqrt{2\pi}\sigma_j,
+\end{equation}
+%
+the three pulse operators have closed analytic forms.
 
+For pulse 1,
+%
 \begin{equation}
 \boxed{
-F_3^{(s)}(\omega_3)
+F_1^{(s)}(\omega_1)
 =
-C_3
-e^{is\Phi_3(\mathbf{R})}
+C_1
+e^{is\Phi_1(\mathbf{R})}
 \exp
 \left[
-\frac{\sigma_3^2}{2}
+\frac{\sigma_1^2}{2}
 \left(
 \mathcal{L}
 +
-i(\omega_3-s\omega_{L3})I
+i(\omega_1-s\omega_{L1})I
 \right)^2
 \right].
 }
-\label{eq:F3_gaussian}
+\label{eq:F1_gaussian}
 \end{equation}
 
-
-% ------------------------------------------------------------
-\subsubsection{Finite-width operator for pulse 2}
-% ------------------------------------------------------------
-
-Since
-%
-\begin{equation}
-\left[
--\mathcal{L}
--i(\omega_1+s\omega_{L2})I
-\right]^2
-=
-\left[
-\mathcal{L}
-+i(\omega_1+s\omega_{L2})I
-\right]^2,
-\end{equation}
-%
-we may write
+For pulse 2,
 %
 \begin{equation}
 \boxed{
@@ -2410,44 +2552,94 @@ i(\omega_1+s\omega_{L2})I
 \label{eq:F2_gaussian}
 \end{equation}
 
-Equations~\eqref{eq:F3_gaussian} and
-\eqref{eq:F2_gaussian} are the finite-width Gaussian pulse operators
-used in the remainder of this work.
-
-
-% ============================================================
-\subsection{Relation to the ordinary laser spectra}
-% ============================================================
-
-The connection between the finite-width operators and the scalar pulse
-spectra can be made explicit.
-
-For pulse 3, define
+For pulse 3,
 %
 \begin{equation}
-\Delta_3^{(s)}
+\boxed{
+F_3^{(s)}(\omega_3)
 =
-\omega_3-s\omega_{L3}.
-\end{equation}
-
-Expanding the square in Eq.~\eqref{eq:F3_gaussian},
-%
-\begin{equation}
+C_3
+e^{is\Phi_3(\mathbf{R})}
+\exp
+\left[
+\frac{\sigma_3^2}{2}
 \left(
 \mathcal{L}
-+i\Delta_3^{(s)}I
-\right)^2
-=
-\mathcal{L}^2
 +
-2i\Delta_3^{(s)}\mathcal{L}
--
-\left(
-\Delta_3^{(s)}
-\right)^2I.
+i(\omega_3-s\omega_{L3})I
+\right)^2
+\right].
+}
+\label{eq:F3_gaussian}
 \end{equation}
 
-Since all terms are functions of $\mathcal{L}$, they commute, giving
+Equations~\eqref{eq:F1_gaussian}--\eqref{eq:F3_gaussian} show that all
+three finite-width pulse effects can be expressed as analytic matrix
+functions of the field-free Liouvillian.
+
+
+% ============================================================
+\subsection{Relation to ordinary laser spectra}
+\label{subsec:F_relation_spectra}
+% ============================================================
+
+The relation between the Liouvillian pulse operators and the ordinary
+scalar laser spectra can be made explicit.
+
+Define
+%
+\begin{align}
+\Delta_1^{(s)}
+&=
+\omega_1-s\omega_{L1},
+\\
+\Delta_2^{(s)}
+&=
+\omega_1+s\omega_{L2},
+\\
+\Delta_3^{(s)}
+&=
+\omega_3-s\omega_{L3}.
+\end{align}
+
+Using the Gaussian laser spectra derived in
+Sec.~\ref{sec:short_pulses}, the pulse operators can be written as
+%
+\begin{equation}
+\boxed{
+F_1^{(s)}(\omega_1)
+=
+E_1^{(s)}(\omega_1)
+\exp
+\left[
+\frac{\sigma_1^2}{2}\mathcal{L}^2
++
+i\sigma_1^2
+\Delta_1^{(s)}
+\mathcal{L}
+\right],
+}
+\label{eq:F1_dressing}
+\end{equation}
+%
+\begin{equation}
+\boxed{
+F_2^{(s)}(\omega_1)
+=
+E_2^{(s)}(-\omega_1)
+\exp
+\left[
+\frac{\sigma_2^2}{2}\mathcal{L}^2
++
+i\sigma_2^2
+\Delta_2^{(s)}
+\mathcal{L}
+\right],
+}
+\label{eq:F2_dressing}
+\end{equation}
+%
+and
 %
 \begin{equation}
 \boxed{
@@ -2466,89 +2658,98 @@ i\sigma_3^2
 \label{eq:F3_dressing}
 \end{equation}
 
-Similarly, defining
-%
-\begin{equation}
-\Delta_2^{(s)}
-=
-\omega_1+s\omega_{L2},
-\end{equation}
-%
-one obtains
-%
-\begin{equation}
-\boxed{
-F_2^{(s)}(\omega_1)
-=
-E_2^{(s)}(-\omega_1)
-\exp
-\left[
-\frac{\sigma_2^2}{2}\mathcal{L}^2
-+
-i\sigma_2^2
-\Delta_2^{(s)}
-\mathcal{L}
-\right].
-}
-\label{eq:F2_dressing}
-\end{equation}
+The ordinary laser spectrum is therefore the scalar part of the
+finite-width operator, while the remaining exponential is a
+Liouvillian-dependent dressing factor.
 
-The finite-width operators can therefore be interpreted as ordinary
-scalar laser spectra multiplied by a Liouvillian-dependent dressing
-operator.
-
-In the short-pulse regime,
-%
-\begin{equation}
-|\lambda_\alpha|\sigma_j\ll1,
-\end{equation}
-%
-for all relevant Liouvillian modes, and the dressing approaches the
-identity. Consequently,
+If the Liouvillian-dependent dressing is negligible for all molecular
+modes that contribute appreciably to the signal, then
 %
 \begin{align}
-F_3^{(s)}(\omega_3)
-&\longrightarrow
-E_3^{(s)}(\omega_3)I,
+F_1^{(s)}(\omega_1)
+&\rightarrow
+E_1^{(s)}(\omega_1)I,
 \\
 F_2^{(s)}(\omega_1)
-&\longrightarrow
+&\rightarrow
 E_2^{(s)}(-\omega_1)I,
+\\
+F_3^{(s)}(\omega_3)
+&\rightarrow
+E_3^{(s)}(\omega_3)I.
 \end{align}
-%
-recovering the scalar short-pulse result of
-Eq.~\eqref{eq:short_pulse_polarization}.
+
+Because the present finite-width formulation retains the complete
+interaction superoperator $V$, this limit produces scalar pulse spectra
+multiplying the full-$V$ impulsive molecular response. It does not, by
+itself, reproduce the RWA-resolved short-pulse expressions of
+Sec.~\ref{sec:short_pulses}. Those expressions are obtained only after
+the rotating-wave approximation is imposed on the molecular
+interaction sequence.
+
+This distinction is important: the finite-width formulation does not
+assume the RWA. Instead, rapidly oscillating molecular contributions
+may be suppressed dynamically by the pulse integrations when their
+Liouvillian frequencies are strongly mismatched from the frequencies
+selected by the laser pulses.
 
 
 % ============================================================
-\subsection{Finite-width rephasing and nonrephasing components}
+\subsection{Finite-width rephasing and nonrephasing signals}
+\label{subsec:finite_rnr}
 % ============================================================
 
-The general finite-width expression,
-Eq.~\eqref{eq:finite_pulse_general}, can now be applied directly to the
-four phase signatures introduced in Sec.~\ref{sec:short_pulses}.
+The field-sign signatures introduced in
+Sec.~\ref{subsec:phase_signatures} remain valid without imposing a
+molecular rotating-wave approximation. They select the spatial phase
+and carrier-phase dependence of the polarization, while the complete
+interaction superoperator $V$ is retained at all three molecular
+interactions.
 
-
-% ------------------------------------------------------------
-\subsubsection{Rephasing components}
-% ------------------------------------------------------------
-
-For
+For the positive-frequency rephasing branch,
 %
 \begin{equation}
 A_R:
 \qquad
+(s_1,s_2,s_3)
+=
 (-,+,+),
 \end{equation}
 %
-the finite-width contribution is
+the first coherence frequency is written as $\nu_1<0$. The general
+finite-width contribution is
+%
+\begin{equation}
+\boxed{
+\begin{aligned}
+A_{R,\mathrm{finite}}
+=
+\langle\!\langle\mu|
+&G(\omega_3)
+V
+e^{\mathcal{L}T}
+F_3^{(+)}(\omega_3)
+F_2^{(+)}(\nu_1)
+V
+\\
+&\times
+G(\nu_1)
+V
+F_1^{(-)}(\nu_1)
+|\rho_{\mathrm{ref}}\rangle\rangle .
+\end{aligned}
+}
+\label{eq:AR_finite_general}
+\end{equation}
+
+For a stationary initial state this becomes
 %
 \begin{equation}
 \boxed{
 \begin{aligned}
 A_{R,\mathrm{finite}}
 ={}&
-E_1^{(-)}(\omega_1)
+E_1^{(-)}(\nu_1)
 \\
 &\times
 \langle\!\langle\mu|
@@ -2556,76 +2757,60 @@ G(\omega_3)
 V
 e^{\mathcal{L}T}
 F_3^{(+)}(\omega_3)
-F_2^{(+)}(\omega_1)
+F_2^{(+)}(\nu_1)
 V
-G(\omega_1)
+G(\nu_1)
 V
-|\rho_0\rangle\rangle .
+|\rho_{\mathrm{ss}}\rangle\rangle .
 \end{aligned}
 }
 \label{eq:AR_finite}
 \end{equation}
 
-For
+This contribution carries the phase-matched wavevector
 %
 \begin{equation}
-B_R:
-\qquad
-(+,-,-),
-\end{equation}
-%
-we obtain
-%
-\begin{equation}
-\boxed{
-\begin{aligned}
-B_{R,\mathrm{finite}}
-={}&
-E_1^{(+)}(\omega_1)
-\\
-&\times
-\langle\!\langle\mu|
-G(\omega_3)
-V
-e^{\mathcal{L}T}
-F_3^{(-)}(\omega_3)
-F_2^{(-)}(\omega_1)
-V
-G(\omega_1)
-V
-|\rho_0\rangle\rangle .
-\end{aligned}
-}
-\label{eq:BR_finite}
-\end{equation}
-
-The complete real-space rephasing polarization is
-%
-\begin{equation}
-\boxed{
-P_{R,\mathrm{finite}}^{(3)}
+\mathbf{k}_R
 =
-A_{R,\mathrm{finite}}
-+
-B_{R,\mathrm{finite}}.
-}
-\label{eq:PR_finite}
+-\mathbf{k}_1+\mathbf{k}_2+\mathbf{k}_3.
 \end{equation}
 
-
-% ------------------------------------------------------------
-\subsubsection{Nonrephasing components}
-% ------------------------------------------------------------
-
-For
+For the positive-frequency nonrephasing branch,
 %
 \begin{equation}
 A_{NR}:
 \qquad
+(s_1,s_2,s_3)
+=
 (+,-,+),
 \end{equation}
 %
-we obtain
+with $\omega_1>0$, the general finite-width contribution is
+%
+\begin{equation}
+\boxed{
+\begin{aligned}
+A_{NR,\mathrm{finite}}
+=
+\langle\!\langle\mu|
+&G(\omega_3)
+V
+e^{\mathcal{L}T}
+F_3^{(+)}(\omega_3)
+F_2^{(-)}(\omega_1)
+V
+\\
+&\times
+G(\omega_1)
+V
+F_1^{(+)}(\omega_1)
+|\rho_{\mathrm{ref}}\rangle\rangle .
+\end{aligned}
+}
+\label{eq:ANR_finite_general}
+\end{equation}
+
+For a stationary initial state,
 %
 \begin{equation}
 \boxed{
@@ -2644,101 +2829,40 @@ F_2^{(-)}(\omega_1)
 V
 G(\omega_1)
 V
-|\rho_0\rangle\rangle .
+|\rho_{\mathrm{ss}}\rangle\rangle .
 \end{aligned}
 }
 \label{eq:ANR_finite}
 \end{equation}
 
-For
+The corresponding phase-matched wavevector is
 %
 \begin{equation}
-B_{NR}:
-\qquad
-(-,+,-),
-\end{equation}
-%
-we obtain
-%
-\begin{equation}
-\boxed{
-\begin{aligned}
-B_{NR,\mathrm{finite}}
-={}&
-E_1^{(-)}(\omega_1)
-\\
-&\times
-\langle\!\langle\mu|
-G(\omega_3)
-V
-e^{\mathcal{L}T}
-F_3^{(-)}(\omega_3)
-F_2^{(+)}(\omega_1)
-V
-G(\omega_1)
-V
-|\rho_0\rangle\rangle .
-\end{aligned}
-}
-\label{eq:BNR_finite}
-\end{equation}
-
-The complete real-space nonrephasing polarization is
-%
-\begin{equation}
-\boxed{
-P_{NR,\mathrm{finite}}^{(3)}
+\mathbf{k}_{NR}
 =
-A_{NR,\mathrm{finite}}
-+
-B_{NR,\mathrm{finite}}.
-}
-\label{eq:PNR_finite}
++\mathbf{k}_1-\mathbf{k}_2+\mathbf{k}_3.
 \end{equation}
 
-The correspondence between phase signature and pulse operators is
-summarized by
-%
-\begin{equation}
-\boxed{
-\begin{array}{c|ccc|cc}
- & s_1 & s_2 & s_3
- & F_2 & F_3
-\\
-\hline
-A_R
-& - & + & +
-& F_2^{(+)}
-& F_3^{(+)}
-\\
-B_R
-& + & - & -
-& F_2^{(-)}
-& F_3^{(-)}
-\\
-A_{NR}
-& + & - & +
-& F_2^{(-)}
-& F_3^{(+)}
-\\
-B_{NR}
-& - & + & -
-& F_2^{(+)}
-& F_3^{(-)}
-\end{array}
-}
-\label{eq:F_signature_table}
-\end{equation}
+The conjugate field signatures
+$(+,-,-)$ and $(-,+,-)$ carry the opposite spatial phases
+$-\mathbf{k}_R$ and $-\mathbf{k}_{NR}$, respectively. They can be
+constructed by reversing the field signs, but are not included in the
+positive phase-matched signals defined above.
+
+Equations~\eqref{eq:AR_finite} and
+\eqref{eq:ANR_finite} should be contrasted with the short-pulse RWA
+expressions of Sec.~\ref{sec:short_pulses}. Here the field signs select
+the experimental phase-matching direction, but they do not replace the
+full interaction $V$ by $V_{\uparrow}$ or $V_{\downarrow}$.
 
 
 % ============================================================
 \subsection{Interpretation in the Liouvillian eigenbasis}
+\label{subsec:F_eigenbasis}
 % ============================================================
 
-The physical meaning of the operators $F_j$ becomes particularly clear
-in the eigenbasis of the Liouvillian.
-
-Consider a right Liouvillian eigenmode satisfying
+The physical action of the operators $F_j$ is particularly transparent
+in the eigenbasis of the Liouvillian. Consider a right eigenmode
 %
 \begin{equation}
 \boxed{
@@ -2746,94 +2870,67 @@ Consider a right Liouvillian eigenmode satisfying
 |r_\alpha\rangle\rangle
 =
 \lambda_\alpha
-|r_\alpha\rangle\rangle .
+|r_\alpha\rangle\rangle ,
 }
 \label{eq:liouvillian_eigenmode}
 \end{equation}
-
-Since $F_2$ and $F_3$ are analytic functions of $\mathcal{L}$, the same
-vectors are also eigenvectors of the pulse operators.
-
-For pulse 3,
-%
-\begin{equation}
-\boxed{
-F_3^{(s)}
-|r_\alpha\rangle\rangle
-=
-f_{3,\alpha}^{(s)}
-|r_\alpha\rangle\rangle ,
-}
-\end{equation}
 %
 with
-%
-\begin{equation}
-\boxed{
-f_{3,\alpha}^{(s)}
-=
-C_3
-e^{is\Phi_3}
-\exp
-\left[
-\frac{\sigma_3^2}{2}
-\left(
-\lambda_\alpha
-+
-i\Delta_3^{(s)}
-\right)^2
-\right].
-}
-\label{eq:F3_eigenvalue}
-\end{equation}
-
-Similarly,
-%
-\begin{equation}
-\boxed{
-F_2^{(s)}
-|r_\alpha\rangle\rangle
-=
-f_{2,\alpha}^{(s)}
-|r_\alpha\rangle\rangle ,
-}
-\end{equation}
-%
-where
-%
-\begin{equation}
-\boxed{
-f_{2,\alpha}^{(s)}
-=
-C_2
-e^{is\Phi_2}
-\exp
-\left[
-\frac{\sigma_2^2}{2}
-\left(
-\lambda_\alpha
-+
-i\Delta_2^{(s)}
-\right)^2
-\right].
-}
-\label{eq:F2_eigenvalue}
-\end{equation}
-
-A Liouvillian mode can generally be written as
 %
 \begin{equation}
 \lambda_\alpha
 =
 -\Gamma_\alpha
 -
-i\Omega_\alpha,
+i\Omega_\alpha.
+\end{equation}
+
+Because each $F_j$ is an analytic function of $\mathcal{L}$,
+%
+\begin{equation}
+F_j^{(s)}
+|r_\alpha\rangle\rangle
+=
+f_{j,\alpha}^{(s)}
+|r_\alpha\rangle\rangle .
+\end{equation}
+
+For pulses 1 and 3,
+%
+\begin{equation}
+f_{j,\alpha}^{(s)}
+=
+C_j
+e^{is\Phi_j}
+\exp
+\left[
+\frac{\sigma_j^2}{2}
+\left(
+\lambda_\alpha
++
+i\Delta_j^{(s)}
+\right)^2
+\right],
+\qquad
+j=1,3,
 \end{equation}
 %
-where $\Gamma_\alpha$ describes relaxation or dephasing and
-$\Omega_\alpha$ is the oscillation frequency of the mode.
+while the same form applies to pulse 2 using
+$\Delta_2^{(s)}=\omega_1+s\omega_{L2}$.
 
-For either pulse operator, the relevant factor becomes
+Using
+%
+\begin{equation}
+\lambda_\alpha
++
+i\Delta
+=
+-\Gamma_\alpha
++
+i(\Delta-\Omega_\alpha),
+\end{equation}
+%
+one obtains
 %
 \begin{align}
 \left(
@@ -2849,99 +2946,86 @@ For either pulse operator, the relevant factor becomes
 (\Delta-\Omega_\alpha).
 \end{align}
 
-Thus the action of a finite pulse on a molecular mode contains both an
-amplitude modification,
+The magnitude of the pulse-filter eigenvalue therefore contains
 %
 \begin{equation}
-\left|
-f_\alpha
-\right|
+\boxed{
+|f_{j,\alpha}^{(s)}|
 \propto
 \exp
 \left[
-\frac{\sigma^2}{2}
+\frac{\sigma_j^2}{2}
 \left(
 \Gamma_\alpha^2
 -
-(\Delta-\Omega_\alpha)^2
+(\Delta_j^{(s)}-\Omega_\alpha)^2
 \right)
-\right],
+\right].
+}
+\label{eq:F_mode_amplitude}
 \end{equation}
-%
-and a phase modification,
+
+For weak damping, the dominant dependence is the Gaussian mismatch
+factor
 %
 \begin{equation}
-\arg f_\alpha
-\supset
--\sigma^2
-\Gamma_\alpha
-(\Delta-\Omega_\alpha).
+\exp
+\left[
+-\frac{\sigma_j^2}{2}
+(\Delta_j^{(s)}-\Omega_\alpha)^2
+\right].
 \end{equation}
 
-The finite-width Gaussian pulse therefore acts as a
-\textit{Liouvillian-mode-dependent complex spectral filter}. Different
-populations and coherences, characterized by different
-$\lambda_\alpha$, acquire different amplitudes and phases during the
-pulse.
+Different Liouvillian populations and coherences therefore acquire
+different amplitudes and phases during the pulse integrations. Modes
+whose oscillation frequencies are strongly mismatched from the
+laser-selected frequency may be strongly suppressed.
 
-This behavior is absent from the scalar short-pulse approximation,
-which multiplies all molecular modes by the same laser spectrum.
+This provides the mechanism by which rapidly oscillating nonresonant
+or counter-rotating molecular contributions can be reduced without
+removing them from the interaction superoperator beforehand. The
+suppression is dynamical and depends on the pulse widths, carrier
+frequencies, and Liouvillian spectrum. It is therefore not equivalent
+to imposing the rotating-wave approximation.
 
 
 % ============================================================
 \subsection{Physical interpretation and regime of validity}
+\label{subsec:finite_validity}
 % ============================================================
 
-The distinction between the short- and finite-width treatments can be
-summarized schematically as
-%
-\begin{equation}
-\boxed{
-\text{short pulse:}
-\qquad
-E_j(\omega)
-\times
-\text{molecular response},
-}
-\end{equation}
-%
-whereas
-%
-\begin{equation}
-\boxed{
-\text{finite-width pulse:}
-\qquad
-F_j(\mathcal{L},\omega)
-\times
-\text{molecular response}.
-}
-\end{equation}
+The finite-width formulation differs qualitatively from the scalar
+short-pulse treatment. In the latter, ordinary laser spectra multiply
+an RWA-resolved impulsive molecular response. In the present treatment,
+the operators $F_j(\mathcal{L},\omega)$ act inside a response
+constructed with the complete interaction superoperator $V$.
 
-The scalar treatment assumes that the molecular state is effectively
-frozen during the pulse. The operators $F_j$ instead retain the
-molecular evolution occurring over the finite temporal width and
-therefore modify different Liouvillian modes independently.
+For a general nonstationary preparation, all three operators
+$F_1$, $F_2$, and $F_3$ are required. For a stationary initial state,
+$F_1$ acts on the Liouvillian zero mode and reduces exactly to the
+ordinary spectrum $E_1$, while $F_2$ and $F_3$ remain capable of
+filtering the nonstationary populations and coherences generated by
+the preceding interactions.
 
-This distinction can become especially important when a measured
-spectral feature is produced by several contributions that interfere.
-Even moderate mode-dependent amplitude or phase corrections may produce
-a large relative change in an observable formed from nearly cancelling
-terms.
-
-The present finite-width result remains subject to the separated-pulse
-condition
+The present result remains subject to the separated-pulse condition
 %
 \begin{equation}
 \Theta(T+u_3-u_2)
 \approx1.
 \end{equation}
 %
-If pulses 2 and 3 overlap significantly, the causality factor couples
-the $u_2$ and $u_3$ integrations and prevents the simple factorization
-into $F_3F_2$. Additional temporal orderings may also contribute. Pulse
-overlap is therefore outside the scope of the present formulation and
-will be considered separately in future work.
+If the pulses overlap significantly, the causality factor couples the
+pulse-offset integrations and prevents the simple factorization into
+independent $F_j$ operators. Additional chronological orderings may
+also contribute.
 
+The finite-width theory therefore occupies a regime in which the
+pulses remain temporally ordered but their durations are sufficiently
+long, or the molecular dynamics sufficiently rapid, that evolution
+across the pulse envelopes cannot be neglected. Within this regime the
+method retains full molecular light--matter coupling and incorporates
+finite-pulse effects directly as Liouvillian-mode-dependent spectral
+filters.
 
 \section{Coupled Two-Level Systems with Thermal Environments}
 \label{sec:dimer_model}
@@ -3257,6 +3341,82 @@ I\otimes\mu
 %
 as introduced in Sec.~\ref{sec:liouville}.
 
+For the RWA-resolved impulsive and short-pulse calculations, we also
+decompose the dipole operator into excitation-raising and
+excitation-lowering parts,
+%
+\begin{equation}
+\boxed{
+\mu
+=
+\mu_{\uparrow}
++
+\mu_{\downarrow},
+}
+\end{equation}
+%
+with
+%
+\begin{equation}
+\mu_{\uparrow}
+=
+\mu_a\sigma_a^+
++
+\mu_b\sigma_b^+,
+\qquad
+\mu_{\downarrow}
+=
+\mu_a\sigma_a^-
++
+\mu_b\sigma_b^-.
+\end{equation}
+
+The corresponding Liouville-space interaction superoperators are
+%
+\begin{equation}
+\boxed{
+V_{\uparrow}
+=
+\frac{i}{\hbar}
+\left(
+I\otimes\mu_{\uparrow}
+-
+\mu_{\uparrow}^T\otimes I
+\right),
+}
+\end{equation}
+%
+and
+%
+\begin{equation}
+\boxed{
+V_{\downarrow}
+=
+\frac{i}{\hbar}
+\left(
+I\otimes\mu_{\downarrow}
+-
+\mu_{\downarrow}^T\otimes I
+\right).
+}
+\end{equation}
+
+Thus,
+%
+\begin{equation}
+\boxed{
+V
+=
+V_{\uparrow}
++
+V_{\downarrow}.
+}
+\end{equation}
+
+The RWA-resolved impulsive and short-pulse calculations use selected
+sequences of $V_{\uparrow}$ and $V_{\downarrow}$, whereas the
+finite-width formulation of Sec.~\ref{sec:finite_pulses} retains the
+complete interaction $V$.
 
 % ============================================================
 \subsection{Independent thermal environments}
@@ -3524,116 +3684,160 @@ For the present two-system model,
 
 % ============================================================
 \subsection{Choice of initial state}
+\label{subsec:dimer_initial_state}
 % ============================================================
 
-For the impulsive molecular-response formulation introduced in
-Sec.~3, the initial density matrix need not be stationary or in
-thermal equilibrium.  The first light--matter interaction defines the
-time origin, so an arbitrary physical initial state $\rho_0$ may be
-used provided that the first interaction is understood to occur
-immediately after preparation.
+The frequency-domain formulation can be applied to both stationary and
+nonstationary initial preparations.  The treatment of the first pulse
+depends on whether the state evolves under the field-free Liouvillian
+during the temporal support of that pulse.
 
-The finite-pulse convolution developed in Sec.~4 requires an
-additional qualification.  For a stationary initial state,
+For the impulsive molecular response of
+Sec.~\ref{sec:frequency_response}, the first interaction defines the
+initial interaction time.  An arbitrary physical density matrix may
+therefore be used,
 %
 \begin{equation}
-\mathcal{L}|\rho_0\rangle\rangle=0,
+\rho_0
+=
+\rho_{\mathrm{prep}},
 \end{equation}
 %
-time-translation invariance is exact and the response depends only on
-the time intervals between interactions.  For a nonstationary prepared
-state, the evolution preceding the first interaction must in general
-be retained explicitly.
+without requiring
+%
+\begin{equation}
+\mathcal{L}
+|\rho_{\mathrm{prep}}\rangle\rangle
+=
+0.
+\end{equation}
 
-For the first numerical benchmark, we choose the joint ground state,
+For a finite-width first pulse, however, different portions of the
+pulse interact with the molecule at different times.  If the state is
+prepared at time $t_{\mathrm{prep}}$ and pulse 1 is centered at
+$\tau_1$, we define the preparation-to-pulse-center delay
 %
 \begin{equation}
 \boxed{
-\rho_0
+\tau_{\mathrm{prep}}
+=
+\tau_1-t_{\mathrm{prep}}.
+}
+\label{eq:preparation_delay}
+\end{equation}
+
+An interaction occurring at the pulse-centered offset $u_1$ then acts
+on the state
+%
+\begin{equation}
+\boxed{
+|\rho(u_1)\rangle\rangle
+=
+e^{\mathcal{L}(\tau_{\mathrm{prep}}+u_1)}
+|\rho_{\mathrm{prep}}\rangle\rangle .
+}
+\label{eq:prepared_state_during_pulse1}
+\end{equation}
+
+The preparation is assumed to occur sufficiently before the
+appreciable temporal support of pulse 1 that
+$\tau_{\mathrm{prep}}+u_1\geq0$ over the relevant integration region.
+
+Using
+%
+\begin{equation}
+e^{\mathcal{L}(\tau_{\mathrm{prep}}+u_1)}
+=
+e^{\mathcal{L}u_1}
+e^{\mathcal{L}\tau_{\mathrm{prep}}},
+\end{equation}
+%
+the finite-width integration over pulse 1 is described by the
+Liouvillian pulse operator introduced in
+Sec.~\ref{sec:finite_pulses},
+%
+\begin{equation}
+F_1^{(s_1)}(\omega_1)
+=
+\int du_1\,
+e^{i\omega_1u_1}
+E_1^{(s_1)}(u_1)
+e^{\mathcal{L}u_1}.
+\end{equation}
+
+The state entering the first light--matter interaction is therefore
+%
+\begin{equation}
+\boxed{
+F_1^{(s_1)}(\omega_1)
+e^{\mathcal{L}\tau_{\mathrm{prep}}}
+|\rho_{\mathrm{prep}}\rangle\rangle .
+}
+\label{eq:F1_prepared_state}
+\end{equation}
+
+Thus, a nonstationary preparation does not require a
+frozen-preparation approximation.  Its field-free evolution before
+and during the first pulse is retained explicitly through
+$e^{\mathcal{L}\tau_{\mathrm{prep}}}$ and $F_1$, respectively.
+
+For the first numerical benchmark we choose the prepared joint ground
+state
+%
+\begin{equation}
+\boxed{
+\rho_{\mathrm{prep}}
 =
 |gg\rangle\langle gg|.
 }
 \label{eq:ground_initial_state}
 \end{equation}
 
-This choice will be used even when the thermal bath occupations are
-nonzero,
+At finite bath occupation,
 %
 \begin{equation}
 \bar{n}_a>0,
 \qquad
-\bar{n}_b>0.
-\end{equation}
-
-At finite bath temperature, the state
-$|gg\rangle\langle gg|$ is generally not stationary because the upward
-thermal jump operators can excite either subsystem. Therefore,
-%
-\begin{equation}
-\mathcal{L}
-\left(
-|gg\rangle\langle gg|
-\right)
-\neq0
+\bar{n}_b>0,
 \end{equation}
 %
-when the thermal occupations are nonzero.
-
-The physical interpretation is that the system is prepared in the
-ground state immediately before the spectroscopic sequence begins.
-After the sequence begins, the finite-temperature environmental
-dynamics are fully included through $\mathcal{L}$.
-
-For a finite-width first pulse applied to a nonstationary prepared
-state, both the delay between preparation and the pulse and the pulse
-duration itself can contribute to the field-free evolution of the
-initial state.
-
-Using the drift rate $\kappa_0$ defined in
-Eq.~\eqref{eq:initial_drift_rate}, and the preparation-to-pulse delay
-$\tau_{\mathrm{prep}}$ defined in Eq.~\eqref{eq:preparation_delay}, the
-useful dimensionless diagnostics are
+this state is not stationary because the upward thermal jump operators
+can excite either subsystem.  Consequently,
 %
 \begin{equation}
 \boxed{
-\chi_{\mathrm{delay}}
-=
-\tau_{\mathrm{prep}}\kappa_0,
-\qquad
-\chi_{\mathrm{width}}
-=
-\sigma_1\kappa_0.
+\mathcal{L}
+|gg\rangle\langle gg|
+\neq0.
 }
+\label{eq:ground_nonstationary}
 \end{equation}
-%
-When both quantities are small, the prepared state can be treated as
-approximately frozen during the first interaction.  More generally,
-the relevant condition is
+
+For an impulsive calculation, the prepared ground state may be used
+directly at the time of the first interaction.  For a finite-width
+calculation, its evolution over pulse 1 is instead retained through
 %
 \begin{equation}
-e^{\mathcal{L}(\tau_{\mathrm{prep}}+u_1)}
-|\rho_0\rangle\rangle
-\simeq
-|\rho_0\rangle\rangle
+F_1^{(s_1)}(\omega_1)
+e^{\mathcal{L}\tau_{\mathrm{prep}}}
+|gg\rangle\langle gg|.
 \end{equation}
-%
-throughout the temporal region in which the first-pulse envelope has
-appreciable weight.
 
-In the strict impulsive limit, with the first interaction occurring at
-the preparation time, the prepared-state molecular response of
-Sec.~\ref{sec:frequency_response} is recovered without requiring
-$\mathcal{L}|\rho_0\rangle\rangle=0$.
-
+This prepared-state benchmark therefore provides a direct test of the
+general $F_1F_2F_3$ formulation developed in
+Sec.~\ref{sec:finite_pulses}.  It is complementary to the stationary
+initial condition discussed in the following subsection, for which
+the action of $F_1$ simplifies exactly to the ordinary scalar spectrum
+of pulse 1.
 
 % ============================================================
 \subsection{Stationary state of the thermal Liouvillian}
+\label{subsec:dimer_stationary_state}
 % ============================================================
 
-A second physically relevant initial condition is the stationary state
-of the chosen open-system dynamics.
-
-We define the stationary state $\rho_{\mathrm{ss}}$ by
+A second physically relevant preparation is the stationary state of
+the chosen open-system dynamics. We define the stationary state
+$\rho_{\mathrm{ss}}$ by
 %
 \begin{equation}
 \boxed{
@@ -3649,73 +3853,197 @@ together with the normalization condition
 %
 \begin{equation}
 \boxed{
-\mathrm{Tr}(\rho_{\mathrm{ss}})
+\mathrm{Tr}
+\left(
+\rho_{\mathrm{ss}}
+\right)
 =
 1.
 }
 \end{equation}
 
-The notation ``ss'' denotes \textit{steady state}. If the system is
-allowed to evolve under the environmental dynamics for a sufficiently
-long time before the first laser pulse arrives, then for a Liouvillian
-with a unique stationary state,
+If the Liouvillian has a unique stationary state and the system is
+allowed to evolve under the field-free environmental dynamics for a
+sufficiently long time before the spectroscopic sequence, then
 %
 \begin{equation}
 \lim_{t\rightarrow\infty}
 e^{\mathcal{L}t}
-\rho(0)
+|\rho(0)\rangle\rangle
 =
-\rho_{\mathrm{ss}}.
+|\rho_{\mathrm{ss}}\rangle\rangle .
 \end{equation}
 
-In that preparation, the appropriate initial condition is
+The corresponding spectroscopic preparation is therefore
 %
 \begin{equation}
 \boxed{
-\rho_0
+\rho_{\mathrm{prep}}
 =
 \rho_{\mathrm{ss}}.
 }
 \label{eq:ss_initial_state}
 \end{equation}
 
-Thus, the two choices
-%
-\begin{equation}
-\rho_0
-=
-|gg\rangle\langle gg|
-\end{equation}
-%
-and
-%
-\begin{equation}
-\rho_0
-=
-\rho_{\mathrm{ss}}
-\end{equation}
-%
-represent different physical preparations rather than different
-versions of the spectroscopy formalism.
-
-
-The stationary preparation is particularly useful for validating the
-finite-pulse convolution developed in Sec.~4.  Since
+The stationary preparation is particularly useful for the finite-width
+formalism of Sec.~\ref{sec:finite_pulses}. Since
+Eq.~\eqref{eq:dimer_steady_state} implies
 %
 \begin{equation}
 e^{\mathcal{L}\tau}
 |\rho_{\mathrm{ss}}\rangle\rangle
 =
-|\rho_{\mathrm{ss}}\rangle\rangle,
+|\rho_{\mathrm{ss}}\rangle\rangle
 \end{equation}
 %
-shifting the absolute time of the first interaction does not change the
-state on which the pulse acts.  The response is therefore
-time-translation invariant and can be expressed entirely in terms of
-the time intervals between interactions.  This makes
-$\rho_{\mathrm{ss}}$ the cleanest finite-temperature initial condition
-for testing the scalar pulse spectra and the finite-width
-Liouvillian pulse operators introduced in Secs.~4 and 5.
+for any time $\tau$, the state does not evolve during a
+preparation-to-pulse delay. In particular,
+%
+\begin{equation}
+\boxed{
+e^{\mathcal{L}\tau_{\mathrm{prep}}}
+|\rho_{\mathrm{ss}}\rangle\rangle
+=
+|\rho_{\mathrm{ss}}\rangle\rangle .
+}
+\label{eq:ss_prep_delay}
+\end{equation}
+
+The same property also simplifies the finite-width integration over
+pulse 1. Using the definition
+%
+\begin{equation}
+F_1^{(s_1)}(\omega_1)
+=
+\int_{-\infty}^{+\infty}
+du_1\,
+e^{i\omega_1u_1}
+E_1^{(s_1)}(u_1)
+e^{\mathcal{L}u_1},
+\end{equation}
+%
+we obtain
+%
+\begin{align}
+F_1^{(s_1)}(\omega_1)
+|\rho_{\mathrm{ss}}\rangle\rangle
+={}&
+\int_{-\infty}^{+\infty}
+du_1\,
+e^{i\omega_1u_1}
+E_1^{(s_1)}(u_1)
+e^{\mathcal{L}u_1}
+|\rho_{\mathrm{ss}}\rangle\rangle
+\\
+={}&
+\int_{-\infty}^{+\infty}
+du_1\,
+e^{i\omega_1u_1}
+E_1^{(s_1)}(u_1)
+|\rho_{\mathrm{ss}}\rangle\rangle
+\\
+={}&
+E_1^{(s_1)}(\omega_1)
+|\rho_{\mathrm{ss}}\rangle\rangle .
+\end{align}
+
+Therefore,
+%
+\begin{equation}
+\boxed{
+F_1^{(s_1)}(\omega_1)
+|\rho_{\mathrm{ss}}\rangle\rangle
+=
+E_1^{(s_1)}(\omega_1)
+|\rho_{\mathrm{ss}}\rangle\rangle .
+}
+\label{eq:dimer_F1_stationary}
+\end{equation}
+
+Thus, for a stationary initial preparation, the first Liouvillian
+pulse operator reduces exactly to the ordinary scalar laser spectrum.
+The general finite-width expression containing
+$F_1F_2F_3$ consequently reduces to
+%
+\begin{equation}
+\boxed{
+\begin{aligned}
+P_{\mathbf{s},\mathrm{finite}}^{(3)}
+={}&
+E_1^{(s_1)}(\omega_1)
+\\
+&\times
+\langle\!\langle\mu|
+G(\omega_3)
+V
+e^{\mathcal{L}T}
+F_3^{(s_3)}(\omega_3)
+F_2^{(s_2)}(\omega_1)
+V
+G(\omega_1)
+V
+|\rho_{\mathrm{ss}}\rangle\rangle .
+\end{aligned}
+}
+\label{eq:dimer_finite_stationary}
+\end{equation}
+
+It is important that the same simplification does not generally apply
+to $F_2$ and $F_3$. Although the system begins in a Liouvillian zero
+mode, the preceding light--matter interactions generate populations
+and coherences that need not satisfy
+%
+\begin{equation}
+\mathcal{L}
+|\rho\rangle\rangle
+=
+0.
+\end{equation}
+%
+The operators $F_2$ and $F_3$ can therefore act nontrivially on these
+molecular modes and produce the mode-dependent finite-width filtering
+discussed in Sec.~\ref{sec:finite_pulses}.
+
+The prepared ground state
+%
+\begin{equation}
+\rho_{\mathrm{prep}}
+=
+|gg\rangle\langle gg|
+\end{equation}
+%
+and the stationary state
+%
+\begin{equation}
+\rho_{\mathrm{prep}}
+=
+\rho_{\mathrm{ss}}
+\end{equation}
+%
+therefore represent physically distinct preparations at finite bath
+temperature. For the former,
+%
+\begin{equation}
+\mathcal{L}
+|gg\rangle\langle gg|
+\neq0
+\end{equation}
+%
+and $F_1$ must generally be retained, whereas for the latter the exact
+reduction
+%
+\begin{equation}
+F_1|\rho_{\mathrm{ss}}\rangle\rangle
+=
+E_1|\rho_{\mathrm{ss}}\rangle\rangle
+\end{equation}
+%
+holds.
+
+The relationship between these two preparations becomes particularly
+simple in the zero-temperature limit, discussed in the following
+subsection.
+
 
 % ============================================================
 \subsection{Zero-temperature limit}
@@ -3842,51 +4170,55 @@ eigenbasis of $H_S$ can later be used as an additional robustness test.
 
 % ============================================================
 \subsection{Benchmark strategy}
+\label{subsec:benchmark_strategy}
 % ============================================================
 
-The coupled thermal dimer will be tested in stages so that the
-Liouvillian construction, the direct resolvent formulation, the
-initial-state preparation, and the treatment of finite pulse widths
-can be validated separately.
+The coupled thermal dimer will be used to validate the spectroscopy
+formalism in a sequence of increasingly demanding tests.  The purpose
+of this hierarchy is to separate errors associated with the
+Liouvillian construction, the resolvent formulation, the
+rotating-wave approximation, the treatment of finite pulse widths, and
+the choice of initial preparation.
 
-First, the Hamiltonian, Liouvillian, and numerical propagation will be
-validated independently.  The initial benchmark will use the prepared
-ground state
+% ------------------------------------------------------------
+\subsubsection{Liouvillian dynamics}
+% ------------------------------------------------------------
+
+The Hamiltonian, dissipators, and complete Liouvillian will first be
+validated independently of the spectroscopy calculation.  For selected
+initial density matrices, direct integration of the Lindblad master
+equation will be compared with Liouville-space propagation,
 %
 \begin{equation}
 \boxed{
-\rho_0
+|\rho(t)\rangle\rangle
 =
-|gg\rangle\langle gg|
+e^{\mathcal{L}t}
+|\rho(0)\rangle\rangle .
 }
 \end{equation}
-%
-while retaining finite thermal occupations in the Liouvillian.  The
-first interaction is taken to define the time origin and to occur
-immediately after preparation.
 
-The linear impulsive response will then be calculated using both
-explicit time-domain propagation and the direct Liouvillian resolvent.
-The comparison will test
+Trace preservation, Hermiticity, positivity of the propagated density
+matrix, and the stationary-state condition
 %
 \begin{equation}
-\langle\!\langle\mu|
-e^{\mathcal{L}t}
-V
-|\rho_0\rangle\rangle
+\mathcal{L}
+|\rho_{\mathrm{ss}}\rangle\rangle
+=
+0
 \end{equation}
 %
-against its direct frequency-domain representation
-%
-\begin{equation}
-\langle\!\langle\mu|
-G(\omega)
-V
-|\rho_0\rangle\rangle.
-\end{equation}
+will be checked numerically.
 
-The same strategy will subsequently be applied to the third-order
-impulsive molecular response,
+% ------------------------------------------------------------
+\subsubsection{Impulsive full-interaction response}
+% ------------------------------------------------------------
+
+The direct frequency-domain resolvent formulation will next be tested
+in the impulsive limit using the complete interaction superoperator
+$V$.
+
+The time-domain third-order response,
 %
 \begin{equation}
 R^{(3)}(t_3,T,t_1)
@@ -3898,113 +4230,383 @@ e^{\mathcal{L}T}
 V
 e^{\mathcal{L}t_1}
 V
-|\rho_0\rangle\rangle,
+|\rho_0\rangle\rangle ,
 \end{equation}
 %
-which will be compared with the direct mixed-frequency representation
-obtained from Liouvillian resolvents.
-
-After the internal time-domain validation, an additional external
-benchmark will be performed using
-QuDPy~\cite{shah2023qudpy}, which provides an independent
-implementation of nonlinear optical response calculations based on
-explicit Liouville-space response pathways and time-domain quantum
-dynamics.
-
-A second set of calculations will use the stationary state
+will be Fourier transformed numerically and compared with the direct
+resolvent expression,
 %
 \begin{equation}
 \boxed{
-\rho_0
+M^{(3)}
+(\omega_3,T,\omega_1)
+=
+\langle\!\langle\mu|
+G(\omega_3)
+V
+e^{\mathcal{L}T}
+V
+G(\omega_1)
+V
+|\rho_0\rangle\rangle .
+}
+\end{equation}
+
+This comparison tests the direct frequency-domain construction itself,
+independently of the RWA and finite-pulse approximations.
+
+% ------------------------------------------------------------
+\subsubsection{RWA-resolved impulsive response}
+% ------------------------------------------------------------
+
+The conventional impulsive rephasing and nonrephasing responses will
+then be evaluated using the excitation-raising and excitation-lowering
+interaction superoperators.
+
+For nonrephasing,
+%
+\begin{equation}
+\boxed{
+M_{NR}^{(3)}
+=
+\langle\!\langle\mu|
+G(\omega_3)
+V_{\uparrow}
+e^{\mathcal{L}T}
+V_{\downarrow}
+G(\omega_1)
+V_{\uparrow}
+|\rho_0\rangle\rangle ,
+}
+\end{equation}
+%
+while for rephasing,
+%
+\begin{equation}
+\boxed{
+M_R^{(3)}
+=
+\langle\!\langle\mu|
+G(\omega_3)
+V_{\uparrow}
+e^{\mathcal{L}T}
+V_{\uparrow}
+G(\nu_1)
+V_{\downarrow}
+|\rho_0\rangle\rangle ,
+\qquad
+\nu_1<0.
+}
+\end{equation}
+
+These calculations will be compared with explicit Liouville-space
+pathway calculations and with the independent QuDPy implementation
+of nonlinear optical response functions~\cite{shah2023qudpy}.
+
+This stage establishes the connection between the direct resolvent
+formulation and the conventional RWA-resolved rephasing and
+nonrephasing responses.
+
+% ------------------------------------------------------------
+\subsubsection{Short-pulse RWA baseline}
+% ------------------------------------------------------------
+
+Finite laser bandwidths will next be introduced within the conventional
+short-pulse RWA treatment of Sec.~\ref{sec:short_pulses}.  The
+impulsive RWA responses will be multiplied by the corresponding scalar
+laser spectra,
+%
+\begin{equation}
+\boxed{
+A_{R,\mathrm{short}}^{(3)}
+=
+E_3^{(+)}
+E_2^{(+)}
+E_1^{(-)}
+M_R^{(3)},
+}
+\end{equation}
+%
+and
+%
+\begin{equation}
+\boxed{
+A_{NR,\mathrm{short}}^{(3)}
+=
+E_3^{(+)}
+E_2^{(-)}
+E_1^{(+)}
+M_{NR}^{(3)},
+}
+\end{equation}
+%
+with the appropriate frequency arguments understood as defined in
+Sec.~\ref{sec:short_pulses}.
+
+These calculations provide the conventional reference against which
+the full-interaction finite-width results will be compared.
+
+% ------------------------------------------------------------
+\subsubsection{Stationary-state finite-width benchmark}
+% ------------------------------------------------------------
+
+The finite-width Liouvillian pulse-operator formulation will first be
+tested using the stationary preparation
+%
+\begin{equation}
+\boxed{
+\rho_{\mathrm{prep}}
 =
 \rho_{\mathrm{ss}}.
 }
 \end{equation}
-%
-This preparation provides the cleanest finite-temperature benchmark
-for the time-translation-invariant finite-pulse convolution because
+
+For this state,
 %
 \begin{equation}
 \mathcal{L}
 |\rho_{\mathrm{ss}}\rangle\rangle
 =
-0.
+0,
 \end{equation}
-
-Finite-width Gaussian pulses will then be introduced.  For the
-stationary preparation, the scalar short-pulse result, the
-Liouvillian pulse-operator formulation, and explicit finite-pulse
-propagation will be compared directly:
+%
+and the first pulse operator must satisfy the exact identity
 %
 \begin{equation}
 \boxed{
-P_{\mathrm{scalar}}^{(3)},
-\qquad
-P_{F}^{(3)},
-\qquad
-P_{\mathrm{explicit}}^{(3)}.
+F_1^{(s_1)}(\omega_1)
+|\rho_{\mathrm{ss}}\rangle\rangle
+=
+E_1^{(s_1)}(\omega_1)
+|\rho_{\mathrm{ss}}\rangle\rangle .
 }
 \end{equation}
-%
-Here, $P_{\mathrm{scalar}}^{(3)}$ denotes the short-pulse spectral
-factorization, $P_F^{(3)}$ denotes the finite-width Liouvillian
-pulse-operator treatment, and $P_{\mathrm{explicit}}^{(3)}$ denotes
-direct propagation in the presence of the time-dependent laser fields.
 
-The finite-width calculation will also be repeated for the prepared
-ground state.  In this case, the validity of treating the first pulse
-as acting on a fixed initial state will be tested with respect to both
-the preparation-to-pulse delay and the pulse duration.  Since
-%
-\begin{equation}
-\mathcal{L}|\rho_0\rangle\rangle\neq0,
-\end{equation}
-%
-both quantities can contribute to the error.
-
-The relevant dimensionless diagnostics are
+This identity will be verified numerically before evaluating the full
+finite-width response,
 %
 \begin{equation}
 \boxed{
-\chi_{\mathrm{delay}}
+\begin{aligned}
+P_{\mathbf{s},\mathrm{finite}}^{(3)}
+={}&
+E_1^{(s_1)}(\omega_1)
+\\
+&\times
+\langle\!\langle\mu|
+G(\omega_3)
+V
+e^{\mathcal{L}T}
+F_3^{(s_3)}
+F_2^{(s_2)}
+V
+G(\omega_1)
+V
+|\rho_{\mathrm{ss}}\rangle\rangle .
+\end{aligned}
+}
+\end{equation}
+
+The result will be compared with explicit finite-pulse propagation
+using the same Gaussian pulse parameters.
+
+% ------------------------------------------------------------
+\subsubsection{Nonstationary prepared-state benchmark}
+% ------------------------------------------------------------
+
+The general $F_1F_2F_3$ formulation will then be tested using the
+prepared ground state at finite bath occupation,
+%
+\begin{equation}
+\boxed{
+\rho_{\mathrm{prep}}
 =
-\tau_{\mathrm{prep}}\kappa_0,
-\qquad
-\chi_{\mathrm{width}}
-=
-\sigma_1\kappa_0.
+|gg\rangle\langle gg|,
 }
 \end{equation}
 %
-The preparation-delay and pulse-width effects will be examined
-separately so that the two sources of nonstationary evolution are not
-conflated.
+for which
+%
+\begin{equation}
+\mathcal{L}
+|\rho_{\mathrm{prep}}\rangle\rangle
+\neq0.
+\end{equation}
 
-This hierarchy separates the following questions:
+The first-pulse evolution must therefore be retained explicitly.  For
+a preparation-to-pulse-center delay $\tau_{\mathrm{prep}}$, the state
+entering the spectroscopy sequence is described through
+%
+\begin{equation}
+\boxed{
+F_1^{(s_1)}(\omega_1)
+e^{\mathcal{L}\tau_{\mathrm{prep}}}
+|\rho_{\mathrm{prep}}\rangle\rangle .
+}
+\end{equation}
+
+The corresponding finite-width response,
+%
+\begin{equation}
+\boxed{
+\begin{aligned}
+P_{\mathbf{s},\mathrm{finite}}^{(3)}
+=
+\langle\!\langle\mu|
+&G(\omega_3)
+V
+e^{\mathcal{L}T}
+F_3^{(s_3)}
+F_2^{(s_2)}
+V
+\\
+&\times
+G(\omega_1)
+V
+F_1^{(s_1)}
+e^{\mathcal{L}\tau_{\mathrm{prep}}}
+|\rho_{\mathrm{prep}}\rangle\rangle ,
+\end{aligned}
+}
+\end{equation}
+%
+will be compared directly with explicit propagation of the same
+nonstationary preparation under the finite laser pulses.
+
+This test determines whether the frequency-domain pulse-operator
+formalism correctly captures both the field-free evolution before
+pulse 1 and the molecular evolution occurring across all three pulse
+envelopes.
+
+% ------------------------------------------------------------
+\subsubsection{Finite-width phase-matched rephasing and
+nonrephasing signals}
+% ------------------------------------------------------------
+
+The non-RWA finite-width formulation will then be tested separately in
+the phase-matched rephasing and nonrephasing directions.
+
+For the rephasing field signature
+%
+\begin{equation}
+(-,+,+),
+\end{equation}
+%
+the finite-width response is evaluated using
+%
+\begin{equation}
+F_1^{(-)},
+\qquad
+F_2^{(+)},
+\qquad
+F_3^{(+)},
+\end{equation}
+%
+while retaining the complete molecular interaction $V$.
+
+For the nonrephasing field signature
+%
+\begin{equation}
+(+,-,+),
+\end{equation}
+%
+the corresponding operators are
+%
+\begin{equation}
+F_1^{(+)},
+\qquad
+F_2^{(-)},
+\qquad
+F_3^{(+)}.
+\end{equation}
+
+The same phase-matched contributions will be extracted from explicit
+finite-pulse propagation using phase cycling or an equivalent
+field-sign-resolved reconstruction.  This provides a direct test of
+the full-$V$ finite-width expressions without introducing a molecular
+rotating-wave approximation.
+
+% ------------------------------------------------------------
+\subsubsection{Pulse-width dependence and dynamical filtering}
+% ------------------------------------------------------------
+
+Finally, the pulse widths and carrier frequencies will be varied to
+study the transition between the conventional RWA description and the
+full finite-width response.
+
+For each set of pulse parameters, the full-$V$ finite-width signals
+%
+\begin{equation}
+A_{R,\mathrm{finite}},
+\qquad
+A_{NR,\mathrm{finite}},
+\end{equation}
+%
+will be compared with the corresponding short-pulse RWA signals
+%
+\begin{equation}
+A_{R,\mathrm{short}},
+\qquad
+A_{NR,\mathrm{short}}.
+\end{equation}
+
+The Liouvillian eigenmode decomposition of the pulse operators will be
+used to identify which molecular modes are suppressed or phase shifted
+as the pulse durations increase.  In particular, contributions with
+large frequency mismatch,
+%
+\begin{equation}
+\left|
+\Delta_j^{(s)}
+-
+\Omega_\alpha
+\right|
+\sigma_j
+\gg1,
+\end{equation}
+%
+are expected to be strongly reduced by the Gaussian pulse filters.
+
+This comparison will determine when the finite-pulse integrations
+produce an RWA-like suppression of rapidly oscillating molecular
+contributions and when significant non-RWA corrections remain.
+
+The complete benchmark hierarchy therefore addresses the following
+questions:
 
 \begin{enumerate}
 
 \item Does the Liouville-space representation reproduce direct
 integration of the Lindblad master equation?
 
-\item Does the direct resolvent formulation reproduce conventional
-time-domain linear and third-order spectroscopy?
+\item Does the direct resolvent formulation reproduce the full
+time-domain impulsive molecular response?
 
-\item Does the finite-width Liouvillian pulse-operator formulation
-reproduce explicit propagation with finite Gaussian laser pulses when
-the initial state is stationary and the pulses remain temporally
-separated?
+\item Do the RWA-resolved direct-frequency-domain responses reproduce
+conventional rephasing and nonrephasing pathway calculations?
 
-\item Over what range of preparation delays and first-pulse widths can
-a nonstationary prepared state such as $|gg\rangle\langle gg|$ be
-treated as effectively frozen during the first interaction?
+\item Does the stationary-state identity
+$F_1|\rho_{\mathrm{ss}}\rangle\rangle
+=
+E_1|\rho_{\mathrm{ss}}\rangle\rangle$
+hold numerically?
+
+\item Does the general $F_1F_2F_3$ formulation reproduce explicit
+finite-pulse propagation for a nonstationary prepared state?
+
+\item Do the full-$V$ finite-width expressions reproduce the
+phase-matched rephasing and nonrephasing contributions obtained from
+explicit finite-pulse propagation?
+
+\item How do pulse width, carrier frequency, and Liouvillian mode
+structure control the departure from the conventional short-pulse RWA
+description?
 
 \item How does the initial preparation,
 $|gg\rangle\langle gg|$ versus $\rho_{\mathrm{ss}}$, modify the
-resulting spectra?
+finite-width spectra?
 
 \end{enumerate}
-
 \section{Numerical Validation}
 
 % ============================================================
@@ -4632,7 +5234,7 @@ numerical foundation for the third-order validation developed next.
 
 \subsection{Third-Order Spectroscopy in Different Pulse Regimes}
 
-\subsection{Impulsive limit}
+\subsubsection{Impulsive limit}
 \label{subsec:third_order_impulsive}
 
 We first consider the impulsive limit, in which the three optical
@@ -4716,7 +5318,7 @@ resolvent is evaluated by solving the corresponding linear systems
 rather than constructing the matrix inverse explicitly.
 
 
-\subsubsection{Direct time-domain and resolvent equivalence}
+\subsubsubsection{Direct time-domain and resolvent equivalence}
 
 To verify Eq.~\eqref{eq:third_order_impulsive_fd}, we independently
 constructed the full time-domain response
@@ -4799,7 +5401,7 @@ evaluation through the Liouvillian resolvent.
 \end{figure}
 
 
-\subsubsection{RWA and rephasing/nonrephasing response}
+\subsubsubsection{RWA and rephasing/nonrephasing response}
 
 To separate the phase-matched contributions, the dipole operator is
 decomposed into excitation-raising and excitation-lowering components,
@@ -4941,7 +5543,7 @@ for the rephasing branch.
 \end{figure}
 
 
-\subsubsection{Independent validation against QuDPy}
+\subsubsubsection{Independent validation against QuDPy}
 
 As an independent check of the RWA-resolved third-order calculation, we
 also evaluated the same dimer response using the time-domain pathway
@@ -5101,201 +5703,479 @@ rephasing/nonrephasing decomposition.
     \label{fig:third_order_qudpy_validation}
 \end{figure}
 
-\subsection{Short-pulse approximation}
-\label{sec:validation_short_pulse}
+% ============================================================
+\subsubsection{Short-pulse and finite-width pulse regimes}
+\label{subsec:third_order_finite_pulse_validation}
+% ============================================================
 
-We next test the short-pulse approximation introduced above, in which
-the finite pulse envelopes enter through scalar frequency-domain
-factors while molecular evolution during the pulse offsets is
-neglected.  For the nonrephasing branch considered here, the
-frequency-domain signal is
+We now introduce the temporal and spectral structure of the three
+laser pulses and compare the conventional short-pulse RWA description
+with the full finite-width frequency-domain formulation.
 
+The purpose of this comparison is not only to benchmark the
+finite-width implementation, but also to identify the pulse-duration
+regimes in which the conventional impulsive or short-pulse
+descriptions remain adequate.
+
+Throughout this subsection we use the stationary state of the thermal
+Liouvillian,
+%
 \begin{equation}
-P_{NR,\mathrm{short}}^{(3)}
-(\omega_3,T,\omega_1)
+\mathcal{L}
+|\rho_{\mathrm{ss}}\rangle\rangle
 =
-E_3^{(+)}(\omega_3)
-E_2^{(-)}(-\omega_1)
-E_1^{(+)}(\omega_1)
-M_{NR}^{(3)}
-(\omega_3,T,\omega_1),
+0,
 \end{equation}
+%
+as the initial preparation.  For this state the first finite-pulse
+operator satisfies the exact identity
+%
+\begin{equation}
+F_1^{(s_1)}(\omega_1)
+|\rho_{\mathrm{ss}}\rangle\rangle
+=
+E_1^{(s_1)}(\omega_1)
+|\rho_{\mathrm{ss}}\rangle\rangle.
+\label{eq:third_order_stationary_F1_identity}
+\end{equation}
+%
+Nevertheless, the numerical implementation retains the complete
+$F_1F_2F_3$ structure so that the same code also applies to
+nonstationary preparations.
 
-where $M_{NR}^{(3)}$ is the impulsive molecular response obtained from
-the Liouvillian resolvents.
+For the short-pulse RWA treatment, the pulse envelopes enter as scalar
+spectral factors multiplying the impulsive RWA molecular response,
+%
+\begin{equation}
+P_{s,\mathrm{short}}^{(3)}
+=
+E_3^{(s_3)}
+E_2^{(s_2)}
+E_1^{(s_1)}
+M_s^{(3)},
+\label{eq:third_order_short_validation}
+\end{equation}
+%
+with the frequency arguments and rephasing/nonrephasing signs chosen
+according to the conventions developed above.
 
-The approximation is tested independently using directly driven
-time-domain equations with finite Gaussian pulses.  Rather than
-extracting a weak cubic contribution from the complete driven density
-matrix, the third-order nonrephasing contribution is generated using
-the perturbative hierarchy
+The finite-width calculation instead retains the complete molecular
+interaction
+%
+\begin{equation}
+V
+=
+V_{\uparrow}
++
+V_{\downarrow}
+\end{equation}
+%
+at every interaction.  For a stationary preparation the numerical
+expression is evaluated in the general form
+%
+\begin{equation}
+\begin{aligned}
+P_{s,\mathrm{finite}}^{(3)}
+=&
+\langle\!\langle\mu|
+G_{\eta}(\omega_3)
+V
+e^{\mathcal{L}T}
+F_3^{(s_3)}
+F_2^{(s_2)}
+V
+G_{\eta}(\omega_1)
+V
+F_1^{(s_1)}
+|\rho_{\mathrm{ss}}\rangle\rangle .
+\end{aligned}
+\label{eq:third_order_finite_validation}
+\end{equation}
+%
+Thus no excitation-raising or excitation-lowering interaction sequence
+is imposed on the finite-width calculation.  Frequency selectivity is
+instead generated by the operator-valued pulse filters.
 
+For the numerical benchmark, the same finite damping parameter $\eta$
+was included consistently in the Fourier transform, resolvents, and
+finite-pulse operators.  This finite-$\eta$ modification is used only
+to make the numerical time-domain and frequency-domain calculations
+directly comparable; the physical expressions correspond to the
+$\eta\rightarrow0^{+}$ limit.
+
+
+% ============================================================
+\subsubsubsection{Explicit finite-pulse ODE benchmark}
+% ============================================================
+
+The finite-width frequency-domain calculation was benchmarked against
+an independent perturbative finite-pulse propagation.  For a selected
+field signature $(s_1,s_2,s_3)$, the third-order hierarchy is
+%
 \begin{align}
-\dot{\rho}^{(1)}
+\frac{d}{dt}
+|\rho^{(1)}\rangle\rangle
 &=
-\mathcal{L}\rho^{(1)}
+\mathcal{L}
+|\rho^{(1)}\rangle\rangle
 +
-E_1^{(+)}(t)
-V_{\uparrow}\rho_{\mathrm{ss}},
+E_1^{(s_1)}(t)
+V
+|\rho_{\mathrm{ss}}\rangle\rangle ,
 \\
-\dot{\rho}^{(2)}
+\frac{d}{dt}
+|\rho^{(2)}\rangle\rangle
 &=
-\mathcal{L}\rho^{(2)}
+\mathcal{L}
+|\rho^{(2)}\rangle\rangle
 +
-E_2^{(-)}(t)
-V_{\downarrow}\rho^{(1)},
+E_2^{(s_2)}(t)
+V
+|\rho^{(1)}\rangle\rangle ,
 \\
-\dot{\rho}^{(3)}
+\frac{d}{dt}
+|\rho^{(3)}\rangle\rangle
 &=
-\mathcal{L}\rho^{(3)}
+\mathcal{L}
+|\rho^{(3)}\rangle\rangle
 +
-E_3^{(+)}(t)
-V_{\uparrow}\rho^{(2)}.
+E_3^{(s_3)}(t)
+V
+|\rho^{(2)}\rangle\rangle .
 \end{align}
+%
+The complete interaction superoperator $V$ is used at every order.
+Consequently, this propagation does not impose a molecular
+rotating-wave approximation.
 
-For each coherence delay $\tau_1$ between the centers of the first two
-pulses, the third-order polarization is propagated directly in time.
-The resulting signal is transformed along the coherence and detection
-coordinates using the same damped causal Fourier convention employed
-in the resolvent calculation.
+The nonrephasing calculation uses the field signature
+$(+,-,+)$, while the rephasing calculation uses $(-,+,+)$.
+The resulting time-domain signals were transformed using the same
+damped Fourier convention as the frequency-domain calculation.
 
-For separated Gaussian pulses, the leading correction to the
-short-pulse approximation is quadratic in the pulse width.  Writing
-the pulse-time difference as $\Delta=u_3-u_2$, the molecular factor may
-be expanded as
-
+To compare complete complex two-dimensional spectra we use the
+Frobenius norm
+%
 \begin{equation}
-S(\Delta)
+\|P\|_F
 =
-S(0)
-+
-\Delta S'(0)
-+
-\frac{\Delta^2}{2}S''(0)
-+\cdots.
+\left[
+\sum_{i,j}
+|P_{ij}|^2
+\right]^{1/2}.
 \end{equation}
-
-Because the Gaussian distribution of $\Delta$ is even, the odd moments
-vanish and the leading correction is
-
+%
+For comparisons in which the overall pulse prefactor is not identical,
+we additionally define the optimal global complex factor
+%
 \begin{equation}
-P_{\mathrm{sep}}^{(3)}
+\alpha_{\mathrm{opt}}
 =
-P_{\mathrm{short}}^{(3)}
-+
-\sigma^2 S''(0)
-+
-\mathcal{O}(\sigma^4).
+\frac{
+\sum_{i,j}
+P_{\mathrm{model},ij}^{*}
+P_{\mathrm{ODE},ij}
+}{
+\sum_{i,j}
+|P_{\mathrm{model},ij}|^2
+},
 \end{equation}
-
-The driven-ODE calculations confirm this behavior.  When pulse overlap
-is suppressed by restricting the coherence delay to
-$\tau_1\geq4\sigma$, the fitted error scales as
-
+%
+and the corresponding spectral-shape discrepancy
+%
 \begin{equation}
-\epsilon_{\mathrm{sep}}
-\propto
-\sigma^{2.010}.
+\epsilon_{\mathrm{shape}}
+=
+\frac{
+\|
+\alpha_{\mathrm{opt}}
+P_{\mathrm{model}}
+-
+P_{\mathrm{ODE}}
+\|_F
+}{
+\|
+P_{\mathrm{ODE}}
+\|_F
+}.
+\label{eq:third_order_shape_error}
 \end{equation}
 
-In contrast, the complete coherence-delay scan includes the
-$\tau_1\simeq0$ region, where the first two finite pulses overlap.
-The corresponding discrepancy scales approximately linearly,
-
+For Gaussian pulses with
+%
 \begin{equation}
-\epsilon_{\mathrm{full}}
-\propto
-\sigma^{0.991}.
+\sigma=1.25,
+\qquad
+T=20,
+\end{equation}
+%
+the time-domain Fourier window was increased until convergence was
+reached.  For the nonrephasing response the finite-width
+frequency-domain discrepancy decreased from approximately $2.91\%$
+at $t_{\max}=80$ to $0.414\%$ at $t_{\max}=120$ and finally to
+%
+\begin{equation}
+\boxed{
+\epsilon_{\mathrm{FD/ODE}}^{NR}
+=
+0.0586\%
+}
+\end{equation}
+%
+at $t_{\max}=160$.
+
+The corresponding converged rephasing result is
+%
+\begin{equation}
+\boxed{
+\epsilon_{\mathrm{FD/ODE}}^{R}
+=
+0.0582\%.
+}
 \end{equation}
 
-Figure~\ref{fig:short_pulse_ode_sigma} shows both regimes.  For the
-upper-upper nonrephasing resonance, the complete ODE error increases
-from approximately $0.15\%$ at $\sigma=0.05$ to approximately
-$1.18\%$ at $\sigma=0.4$.  When pulse overlap is excluded, the
-corresponding errors are only approximately $0.003\%$ and $0.18\%$.
+The optimal complex scale factors are essentially unity.  For example,
+for the nonrephasing calculation,
+%
+\begin{equation}
+\alpha_{\mathrm{FD}}^{NR}
+=
+0.9999968
++
+1.8\times10^{-6}i,
+\end{equation}
+%
+showing that the agreement is not produced by a significant global
+amplitude or phase adjustment.
 
-\begin{figure}[t]
+For comparison, at the same pulse width the short-pulse RWA
+description gives spectral-shape discrepancies of approximately
+%
+\begin{equation}
+5.27\%
+\qquad\text{and}\qquad
+5.54\%
+\end{equation}
+%
+for the nonrephasing and rephasing branches, respectively, whereas
+the corresponding impulsive RWA discrepancies are approximately
+%
+\begin{equation}
+9.60\%
+\qquad\text{and}\qquad
+9.83\%.
+\end{equation}
+
+The comparison is shown in
+Fig.~\ref{fig:third_order_four_model_finite_width}.
+
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.78\linewidth]
-    {figures/short_pulse_ode_validation_vs_sigma.pdf}
-    \caption{
-    Driven-ODE validation of the scalar short-pulse approximation at
-    the upper-upper nonrephasing resonance.  The complete
-    coherence-delay scan includes the pulse-overlap region near
-    $\tau_1=0$, whereas the separated-pulse result retains only
-    $\tau_1\geq4\sigma$.  The separated-pulse discrepancy exhibits the
-    expected quadratic dependence on the Gaussian pulse width.
+
+    \includegraphics[
+        width=0.98\textwidth
+    ]{
+    figures/04_finite_pulse_validation/
+    NR_four_model_sigma1p25_T20_tmax160.pdf
     }
-    \label{fig:short_pulse_ode_sigma}
+
+    \vspace{0.5em}
+
+    \includegraphics[
+        width=0.98\textwidth
+    ]{
+    figures/04_finite_pulse_validation/
+    R_four_model_sigma1p25_T20_tmax160.pdf
+    }
+
+    \caption{
+    Comparison of explicit finite-pulse propagation, the finite-width
+    direct frequency-domain calculation, the short-pulse RWA
+    approximation, and the impulsive RWA response for
+    $\sigma=1.25$ and $T=20$.
+    The upper row shows the nonrephasing response and the lower row the
+    rephasing response.
+    Each displayed spectrum is normalized independently to emphasize
+    spectral structure.
+    The complete complex spectral-shape discrepancies relative to the
+    explicit finite-pulse ODE are approximately $0.059\%$ for the
+    finite-width frequency-domain calculation, $5.3$--$5.5\%$ for the
+    short-pulse RWA approximation, and $9.6$--$9.8\%$ for the
+    impulsive RWA response.
+    }
+
+    \label{fig:third_order_four_model_finite_width}
 \end{figure}
 
-To demonstrate that the short-pulse expression captures nontrivial
-finite-pulse spectral filtering rather than simply reproducing the
-impulsive spectrum, we additionally consider
-$\sigma=0.4$, $\omega_L=0.78$, and a minimum pulse-center separation
-$\Delta_{\mathrm{sep}}=4\sigma$.  For these parameters, the complete
-complex two-dimensional spectra satisfy
 
-\begin{equation}
-\frac{
-\|P_{\mathrm{ODE}}^{(3)}
--
-P_{\mathrm{short}}^{(3)}\|_2
-}{
-\|P_{\mathrm{ODE}}^{(3)}\|_2
-}
-=
-1.33\%,
-\end{equation}
+% ============================================================
+\subsubsubsection{Pulse-width regimes}
+% ============================================================
 
-whereas comparison with the impulsive molecular response gives
+The pulse width was next varied while keeping the pulse centers
+sufficiently separated.  This reveals three physically distinct
+regimes.
 
-\begin{equation}
-\frac{
-\|P_{\mathrm{ODE}}^{(3)}
--
-M_{NR}^{(3)}\|_2
-}{
-\|P_{\mathrm{ODE}}^{(3)}\|_2
-}
-=
-5.10\%.
-\end{equation}
+For very short pulses, the bandwidth is sufficiently broad that the
+counter-rotating contributions contained in the full interaction
+superoperator are not strongly suppressed.  In this limit the
+short-pulse RWA and impulsive RWA calculations approach one another,
+but both differ appreciably from the full-$V$ finite-pulse response.
+For example, at $\sigma=0.05$ their spectral-shape discrepancies are
+both approximately $13.27\%$, whereas the finite-width
+frequency-domain discrepancy remains approximately $0.40\%$.
 
-The scalar short-pulse spectrum therefore reproduces the directly
-driven finite-pulse response substantially better than the impulsive
-limit while retaining the spectral weighting imposed by the finite
-laser bandwidth, as shown in
-Fig.~\ref{fig:short_pulse_2d_comparison}.
+At intermediate pulse widths, the pulse is long enough on the optical
+timescale to suppress rapidly oscillating counter-rotating
+contributions while remaining short compared with the slower
+molecular dynamics.  This produces the conventional impulsive-RWA
+window.  The short-pulse RWA discrepancy reaches its minimum near
+$\sigma\simeq1$--$2$, with values close to $5.3\%$ for the present
+model.
 
-\begin{figure}[t]
+This intermediate regime is the physical regime in which conventional
+RWA pathway formulations, such as those independently validated
+against QuDPy above, are expected to be most appropriate.  The QuDPy
+comparison and the present pulse-width scan use different initial
+preparations and waiting times, however, and therefore should be
+regarded as complementary validations rather than point-by-point
+identical calculations.
+
+As the pulse width increases further, the RWA may remain effective but
+molecular evolution during the pulse can no longer be neglected.
+Consequently, the impulsive approximation deteriorates rapidly.  At
+$\sigma=4$, for example, the impulsive RWA discrepancy is approximately
+$29.4\%$, while the short-pulse RWA discrepancy is approximately
+$9.0\%$.  The finite-width frequency-domain result remains near the
+numerical Fourier-window floor, approximately $0.43\%$ in this scan.
+
+These three regimes are summarized in
+Fig.~\ref{fig:third_order_three_regimes}.
+
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]
-    {figures/selected_ode_short_impulsive_sigma04_wL078.pdf}
-    \caption{
-    Nonrephasing two-dimensional spectra obtained from directly driven
-    finite Gaussian pulses (left), the scalar short-pulse resolvent
-    expression (center), and the corresponding impulsive molecular
-    response (right).  Parameters are $\sigma=0.4$,
-    $\omega_L=0.78$, and
-    $\Delta_{\mathrm{sep}}=4\sigma$.  The short-pulse spectrum differs
-    from the driven ODE result by $1.33\%$ in the full complex
-    two-dimensional norm, compared with a $5.10\%$ discrepancy for the
-    impulsive limit.
+
+    \includegraphics[
+        width=0.82\textwidth
+    ]{
+    figures/04_finite_pulse_validation/
+    NR_three_physical_regimes.pdf
     }
-    \label{fig:short_pulse_2d_comparison}
+
+    \caption{
+    Spectral-shape error of the finite-width frequency-domain,
+    short-pulse RWA, and impulsive RWA descriptions relative to the
+    full-$V$ finite-pulse ODE as a function of Gaussian pulse width.
+    Only pulse widths satisfying the separated-pulse criterion are
+    included.
+    The ultrashort regime exhibits non-RWA corrections, the
+    intermediate region gives the best agreement with the conventional
+    impulsive-RWA description, and finite-pulse dynamical effects become
+    increasingly important toward the right.
+    The approximately $0.4\%$ floor of the finite-width curve results
+    from the shorter $t_{\max}=120$ Fourier window used for the scan;
+    the converged $t_{\max}=160$ calculation gives approximately
+    $0.06\%$.
+    }
+
+    \label{fig:third_order_three_regimes}
 \end{figure}
 
-These calculations establish the regime in which the effects of the
-finite pulses may be represented accurately by scalar spectral
-factors.  As the pulse duration increases further, molecular evolution
-during the pulse offsets can no longer be neglected, motivating the
-operator-valued finite-width treatment considered next.
 
-\subsubsection{Finite-width pulses}
-% retain evolution during pulse offsets
-% F2 and F3 operators
-% Gaussian closed forms
+% ============================================================
+\subsubsubsection{Validity of the separated-pulse assumption}
+% ============================================================
+
+The finite-width factorization developed above assumes that neighboring
+pulse envelopes are temporally separated.  For two equal Gaussian
+envelopes of width $\sigma$ whose centers are separated by
+$\Delta\tau$, a convenient normalized overlap measure is
+%
+\begin{equation}
+\mathcal{O}
+=
+\frac{
+\int dt\,
+g_1(t)g_2(t)
+}{
+\sqrt{
+\int dt\,g_1^2(t)
+\int dt\,g_2^2(t)
+}
+}
+=
+\exp\left[
+-\frac{\Delta\tau^2}{4\sigma^2}
+\right].
+\label{eq:third_order_gaussian_overlap}
+\end{equation}
+
+Thus an overlap tolerance $\mathcal{O}<\varepsilon$ requires
+%
+\begin{equation}
+\frac{\Delta\tau}{\sigma}
+>
+2
+\sqrt{
+\ln\left(\frac{1}{\varepsilon}\right)
+}.
+\label{eq:third_order_gaussian_separation}
+\end{equation}
+%
+For example, $1\%$ normalized overlap corresponds to
+$\Delta\tau/\sigma>4.29$, whereas $0.1\%$ overlap corresponds to
+$\Delta\tau/\sigma>5.26$.
+
+The temporal-ordering assumption was tested independently using a
+phase-resolved three-pulse ODE in which all three finite pulses and both
+positive- and negative-frequency field components were allowed to act
+at every perturbative order.  No molecular RWA and no fixed
+$1\rightarrow2\rightarrow3$ interaction ordering were imposed.
+
+At $\sigma=1.25$, including the complete pulse-1/pulse-2 overlap region
+produces a spectral-shape difference of approximately $7.70\%$ between
+the unrestricted and sequential third-order ODEs.  As the overlapping
+region is excluded, this discrepancy collapses rapidly.  When the
+minimum retained pulse separation is approximately $4\sigma$, the
+difference is only about $0.025\%$, and at separations of approximately
+$5$--$6\sigma$ it is below $10^{-3}\%$.
+
+The comparison is shown in
+Fig.~\ref{fig:third_order_ordering_overlap}.
+
+\begin{figure}[htbp]
+    \centering
+
+    \includegraphics[
+        width=0.78\textwidth
+    ]{
+    figures/04_finite_pulse_validation/
+    NR_ordering_error_and_overlap_dual_axis.pdf
+    }
+
+    \caption{
+    Connection between Gaussian pulse overlap and temporal-ordering
+    corrections for the nonrephasing response at $\sigma=1.25$.
+    The unrestricted three-pulse ODE is compared with the sequential
+    third-order ODE after progressively excluding small pulse-1/pulse-2
+    separations.
+    The temporal-ordering discrepancy decreases rapidly as the Gaussian
+    overlap vanishes and becomes negligible at separations of order
+    $4$--$5\sigma$.
+    }
+
+    \label{fig:third_order_ordering_overlap}
+\end{figure}
+
+Taken together, these results establish both the accuracy and the
+domain of validity of the finite-width frequency-domain construction.
+Within the separated-pulse regime it reproduces explicit full-$V$
+finite-pulse propagation with sub-percent numerical error, while the
+short-pulse and impulsive RWA descriptions exhibit distinct breakdowns
+on the ultrashort and finite-width sides of the conventional
+impulsive-RWA window.
+
+
 \subsubsection{Summary of the third-order validation}
 
 \section{Benchmark Results}
