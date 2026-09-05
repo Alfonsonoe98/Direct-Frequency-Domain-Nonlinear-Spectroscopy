@@ -28,6 +28,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{pdflscape}
 
+
 % ============================================================
 % COLORS
 % ============================================================
@@ -4610,7 +4611,7 @@ finite-width spectra?
 \section{Numerical Validation}
 
 % ============================================================
-\subsection{Linear response}
+\subsection{Linear Response}
 \label{sec:linear_validation}
 % ============================================================
 
@@ -5016,8 +5017,7 @@ In this case,
 so the zeroth-order state evolves under the thermal Liouvillian before
 and during a finite first pulse.
 
-The initial-state drift rate defined in
-Eq.~\eqref{eq:initial_drift_rate} is
+The initial-state drift rate for the prepared ground state is
 %
 \begin{equation}
 \boxed{
@@ -5232,19 +5232,34 @@ the finite-pulse convolution for a stationary preparation, and the
 treatment of a nonstationary prepared state.  These results provide the
 numerical foundation for the third-order validation developed next.
 
-\subsection{Third-Order Spectroscopy in Different Pulse Regimes}
-
-\subsubsection{Impulsive limit}
+% ============================================================
+\subsection{Impulsive Third-Order Validation}
 \label{subsec:third_order_impulsive}
+% ============================================================
 
-We first consider the impulsive limit, in which the three optical
-interactions are taken to occur at well-defined times and the temporal
-widths of the pulses are neglected.  This limit isolates the intrinsic
-third-order molecular response before introducing the spectral and
-temporal structure of finite laser pulses.
+We next validate the direct frequency-domain construction at third
+order.  We begin in the impulsive limit, in which the three optical
+interactions occur at well-defined times and the temporal widths of the
+laser pulses are neglected.
 
-For three interactions separated by the coherence time $t_1$, waiting
-time $T$, and detection time $t_3$, the third-order response is
+The validation is performed in three stages.  First, the direct
+frequency-domain resolvent expression is compared with an explicit
+two-dimensional time-domain propagation using the complete interaction
+superoperator $V$.  This test is independent of the rotating-wave
+approximation.  Second, the interaction is decomposed into
+excitation-raising and excitation-lowering components to construct the
+conventional rephasing and nonrephasing RWA responses.  Finally, these
+RWA-resolved responses are compared with an independent QuDPy
+time-domain pathway calculation.
+
+
+% ============================================================
+\subsubsection{Full-interaction time-domain and resolvent equivalence}
+% ============================================================
+
+For three impulsive interactions separated by the coherence time
+$t_1$, waiting time $T$, and detection time $t_3$, the complete
+third-order molecular response is
 
 \begin{equation}
 R^{(3)}(t_3,T,t_1)
@@ -5271,8 +5286,7 @@ I\otimes\mu-\mu^{T}\otimes I
 \right)
 \end{equation}
 
-is the dipole interaction superoperator and $\mathcal{L}$ is the
-field-free Liouvillian.
+is the complete dipole interaction superoperator.
 
 Using the causal Fourier convention
 
@@ -5284,7 +5298,7 @@ e^{+i\omega t}f(t),
 \end{equation}
 
 together with a small positive damping parameter $\eta$, we define the
-Liouvillian resolvent
+numerical Liouvillian resolvent
 
 \begin{equation}
 G_\eta(\omega)
@@ -5295,8 +5309,8 @@ G_\eta(\omega)
 \label{eq:liouvillian_resolvent}
 \end{equation}
 
-The corresponding mixed frequency-time-frequency third-order response
-can then be evaluated directly as
+The corresponding mixed frequency--time--frequency response can then
+be evaluated directly as
 
 \begin{equation}
 M^{(3)}(\omega_3,T,\omega_1)
@@ -5312,20 +5326,19 @@ V
 \label{eq:third_order_impulsive_fd}
 \end{equation}
 
-Equation~\eqref{eq:third_order_impulsive_fd} avoids explicit propagation
-over the two coherence-time axes.  Numerically, the action of the
-resolvent is evaluated by solving the corresponding linear systems
-rather than constructing the matrix inverse explicitly.
+Equation~\eqref{eq:third_order_impulsive_fd} replaces explicit
+propagation along the two coherence-time coordinates by two
+Liouvillian resolvent evaluations.  Numerically, the action of each
+resolvent is obtained by solving the corresponding linear system rather
+than constructing the matrix inverse explicitly.
 
-
-\subsubsubsection{Direct time-domain and resolvent equivalence}
-
-To verify Eq.~\eqref{eq:third_order_impulsive_fd}, we independently
-constructed the full time-domain response
-$R^{(3)}(t_3,T,t_1)$ and performed the damped two-dimensional transform
+To verify this construction independently, we calculated
+$R^{(3)}(t_3,T,t_1)$ directly on a two-dimensional time grid and
+performed the damped transform
 
 \begin{equation}
 M_{\mathrm{TD}}^{(3)}
+(\omega_3,T,\omega_1)
 =
 \int_0^\infty dt_3
 \int_0^\infty dt_1\,
@@ -5335,76 +5348,88 @@ R^{(3)}(t_3,T,t_1).
 \label{eq:third_order_td_transform}
 \end{equation}
 
-The transformed time-domain response was then compared point by point
-with the direct two-resolvent expression in
-Eq.~\eqref{eq:third_order_impulsive_fd}.  For the dimer model considered
-here, the relative two-dimensional error,
+The transformed time-domain response was compared point by point with
+the direct resolvent result.  We quantify the discrepancy using the
+Frobenius norm of the complete complex two-dimensional spectra,
 
 \begin{equation}
-\epsilon
+\epsilon_{\mathrm{TD/FD}}
 =
 \frac{
 \left\|
 M_{\mathrm{TD}}^{(3)}
 -
 M_{\mathrm{FD}}^{(3)}
-\right\|_2
+\right\|_F
 }{
 \left\|
 M_{\mathrm{FD}}^{(3)}
-\right\|_2
-},
+\right\|_F
+}.
+\label{eq:third_order_td_fd_error}
 \end{equation}
 
-was found to be approximately
+For the coupled dimer considered here,
 
 \begin{equation}
-\epsilon
+\boxed{
+\epsilon_{\mathrm{TD/FD}}
 \simeq
 5.4\times10^{-5}.
+}
 \end{equation}
 
 The agreement demonstrates the numerical equivalence between explicit
-causal time propagation followed by Fourier transformation and direct
-evaluation through the Liouvillian resolvent.
+causal propagation followed by a two-dimensional Fourier transform and
+direct evaluation through the Liouvillian resolvent.
+
+Importantly, the complete interaction superoperator $V$ is retained
+throughout this comparison.  The result therefore validates the direct
+frequency-domain construction itself before any molecular
+rotating-wave approximation or pathway selection is introduced.
 
 \begin{figure}[htbp]
     \centering
 
     \begin{minipage}{0.32\textwidth}
         \centering
-        \includegraphics[width=\linewidth]
-        {figures/third_order_impulsive_td.pdf}
+        \includegraphics[width=\linewidth]{figures/third_order_impulsive_td.pdf}
     \end{minipage}
     \hfill
     \begin{minipage}{0.32\textwidth}
         \centering
-        \includegraphics[width=\linewidth]
-        {figures/third_order_direct_2d_resolvent.pdf}
+        \includegraphics[width=\linewidth]{figures/third_order_direct_2d_resolvent.pdf}
     \end{minipage}
     \hfill
     \begin{minipage}{0.32\textwidth}
         \centering
-        \includegraphics[width=\linewidth]
-        {figures/third_order_2d_validation_difference.pdf}
+        \includegraphics[width=\linewidth]{figures/third_order_2d_validation_difference.pdf}
     \end{minipage}
 
     \caption{
-    Comparison of the impulsive third-order spectrum obtained from
-    explicit two-dimensional time-domain propagation and Fourier
-    transformation (left), direct Liouvillian-resolvent evaluation
-    (center), and their difference (right).
-    The relative two-dimensional error is
-    $\epsilon\simeq5.4\times10^{-5}$.
+    Comparison of the impulsive full-interaction third-order spectrum
+    obtained from explicit two-dimensional time-domain propagation and
+    Fourier transformation (left), direct Liouvillian-resolvent
+    evaluation (center), and their difference (right).
+    The relative complex two-dimensional discrepancy is
+    $\epsilon_{\mathrm{TD/FD}}\simeq5.4\times10^{-5}$.
     }
+
     \label{fig:third_order_td_vs_resolvent}
 \end{figure}
 
 
-\subsubsubsection{RWA and rephasing/nonrephasing response}
+% ============================================================
+\subsubsection{RWA-resolved rephasing and nonrephasing response}
+% ============================================================
 
-To separate the phase-matched contributions, the dipole operator is
-decomposed into excitation-raising and excitation-lowering components,
+Having validated the direct resolvent formulation using the complete
+interaction superoperator, we next introduce the rotating-wave
+decomposition required for the conventional impulsive rephasing and
+nonrephasing signals.
+
+The dipole operator is decomposed into excitation-raising and
+excitation-lowering components,
 
 \begin{equation}
 \mu
@@ -5445,14 +5470,27 @@ I\otimes\mu_{\downarrow}
 \end{equation}
 
 For a positive-frequency optical field component,
-$E^{(+)}(t)\propto e^{-i\omega_L t}$, the rotating-wave approximation
-associates $E^{(+)}$ with $\mu_{\uparrow}$ and $E^{(-)}$ with
-$\mu_{\downarrow}$.
 
-Using the coherence-order convention in which
-$V_{\uparrow}$ increases the optical coherence order by one and
-$V_{\downarrow}$ decreases it by one, the nonrephasing sequence
-$(+,-,+)$ gives
+\begin{equation}
+E^{(+)}(t)
+\propto
+e^{-i\omega_L t},
+\end{equation}
+
+the rotating-wave approximation associates $E^{(+)}$ with
+$\mu_{\uparrow}$ and $E^{(-)}$ with $\mu_{\downarrow}$.
+
+Using the coherence-order convention in which $V_{\uparrow}$ increases
+the optical coherence order by one and $V_{\downarrow}$ decreases it
+by one, the positive-frequency nonrephasing field signature
+
+\begin{equation}
+(+,-,+)
+\end{equation}
+
+gives the molecular sequence
+$V_{\uparrow}V_{\downarrow}V_{\uparrow}$ in chronological order.
+The corresponding response is
 
 \begin{equation}
 M_{NR}^{(3)}
@@ -5469,9 +5507,20 @@ V_{\uparrow}
 \label{eq:M3_NR}
 \end{equation}
 
-with $\omega_1>0$.
+with
 
-The rephasing sequence $(-,+,+)$ instead gives
+\begin{equation}
+\omega_1>0.
+\end{equation}
+
+The rephasing field signature
+
+\begin{equation}
+(-,+,+)
+\end{equation}
+
+instead gives the chronological molecular sequence
+$V_{\downarrow}V_{\uparrow}V_{\uparrow}$ and the response
 
 \begin{equation}
 M_R^{(3)}
@@ -5488,66 +5537,76 @@ V_{\downarrow}
 \label{eq:M3_R}
 \end{equation}
 
-where the raw first coherence frequency satisfies $\nu_1<0$ under the
-Fourier convention used here.
+where the signed first coherence frequency satisfies
 
-For an initial state with zero optical coherence order, both pathways
+\begin{equation}
+\nu_1<0
+\end{equation}
+
+under the Fourier convention adopted here.
+
+For an initial state with zero optical coherence order, both branches
 return to the population sector after the second interaction and end in
 the positive-frequency optical-coherence sector after the third
-interaction.  Consequently, the full dipole detection operator
-$\langle\!\langle\mu|$ automatically selects the physically allowed
-final coherence for these branches.
+interaction.  The complete detection operator
+$\langle\!\langle\mu|$ therefore selects the physically allowed final
+coherence automatically.
 
-For the dimer benchmark at $T=5$, the strongest features occur close to
-the upper excitonic transition, with approximately
+For the dimer benchmark at $T=5$, the strongest features occur near the
+upper excitonic transition.  The dominant nonrephasing feature lies
+approximately at
 
 \begin{equation}
 (\omega_1,\omega_3)
 \simeq
-(1.24,1.24)
+(1.24,1.24),
 \end{equation}
 
-for the nonrephasing branch and
+while the corresponding rephasing feature appears at
 
 \begin{equation}
 (\nu_1,\omega_3)
 \simeq
-(-1.24,1.24)
+(-1.24,1.24).
 \end{equation}
 
-for the rephasing branch.
+The sign reversal of the raw first-frequency axis is therefore a direct
+consequence of the Fourier and field-sign conventions and not an
+independent change in the molecular transition frequency.
 
 \begin{figure}[htbp]
     \centering
 
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=\linewidth]
-        {figures/third_order_impulsive_rephasing.pdf}
+        \includegraphics[width=\linewidth]{figures/third_order_impulsive_rephasing.pdf}
     \end{minipage}
     \hfill
     \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=\linewidth]
-        {figures/third_order_impulsive_nonrephasing.pdf}
+        \includegraphics[width=\linewidth]{figures/third_order_impulsive_nonrephasing.pdf}
     \end{minipage}
 
     \caption{
     Impulsive rephasing (left) and nonrephasing (right) third-order
     spectra obtained directly from the RWA-resolved Liouvillian
-    resolvent at $T=5$.  Under the Fourier convention used here, the
-    raw first-frequency axis is negative for the rephasing branch and
-    positive for the nonrephasing branch.
+    resolvent at $T=5$.
+    Under the Fourier convention used here, the raw first-frequency
+    axis is negative for the rephasing branch and positive for the
+    nonrephasing branch.
     }
+
     \label{fig:third_order_impulsive_rnr}
 \end{figure}
 
 
-\subsubsubsection{Independent validation against QuDPy}
+% ============================================================
+\subsubsection{Independent validation against QuDPy}
+% ============================================================
 
-As an independent check of the RWA-resolved third-order calculation, we
-also evaluated the same dimer response using the time-domain pathway
-propagation implemented in QuDPy.
+As an independent validation of the RWA-resolved third-order
+calculation, we also evaluated the same dimer response using the
+time-domain pathway propagation implemented in QuDPy.
 % Add the appropriate QuDPy reference here.
 
 QuDPy represents the individual left- and right-acting dipole
@@ -5575,7 +5634,7 @@ B_u\rho
 \rho\mu_{\downarrow}.
 \end{equation}
 
-The RWA interaction superoperators therefore satisfy
+The RWA interaction superoperators can therefore be written as
 
 \begin{equation}
 V_{\uparrow}
@@ -5590,7 +5649,7 @@ V_{\downarrow}
 \label{eq:qudpy_commutator_connection}
 \end{equation}
 
-For the benchmark we choose the ground-state initial condition
+For this benchmark we use the ground-state preparation
 
 \begin{equation}
 \rho_0
@@ -5598,9 +5657,10 @@ For the benchmark we choose the ground-state initial condition
 |gg\rangle\langle gg|,
 \end{equation}
 
-for which the standard three rephasing and three nonrephasing
-double-sided pathways provide the complete RWA response.  With
-$\hbar=1$, expansion of the commutator superoperators gives
+for which the conventional three rephasing and three nonrephasing
+double-sided pathways provide the complete impulsive RWA response.
+
+With $\hbar=1$, expansion of the commutator superoperators gives
 
 \begin{equation}
 R_R^{(3)}
@@ -5627,14 +5687,24 @@ R_4-R_5-R_6
 The individual QuDPy pathways were propagated explicitly in time.
 Rather than using the built-in QuDPy Fourier-transform and plotting
 conventions, the resulting complex time-domain responses were
-transformed using precisely the same damped causal Fourier convention
-as in Eq.~\eqref{eq:third_order_td_transform}.  This provides a direct
-comparison of the two independent dynamical implementations without
-introducing additional FFT sign or phase conventions.
+transformed using the same damped causal Fourier convention as
+Eq.~\eqref{eq:third_order_td_transform}.  This isolates differences in
+the underlying dynamical implementations from differences caused by
+FFT signs, axis conventions, or plotting conventions.
 
-Using a QuDPy propagation window of $t_{\max}=100$ and a temporal
-spacing of approximately $\Delta t=0.251$, the complete complex
-two-dimensional spectra give relative errors
+Using a QuDPy propagation window of
+
+\begin{equation}
+t_{\max}=100
+\end{equation}
+
+and a temporal spacing of approximately
+
+\begin{equation}
+\Delta t=0.251,
+\end{equation}
+
+the complete complex spectra give relative discrepancies
 
 \begin{equation}
 \epsilon_{NR}
@@ -5650,9 +5720,11 @@ and
 1.43\times10^{-2}.
 \end{equation}
 
-No amplitude normalization or global phase adjustment was applied.
+No amplitude normalization or global phase adjustment was applied in
+these comparisons.
 
-As an additional diagnostic, the global complex overlap factors were
+As an additional diagnostic, the optimal global complex overlap
+factors are
 
 \begin{equation}
 \alpha_{NR}
@@ -5665,103 +5737,74 @@ and
 \begin{equation}
 \alpha_R
 =
-1.0069-0.0021i,
+1.0069-0.0021i.
 \end{equation}
 
-which are both close to unity.  After removing these small global
-differences only as a diagnostic, the residual spectral-shape
-discrepancies are approximately $1.22\%$ for the nonrephasing branch
-and $1.23\%$ for the rephasing branch.
+Both are close to unity.  If these small global amplitude and phase
+differences are removed only as a diagnostic, the remaining
+spectral-shape discrepancies are approximately $1.22\%$ for the
+nonrephasing branch and $1.23\%$ for the rephasing branch.
 
-The agreement therefore verifies not only the direct resolvent
-construction, but also the RWA interaction signs, the mapping between
-commutator superoperators and double-sided pathways, and the
-rephasing/nonrephasing decomposition.
+The agreement verifies the connection between the direct
+Liouville-space commutator formulation and the conventional
+double-sided pathway construction.  In particular, it independently
+checks the RWA interaction signs, the mapping of left- and right-acting
+dipole operations, and the rephasing/nonrephasing decomposition.
 
 \begin{figure}[htbp]
     \centering
 
-    \includegraphics[width=0.98\textwidth]
-    {figures/third_order_qudpy_nonrephasing_comparison.pdf}
+    \includegraphics[width=0.98\textwidth]{figures/third_order_qudpy_nonrephasing_comparison.pdf}
 
     \vspace{0.5em}
 
-    \includegraphics[width=0.98\textwidth]
-    {figures/third_order_qudpy_rephasing_comparison.pdf}
+    \includegraphics[width=0.98\textwidth]{figures/third_order_qudpy_rephasing_comparison.pdf}
 
     \caption{
-    Independent comparison of the direct frequency-domain resolvent
-    calculation with explicit QuDPy time-domain pathway propagation.
+    Independent comparison of the direct frequency-domain RWA
+    resolvent calculation with explicit QuDPy time-domain pathway
+    propagation.
     The upper row shows the nonrephasing response and the lower row the
-    rephasing response.  Within each row, the panels show the direct
-    resolvent result, the QuDPy time-domain result transformed using the
-    same Fourier convention, and their difference.  No amplitude
-    normalization or phase correction was applied.  The full complex
-    two-dimensional relative errors are $1.45\%$ and $1.43\%$ for the
-    nonrephasing and rephasing branches, respectively.
+    rephasing response.
+    Within each row, the panels show the direct resolvent result, the
+    QuDPy time-domain result transformed using the same Fourier
+    convention, and their difference.
+    No amplitude normalization or phase correction was applied.
+    The full complex two-dimensional relative discrepancies are
+    $1.45\%$ and $1.43\%$ for the nonrephasing and rephasing branches,
+    respectively.
     }
+
     \label{fig:third_order_qudpy_validation}
 \end{figure}
 
 % ============================================================
-\subsubsection{Short-pulse and finite-width pulse regimes}
-\label{subsec:third_order_finite_pulse_validation}
+\subsection{Finite-Width Third-Order Validation}
+\label{subsec:third_order_finite_width}
 % ============================================================
 
-We now introduce the temporal and spectral structure of the three
-laser pulses and compare the conventional short-pulse RWA description
-with the full finite-width frequency-domain formulation.
+Having validated the impulsive third-order resolvent formulation and its
+RWA-resolved implementation, we now introduce finite pulse durations.
+The purpose of this subsection is to test the operator-valued
+finite-pulse construction, quantify the accuracy of the conventional
+short-pulse approximation, and determine the temporal-separation regime
+in which the finite-width factorization remains valid.
 
-The purpose of this comparison is not only to benchmark the
-finite-width implementation, but also to identify the pulse-duration
-regimes in which the conventional impulsive or short-pulse
-descriptions remain adequate.
-
-Throughout this subsection we use the stationary state of the thermal
+For these calculations we use the stationary state of the thermal
 Liouvillian,
-%
+
 \begin{equation}
 \mathcal{L}
 |\rho_{\mathrm{ss}}\rangle\rangle
 =
 0,
 \end{equation}
-%
-as the initial preparation.  For this state the first finite-pulse
-operator satisfies the exact identity
-%
-\begin{equation}
-F_1^{(s_1)}(\omega_1)
-|\rho_{\mathrm{ss}}\rangle\rangle
-=
-E_1^{(s_1)}(\omega_1)
-|\rho_{\mathrm{ss}}\rangle\rangle.
-\label{eq:third_order_stationary_F1_identity}
-\end{equation}
-%
-Nevertheless, the numerical implementation retains the complete
-$F_1F_2F_3$ structure so that the same code also applies to
-nonstationary preparations.
 
-For the short-pulse RWA treatment, the pulse envelopes enter as scalar
-spectral factors multiplying the impulsive RWA molecular response,
-%
-\begin{equation}
-P_{s,\mathrm{short}}^{(3)}
-=
-E_3^{(s_3)}
-E_2^{(s_2)}
-E_1^{(s_1)}
-M_s^{(3)},
-\label{eq:third_order_short_validation}
-\end{equation}
-%
-with the frequency arguments and rephasing/nonrephasing signs chosen
-according to the conventions developed above.
+as the initial preparation unless stated otherwise.
 
-The finite-width calculation instead retains the complete molecular
-interaction
-%
+The finite-width calculation retains the complete dipole interaction
+superoperator
+
 \begin{equation}
 V
 =
@@ -5769,49 +5812,132 @@ V_{\uparrow}
 +
 V_{\downarrow}
 \end{equation}
-%
-at every interaction.  For a stationary preparation the numerical
-expression is evaluated in the general form
-%
+
+at every interaction.  Thus, unlike the conventional impulsive RWA
+calculation of Sec.~\ref{subsec:third_order_impulsive}, no
+excitation-raising or excitation-lowering molecular pathway is imposed
+by hand.
+
+
+% ============================================================
+\subsubsection{Finite-pulse operators and short-pulse reference}
+% ============================================================
+
+For a selected field-signature branch
+$s=(s_1,s_2,s_3)$, the finite-width frequency-domain response is
+
 \begin{equation}
 \begin{aligned}
 P_{s,\mathrm{finite}}^{(3)}
-=&
+(\omega_3,T,\omega_1)
+=
 \langle\!\langle\mu|
-G_{\eta}(\omega_3)
+&G_\eta(\omega_3)
 V
 e^{\mathcal{L}T}
 F_3^{(s_3)}
 F_2^{(s_2)}
+\\
+&\times
 V
-G_{\eta}(\omega_1)
+G_\eta(\omega_1)
 V
 F_1^{(s_1)}
-|\rho_{\mathrm{ss}}\rangle\rangle .
+|\rho_{\mathrm{ss}}\rangle\rangle ,
 \end{aligned}
 \label{eq:third_order_finite_validation}
 \end{equation}
-%
-Thus no excitation-raising or excitation-lowering interaction sequence
-is imposed on the finite-width calculation.  Frequency selectivity is
-instead generated by the operator-valued pulse filters.
 
-For the numerical benchmark, the same finite damping parameter $\eta$
-was included consistently in the Fourier transform, resolvents, and
-finite-pulse operators.  This finite-$\eta$ modification is used only
-to make the numerical time-domain and frequency-domain calculations
-directly comparable; the physical expressions correspond to the
-$\eta\rightarrow0^{+}$ limit.
+with the signed first coherence frequency used for the rephasing
+branch as described in Sec.~\ref{subsec:third_order_impulsive}.
+
+The nonrephasing field signature is
+
+\begin{equation}
+(s_1,s_2,s_3)
+=
+(+,-,+),
+\end{equation}
+
+whereas the rephasing branch uses
+
+\begin{equation}
+(s_1,s_2,s_3)
+=
+(-,+,+).
+\end{equation}
+
+The operators $F_1$, $F_2$, and $F_3$ incorporate both the Gaussian
+pulse spectra and the field-free Liouvillian evolution occurring over
+the pulse offsets.  Their closed forms were derived in
+Sec.~\ref{sec:finite_pulses}.
+
+As a first numerical test, the analytical matrix-exponential forms of
+all three finite-pulse operators were compared with direct numerical
+evaluation of their defining time integrals.  The relative differences
+were of order
+
+\begin{equation}
+10^{-13},
+\end{equation}
+
+confirming the numerical implementation of the Gaussian
+Liouvillian-dressing operators.
+
+For the stationary preparation, the first pulse operator must satisfy
+
+\begin{equation}
+F_1^{(s_1)}
+|\rho_{\mathrm{ss}}\rangle\rangle
+=
+E_1^{(s_1)}
+|\rho_{\mathrm{ss}}\rangle\rangle .
+\label{eq:third_order_stationary_F1_identity}
+\end{equation}
+
+Numerically, this identity is satisfied to a relative difference of
+approximately
+
+\begin{equation}
+2\times10^{-16}.
+\end{equation}
+
+Although $F_1$ therefore reduces to a scalar spectral factor for this
+particular preparation, the complete $F_1F_2F_3$ structure is retained
+in the implementation so that the same formulation can be applied to
+nonstationary initial states.
+
+For comparison, the conventional short-pulse RWA approximation
+neglects molecular evolution during the pulse offsets and retains only
+scalar laser spectra multiplying the impulsive RWA molecular response,
+
+\begin{equation}
+P_{s,\mathrm{short}}^{(3)}
+=
+E_3^{(s_3)}
+E_2^{(s_2)}
+E_1^{(s_1)}
+M_s^{(3)}.
+\label{eq:third_order_short_validation}
+\end{equation}
+
+The impulsive RWA response is recovered by removing these finite
+spectral envelope factors.  The finite-width, short-pulse RWA, and
+impulsive RWA calculations therefore provide a hierarchy in which the
+effects of finite pulse duration and the rotating-wave approximation
+can be distinguished numerically.
 
 
 % ============================================================
-\subsubsubsection{Explicit finite-pulse ODE benchmark}
+\subsubsection{Explicit finite-pulse ODE benchmark}
 % ============================================================
 
-The finite-width frequency-domain calculation was benchmarked against
-an independent perturbative finite-pulse propagation.  For a selected
-field signature $(s_1,s_2,s_3)$, the third-order hierarchy is
-%
+The finite-width frequency-domain formulation was benchmarked against
+an independent perturbative time-domain calculation with explicit
+Gaussian laser pulses.
+
+For a selected field signature, the sequential third-order hierarchy is
+
 \begin{align}
 \frac{d}{dt}
 |\rho^{(1)}\rangle\rangle
@@ -5842,20 +5968,25 @@ V
 E_3^{(s_3)}(t)
 V
 |\rho^{(2)}\rangle\rangle .
+\label{eq:third_order_finite_ode}
 \end{align}
-%
+
 The complete interaction superoperator $V$ is used at every order.
-Consequently, this propagation does not impose a molecular
+Consequently, this benchmark does not impose a molecular
 rotating-wave approximation.
 
-The nonrephasing calculation uses the field signature
-$(+,-,+)$, while the rephasing calculation uses $(-,+,+)$.
-The resulting time-domain signals were transformed using the same
-damped Fourier convention as the frequency-domain calculation.
+The pulse-center variables were transformed over a nearly bilateral
+numerical domain so that the time-domain benchmark implements the same
+translation-invariant Fourier construction used in the analytical
+finite-width derivation.  A common damping parameter $\eta$ was
+included consistently in the numerical Fourier transform, the
+resolvents, and the finite-$\eta$ versions of the pulse operators.
+This modification is used only to make the finite numerical transform
+and frequency-domain calculation directly comparable; the physical
+expressions correspond to the limit $\eta\rightarrow0^{+}$.
 
-To compare complete complex two-dimensional spectra we use the
-Frobenius norm
-%
+To compare complete complex spectra we use the Frobenius norm,
+
 \begin{equation}
 \|P\|_F
 =
@@ -5864,10 +5995,12 @@ Frobenius norm
 |P_{ij}|^2
 \right]^{1/2}.
 \end{equation}
-%
-For comparisons in which the overall pulse prefactor is not identical,
-we additionally define the optimal global complex factor
-%
+
+When different approximations contain different overall pulse
+prefactors, it is also useful to separate a global complex amplitude
+and phase difference from a change in spectral structure.  We therefore
+define
+
 \begin{equation}
 \alpha_{\mathrm{opt}}
 =
@@ -5879,10 +6012,11 @@ P_{\mathrm{ODE},ij}
 \sum_{i,j}
 |P_{\mathrm{model},ij}|^2
 },
+\label{eq:third_order_alpha_opt}
 \end{equation}
-%
+
 and the corresponding spectral-shape discrepancy
-%
+
 \begin{equation}
 \epsilon_{\mathrm{shape}}
 =
@@ -5902,18 +6036,18 @@ P_{\mathrm{ODE}}
 \end{equation}
 
 For Gaussian pulses with
-%
+
 \begin{equation}
 \sigma=1.25,
 \qquad
 T=20,
 \end{equation}
-%
-the time-domain Fourier window was increased until convergence was
-reached.  For the nonrephasing response the finite-width
-frequency-domain discrepancy decreased from approximately $2.91\%$
-at $t_{\max}=80$ to $0.414\%$ at $t_{\max}=120$ and finally to
-%
+
+the numerical Fourier window was increased systematically.  For the
+nonrephasing response, the finite-width frequency-domain discrepancy
+decreased from approximately $2.91\%$ at $t_{\max}=80$ to
+$0.414\%$ at $t_{\max}=120$, and finally to
+
 \begin{equation}
 \boxed{
 \epsilon_{\mathrm{FD/ODE}}^{NR}
@@ -5921,11 +6055,11 @@ at $t_{\max}=80$ to $0.414\%$ at $t_{\max}=120$ and finally to
 0.0586\%
 }
 \end{equation}
-%
+
 at $t_{\max}=160$.
 
-The corresponding converged rephasing result is
-%
+The corresponding converged rephasing discrepancy is
+
 \begin{equation}
 \boxed{
 \epsilon_{\mathrm{FD/ODE}}^{R}
@@ -5934,148 +6068,196 @@ The corresponding converged rephasing result is
 }
 \end{equation}
 
-The optimal complex scale factors are essentially unity.  For example,
-for the nonrephasing calculation,
-%
+The optimal complex factors are essentially unity.  For example, for
+the nonrephasing calculation,
+
 \begin{equation}
 \alpha_{\mathrm{FD}}^{NR}
 =
 0.9999968
 +
-1.8\times10^{-6}i,
+1.8\times10^{-6}i.
 \end{equation}
-%
-showing that the agreement is not produced by a significant global
-amplitude or phase adjustment.
 
-For comparison, at the same pulse width the short-pulse RWA
-description gives spectral-shape discrepancies of approximately
-%
+The residual difference is therefore dominated by the finite numerical
+Fourier window rather than by a systematic amplitude or phase mismatch.
+
+At the same pulse width, the short-pulse RWA approximation gives
+spectral-shape discrepancies of approximately
+
 \begin{equation}
 5.27\%
 \qquad\text{and}\qquad
 5.54\%
 \end{equation}
-%
-for the nonrephasing and rephasing branches, respectively, whereas
-the corresponding impulsive RWA discrepancies are approximately
-%
+
+for the nonrephasing and rephasing branches, respectively.
+
+The corresponding impulsive RWA discrepancies are approximately
+
 \begin{equation}
 9.60\%
 \qquad\text{and}\qquad
 9.83\%.
 \end{equation}
 
-The comparison is shown in
+The nonrephasing and rephasing comparisons are shown in
 Fig.~\ref{fig:third_order_four_model_finite_width}.
 
 \begin{figure}[htbp]
     \centering
 
-    \includegraphics[
-        width=0.98\textwidth
-    ]{
-    figures/04_finite_pulse_validation/
-    NR_four_model_sigma1p25_T20_tmax160.pdf
-    }
+    \includegraphics[width=0.98\textwidth]{figures/04_finite_pulse_validation/NR_four_model_sigma1p25_T20_tmax160.pdf}
 
-    \vspace{0.5em}
+    \vspace{0.8em}
 
-    \includegraphics[
-        width=0.98\textwidth
-    ]{
-    figures/04_finite_pulse_validation/
-    R_four_model_sigma1p25_T20_tmax160.pdf
-    }
+    \includegraphics[width=0.98\textwidth]{figures/04_finite_pulse_validation/R_four_model_sigma1p25_T20_tmax160.pdf}
 
     \caption{
-    Comparison of explicit finite-pulse propagation, the finite-width
-    direct frequency-domain calculation, the short-pulse RWA
-    approximation, and the impulsive RWA response for
+    Comparison of explicit finite-pulse ODE propagation, the
+    finite-width direct frequency-domain calculation, the short-pulse
+    RWA approximation, and the impulsive RWA response for
     $\sigma=1.25$ and $T=20$.
-    The upper row shows the nonrephasing response and the lower row the
-    rephasing response.
-    Each displayed spectrum is normalized independently to emphasize
-    spectral structure.
+    The upper panel shows the nonrephasing response and the lower panel
+    shows the rephasing response.
     The complete complex spectral-shape discrepancies relative to the
-    explicit finite-pulse ODE are approximately $0.059\%$ for the
-    finite-width frequency-domain calculation, $5.3$--$5.5\%$ for the
-    short-pulse RWA approximation, and $9.6$--$9.8\%$ for the
-    impulsive RWA response.
+    finite-pulse ODE are approximately $0.059\%$ for the finite-width
+    frequency-domain calculation, $5.3$--$5.5\%$ for the short-pulse
+    RWA description, and $9.6$--$9.8\%$ for the impulsive RWA response.
     }
 
     \label{fig:third_order_four_model_finite_width}
 \end{figure}
 
+The sub-$0.1\%$ agreement of the converged finite-width calculation
+with explicit finite-pulse propagation provides the principal
+numerical validation of the operator-valued pulse construction.
+
 
 % ============================================================
-\subsubsubsection{Pulse-width regimes}
+\subsubsection{Pulse-width regimes}
 % ============================================================
 
-The pulse width was next varied while keeping the pulse centers
-sufficiently separated.  This reveals three physically distinct
-regimes.
+The Gaussian pulse width was next varied while the waiting time was
+held fixed at
 
-For very short pulses, the bandwidth is sufficiently broad that the
-counter-rotating contributions contained in the full interaction
-superoperator are not strongly suppressed.  In this limit the
-short-pulse RWA and impulsive RWA calculations approach one another,
-but both differ appreciably from the full-$V$ finite-pulse response.
-For example, at $\sigma=0.05$ their spectral-shape discrepancies are
-both approximately $13.27\%$, whereas the finite-width
-frequency-domain discrepancy remains approximately $0.40\%$.
+\begin{equation}
+T=20.
+\end{equation}
 
-At intermediate pulse widths, the pulse is long enough on the optical
-timescale to suppress rapidly oscillating counter-rotating
-contributions while remaining short compared with the slower
-molecular dynamics.  This produces the conventional impulsive-RWA
-window.  The short-pulse RWA discrepancy reaches its minimum near
-$\sigma\simeq1$--$2$, with values close to $5.3\%$ for the present
-model.
+Only pulse widths for which neighboring pulses remain well separated
+are included in the present comparison.  The scan reveals three
+distinct physical regimes.
 
-This intermediate regime is the physical regime in which conventional
-RWA pathway formulations, such as those independently validated
-against QuDPy above, are expected to be most appropriate.  The QuDPy
-comparison and the present pulse-width scan use different initial
-preparations and waiting times, however, and therefore should be
-regarded as complementary validations rather than point-by-point
-identical calculations.
+For very short pulses, the optical bandwidth becomes sufficiently broad
+that counter-rotating contributions contained in the complete
+interaction superoperator are no longer strongly suppressed.  In this
+regime the short-pulse RWA and impulsive RWA calculations approach one
+another, because molecular evolution during the narrow pulse is
+negligible, but both differ appreciably from the full-$V$ result.
 
-As the pulse width increases further, the RWA may remain effective but
-molecular evolution during the pulse can no longer be neglected.
-Consequently, the impulsive approximation deteriorates rapidly.  At
-$\sigma=4$, for example, the impulsive RWA discrepancy is approximately
-$29.4\%$, while the short-pulse RWA discrepancy is approximately
-$9.0\%$.  The finite-width frequency-domain result remains near the
-numerical Fourier-window floor, approximately $0.43\%$ in this scan.
+At
 
-These three regimes are summarized in
+\begin{equation}
+\sigma=0.05,
+\end{equation}
+
+for example, the short-pulse and impulsive RWA discrepancies are both
+
+\begin{equation}
+\epsilon_{\mathrm{shape}}
+\simeq
+13.27\%,
+\end{equation}
+
+whereas the finite-width frequency-domain result remains within
+approximately $0.40\%$ of the full-$V$ ODE reference.
+
+This behavior demonstrates that the limit $\sigma\rightarrow0$ should
+not be identified automatically with the conventional impulsive RWA
+limit.  The full-$V$ finite-pulse response approaches the impulsive
+full-interaction response, whereas the short-pulse RWA expression
+approaches the impulsive RWA response.
+
+At intermediate pulse widths, the pulse becomes sufficiently long on
+the optical timescale to suppress rapidly oscillating
+counter-rotating contributions while remaining short compared with the
+slower molecular dynamics.  This produces the conventional
+impulsive-RWA window.
+
+For the present dimer, the short-pulse RWA discrepancy reaches its
+minimum near
+
+\begin{equation}
+\sigma
+\simeq
+1\text{--}2,
+\end{equation}
+
+where it is approximately $5.3\%$.
+
+This intermediate region is the regime in which conventional
+impulsive RWA pathway methods, including the QuDPy calculation
+validated in Sec.~\ref{subsec:third_order_impulsive}, are physically
+most appropriate.  The QuDPy benchmark and the present pulse-width scan
+use different numerical preparations and should therefore be regarded
+as complementary validations rather than as point-by-point identical
+calculations.
+
+As the pulse width increases further, evolution of the molecular state
+during the pulse becomes increasingly important.  The impulsive
+approximation then deteriorates even when the RWA remains qualitatively
+reasonable.
+
+At
+
+\begin{equation}
+\sigma=4,
+\end{equation}
+
+the impulsive RWA discrepancy has increased to approximately
+
+\begin{equation}
+29.4\%,
+\end{equation}
+
+while the short-pulse RWA discrepancy is approximately
+
+\begin{equation}
+9.0\%.
+\end{equation}
+
+The finite-width frequency-domain result remains near
+
+\begin{equation}
+0.43\%.
+\end{equation}
+
+The approximately $0.4\%$ finite-width floor in this pulse-width scan
+is caused primarily by the shorter numerical Fourier window
+$t_{\max}=120$ used for the scan.  As shown above, increasing the
+window to $t_{\max}=160$ reduces the discrepancy near
+$\sigma=1.25$ to approximately $0.06\%$.
+
+The three pulse-width regimes are summarized in
 Fig.~\ref{fig:third_order_three_regimes}.
 
 \begin{figure}[htbp]
     \centering
 
-    \includegraphics[
-        width=0.82\textwidth
-    ]{
-    figures/04_finite_pulse_validation/
-    NR_three_physical_regimes.pdf
-    }
+    \includegraphics[width=0.82\textwidth]{figures/04_finite_pulse_validation/NR_three_physical_regimes.pdf}
 
     \caption{
-    Spectral-shape error of the finite-width frequency-domain,
-    short-pulse RWA, and impulsive RWA descriptions relative to the
+    Spectral-shape discrepancy of the finite-width frequency-domain,
+    short-pulse RWA, and impulsive RWA calculations relative to the
     full-$V$ finite-pulse ODE as a function of Gaussian pulse width.
-    Only pulse widths satisfying the separated-pulse criterion are
-    included.
-    The ultrashort regime exhibits non-RWA corrections, the
-    intermediate region gives the best agreement with the conventional
-    impulsive-RWA description, and finite-pulse dynamical effects become
-    increasingly important toward the right.
-    The approximately $0.4\%$ floor of the finite-width curve results
-    from the shorter $t_{\max}=120$ Fourier window used for the scan;
-    the converged $t_{\max}=160$ calculation gives approximately
-    $0.06\%$.
+    The scan is restricted to the separated-pulse domain.
+    The ultrashort region displays non-RWA corrections, the
+    intermediate region provides the conventional impulsive-RWA
+    window, and finite-pulse dynamical effects become progressively
+    more important as the pulse width increases.
+    The approximately $0.4\%$ floor of the finite-width curve is
+    associated with the finite Fourier window used for this scan.
     }
 
     \label{fig:third_order_three_regimes}
@@ -6083,14 +6265,38 @@ Fig.~\ref{fig:third_order_three_regimes}.
 
 
 % ============================================================
-\subsubsubsection{Validity of the separated-pulse assumption}
+\subsubsection{Validity of the separated-pulse approximation}
 % ============================================================
 
-The finite-width factorization developed above assumes that neighboring
-pulse envelopes are temporally separated.  For two equal Gaussian
-envelopes of width $\sigma$ whose centers are separated by
-$\Delta\tau$, a convenient normalized overlap measure is
-%
+The factorized finite-width expression in
+Eq.~\eqref{eq:third_order_finite_validation} assumes that the three
+pulse envelopes are temporally separated.  It is therefore important
+to distinguish the finite-pulse regime from the separate breakdown
+caused by direct pulse overlap.
+
+For two equal Gaussian envelopes separated by a time
+$\Delta\tau$,
+
+\begin{equation}
+g_1(t)
+=
+\exp\left[
+-\frac{(t-\tau_1)^2}{2\sigma^2}
+\right],
+\end{equation}
+
+and
+
+\begin{equation}
+g_2(t)
+=
+\exp\left[
+-\frac{(t-\tau_2)^2}{2\sigma^2}
+\right],
+\end{equation}
+
+the normalized envelope overlap is
+
 \begin{equation}
 \mathcal{O}
 =
@@ -6110,87 +6316,478 @@ g_1(t)g_2(t)
 \label{eq:third_order_gaussian_overlap}
 \end{equation}
 
-Thus an overlap tolerance $\mathcal{O}<\varepsilon$ requires
-%
+If an overlap tolerance $\varepsilon$ is required, then
+
 \begin{equation}
 \frac{\Delta\tau}{\sigma}
 >
 2
 \sqrt{
-\ln\left(\frac{1}{\varepsilon}\right)
+\ln\left(
+\frac{1}{\varepsilon}
+\right)
 }.
 \label{eq:third_order_gaussian_separation}
 \end{equation}
-%
-For example, $1\%$ normalized overlap corresponds to
-$\Delta\tau/\sigma>4.29$, whereas $0.1\%$ overlap corresponds to
-$\Delta\tau/\sigma>5.26$.
 
-The temporal-ordering assumption was tested independently using a
-phase-resolved three-pulse ODE in which all three finite pulses and both
-positive- and negative-frequency field components were allowed to act
-at every perturbative order.  No molecular RWA and no fixed
-$1\rightarrow2\rightarrow3$ interaction ordering were imposed.
+For example,
 
-At $\sigma=1.25$, including the complete pulse-1/pulse-2 overlap region
-produces a spectral-shape difference of approximately $7.70\%$ between
-the unrestricted and sequential third-order ODEs.  As the overlapping
-region is excluded, this discrepancy collapses rapidly.  When the
-minimum retained pulse separation is approximately $4\sigma$, the
-difference is only about $0.025\%$, and at separations of approximately
-$5$--$6\sigma$ it is below $10^{-3}\%$.
+\begin{equation}
+\mathcal{O}<1\%
+\end{equation}
 
-The comparison is shown in
+requires approximately
+
+\begin{equation}
+\frac{\Delta\tau}{\sigma}
+>
+4.29,
+\end{equation}
+
+whereas
+
+\begin{equation}
+\mathcal{O}<0.1\%
+\end{equation}
+
+requires approximately
+
+\begin{equation}
+\frac{\Delta\tau}{\sigma}
+>
+5.26.
+\end{equation}
+
+The sequential ODE of
+Eq.~\eqref{eq:third_order_finite_ode} imposes the chronological pulse
+ordering $1\rightarrow2\rightarrow3$.  To verify that this restriction
+does not affect the separated-pulse benchmark, we performed a second,
+more general third-order propagation in which all three finite pulses,
+both positive- and negative-frequency field components, and all
+temporal orderings were allowed to contribute.
+
+The desired rephasing or nonrephasing field signature was selected
+directly by propagating the corresponding Fourier sectors in the three
+independent laser phases.  This unrestricted calculation uses the
+complete interaction superoperator $V$ and does not impose a molecular
+RWA.
+
+For $\sigma=1.25$, inclusion of the region near zero pulse-1/pulse-2
+separation produces a spectral-shape difference of approximately
+
+\begin{equation}
+7.70\%
+\end{equation}
+
+between the unrestricted three-pulse calculation and the sequential
+ODE.
+
+The discrepancy falls rapidly as the minimum pulse separation is
+increased.  At a separation of approximately
+
+\begin{equation}
+4\sigma,
+\end{equation}
+
+the spectral-shape difference is only approximately
+
+\begin{equation}
+0.025\%,
+\end{equation}
+
+and by approximately $5$--$6\sigma$ it falls below
+
+\begin{equation}
+10^{-3}\%.
+\end{equation}
+
+This explicitly verifies that the sequential full-$V$ ODE becomes
+equivalent to the unrestricted three-pulse propagation in the regime
+where neighboring Gaussian pulse overlaps are negligible.
+
+The connection between envelope overlap and temporal-ordering
+corrections is shown in
 Fig.~\ref{fig:third_order_ordering_overlap}.
 
 \begin{figure}[htbp]
     \centering
 
-    \includegraphics[
-        width=0.78\textwidth
-    ]{
-    figures/04_finite_pulse_validation/
-    NR_ordering_error_and_overlap_dual_axis.pdf
-    }
+    \includegraphics[width=0.78\textwidth]{figures/04_finite_pulse_validation/NR_ordering_error_and_overlap_dual_axis.pdf}
 
     \caption{
-    Connection between Gaussian pulse overlap and temporal-ordering
-    corrections for the nonrephasing response at $\sigma=1.25$.
-    The unrestricted three-pulse ODE is compared with the sequential
-    third-order ODE after progressively excluding small pulse-1/pulse-2
-    separations.
-    The temporal-ordering discrepancy decreases rapidly as the Gaussian
-    overlap vanishes and becomes negligible at separations of order
-    $4$--$5\sigma$.
+    Comparison of Gaussian pulse overlap with the spectral-shape
+    difference between the unrestricted three-pulse ODE and the
+    sequential full-$V$ third-order ODE.
+    The nonrephasing calculation is shown for $\sigma=1.25$ while
+    progressively excluding small pulse-1/pulse-2 separations.
+    Temporal-ordering corrections decrease rapidly with the Gaussian
+    overlap and become negligible once neighboring pulses are separated
+    by approximately $4$--$5\sigma$.
     }
 
     \label{fig:third_order_ordering_overlap}
 \end{figure}
 
-Taken together, these results establish both the accuracy and the
-domain of validity of the finite-width frequency-domain construction.
-Within the separated-pulse regime it reproduces explicit full-$V$
-finite-pulse propagation with sub-percent numerical error, while the
-short-pulse and impulsive RWA descriptions exhibit distinct breakdowns
-on the ultrashort and finite-width sides of the conventional
-impulsive-RWA window.
+The finite-width frequency-domain formulation therefore has a clear
+domain of validity.  Within the separated-pulse regime it reproduces
+explicit full-$V$ finite-pulse propagation with sub-percent numerical
+error and remains accurate across the ultrashort, conventional
+impulsive-RWA, and finite-pulse regimes.  When neighboring pulse
+envelopes overlap strongly, additional temporal orderings contribute
+and the separated-pulse factorization is no longer expected to apply.
+
+% ============================================================
+\subsection{Summary of the Numerical Validation}
+\label{subsec:numerical_validation_summary}
+% ============================================================
+
+The calculations in this section establish a sequence of independent
+numerical checks of the direct frequency-domain formulation, beginning
+with linear response and extending to finite-pulse third-order
+spectroscopy.
+
+At linear order, direct Lindblad propagation and Liouville-space
+propagation agree to numerical precision.  Explicit time-domain
+propagation followed by Fourier transformation reproduces the direct
+Liouvillian-resolvent response, and for a stationary preparation the
+finite-pulse polarization factorizes as
+
+\begin{equation}
+P^{(1)}(\omega)
+=
+E(\omega)
+M^{(1)}(\omega).
+\end{equation}
+
+The nonstationary prepared-state calculation further demonstrates that
+deviations from this simple factorization can be attributed to
+field-free evolution of the preparation rather than to a failure of
+the resolvent construction.
+
+At third order, the impulsive response calculated from explicit
+two-dimensional time-domain propagation agrees with the direct
+frequency-domain resolvent expression with a relative complex
+discrepancy of approximately
+
+\begin{equation}
+5.4\times10^{-5}.
+\end{equation}
+
+This comparison uses the complete interaction superoperator $V$ and
+therefore validates the direct frequency-domain construction
+independently of the rotating-wave approximation.
+
+The subsequent RWA-resolved rephasing and nonrephasing calculations
+were independently compared with QuDPy time-domain pathway
+propagation.  The complete complex two-dimensional spectra agree at the
+approximately
+
+\begin{equation}
+1.4\%
+\end{equation}
+
+level without amplitude normalization or phase correction.  This
+provides an independent check of the excitation-raising and
+excitation-lowering interaction decomposition, the pathway signs, and
+the rephasing/nonrephasing conventions.
+
+The finite-width pulse operators $F_1$, $F_2$, and $F_3$ were tested
+directly against their defining Gaussian time integrals and agree to
+approximately
+
+\begin{equation}
+10^{-13}.
+\end{equation}
+
+For the stationary state, the expected identity
+
+\begin{equation}
+F_1^{(s_1)}
+|\rho_{\mathrm{ss}}\rangle\rangle
+=
+E_1^{(s_1)}
+|\rho_{\mathrm{ss}}\rangle\rangle
+\end{equation}
+
+is satisfied to numerical precision.
+
+Most importantly, the complete finite-width frequency-domain
+third-order response was compared with explicit finite-pulse
+full-$V$ ODE propagation.  For
+$\sigma=1.25$ and $T=20$, convergence of the time-domain Fourier
+window gives
+
+\begin{equation}
+\epsilon_{\mathrm{FD/ODE}}^{NR}
+=
+0.0586\%,
+\end{equation}
+
+and
+
+\begin{equation}
+\epsilon_{\mathrm{FD/ODE}}^{R}
+=
+0.0582\%.
+\end{equation}
+
+The corresponding optimal global complex factors are essentially
+unity, showing that the agreement is quantitative in both amplitude
+and phase and is not produced by an arbitrary rescaling.
+
+The pulse-width scan further separates three physically distinct
+regimes.  For ultrashort pulses, the short-pulse and impulsive RWA
+responses converge toward one another while remaining different from
+the complete full-$V$ response because counter-rotating contributions
+are no longer negligible.  At intermediate pulse widths, the
+conventional impulsive-RWA description becomes most accurate.  At
+larger pulse widths, molecular evolution during the pulse becomes
+important and the impulsive approximation progressively fails, while
+the finite-width frequency-domain construction continues to reproduce
+the explicit finite-pulse ODE.
+
+Finally, comparison with an unrestricted three-pulse ODE establishes
+the domain of validity of the separated-pulse factorization.  For equal
+Gaussian envelopes, the normalized overlap
+
+\begin{equation}
+\mathcal{O}
+=
+\exp\left[
+-\frac{\Delta\tau^2}{4\sigma^2}
+\right]
+\end{equation}
+
+provides a direct measure of pulse separation.  Temporal-ordering
+corrections become negligible once neighboring pulses are separated by
+approximately $4$--$5\sigma$, whereas strong pulse overlap introduces
+additional chronological orderings that are not contained in the
+factorized finite-width expression.
+
+The numerical validation may therefore be summarized schematically as
+
+\begin{equation}
+\boxed{
+\begin{gathered}
+\text{Liouville-space dynamics}
+\\
+\Downarrow
+\\
+\text{direct resolvent response}
+\\
+\Downarrow
+\\
+\text{impulsive third-order response}
+\\
+\Downarrow
+\\
+\text{RWA-resolved rephasing/nonrephasing response}
+\\
+\Downarrow
+\\
+\text{finite-width }F_1F_2F_3\text{ response}
+\\
+\Downarrow
+\\
+\text{explicit finite-pulse full-}V\text{ ODE}.
+\end{gathered}
+}
+\label{eq:numerical_validation_chain}
+\end{equation}
+
+Together, these results validate the direct frequency-domain method in
+the impulsive, short-pulse, and finite-width separated-pulse regimes,
+while also identifying the physical limits of the simpler RWA and
+impulsive approximations and the breakdown of the separated-pulse
+factorization under strong temporal overlap.
+
+Having established this numerical foundation, we next turn to a more
+systematic comparison of the frequency-domain and time-domain
+approaches and to the computational consequences of the different
+pulse treatments.
+
+% ============================================================
+\section{Computational Performance}
+\label{sec:computational_performance}
+% ============================================================
+
+The numerical validations in Sec.~\ref{sec:numerical_validation}
+establish the equivalence of the direct frequency-domain formulation
+with explicit time-domain propagation when the corresponding physical
+approximations and transform conventions are matched.  We now examine
+the computational cost of the different formulations.
+
+All timing comparisons reported in this section were performed in the
+same software environment and on the same machine.  Wall-clock times
+were measured repeatedly after warm-up evaluations, and the median
+runtime was used to reduce the influence of transient system-level
+fluctuations.
+
+We first compare direct resolvent evaluation with explicit
+time-domain propagation followed by a two-dimensional Fourier
+transform.  We then quantify the additional cost of the finite-pulse
+operators, examine the dependence on the requested frequency-grid
+density, and analyze the cost required to converge the time-domain
+calculation with respect to the coherence-time window and temporal
+spacing.  Finally, an implementation-level timing comparison with
+QuDPy is presented separately.
 
 
-\subsubsection{Summary of the third-order validation}
+% ============================================================
+\subsection{Frequency-Domain versus Time-Domain Evaluation}
+\label{subsec:fd_vs_td_performance}
+% ============================================================
 
-\section{Benchmark Results}
-\subsection{Frequency-domain versus time-domain}
-\subsection{Scalar versus $F_j$ pulse treatment}
-\subsection{Pulse-width dependence}
-\subsection{Computational cost}
+We begin with the impulsive nonrephasing RWA response used in the
+validation of Sec.~\ref{subsec:third_order_impulsive}.  The direct
+frequency-domain calculation evaluates
 
-\section{Current Limitations and Next Steps}
+\begin{equation}
+M_{NR}^{(3)}
+(\omega_3,T,\omega_1)
+=
+\langle\!\langle\mu|
+G_\eta(\omega_3)
+V_{\uparrow}
+e^{\mathcal{L}T}
+V_{\downarrow}
+G_\eta(\omega_1)
+V_{\uparrow}
+|\rho_0\rangle\!\rangle ,
+\end{equation}
+
+directly on the requested frequency grid.  The corresponding
+time-domain calculation first constructs
+
+\begin{equation}
+R_{NR}^{(3)}(t_3,T,t_1)
+\end{equation}
+
+on a two-dimensional coherence-time grid and subsequently performs the
+damped transform
+
+\begin{equation}
+M_{NR,\mathrm{TD}}^{(3)}
+(\omega_3,T,\omega_1)
+=
+\int_0^\infty dt_3
+\int_0^\infty dt_1\,
+e^{(i\omega_3-\eta)t_3}
+e^{(i\omega_1-\eta)t_1}
+R_{NR}^{(3)}(t_3,T,t_1).
+\end{equation}
+
+For the benchmark, the waiting time and damping parameter were
+
+\begin{equation}
+T=5,
+\qquad
+\eta=0.02,
+\end{equation}
+
+and the coherence-time axes extended to
+
+\begin{equation}
+t_{\max}=100
+\end{equation}
+
+with temporal spacing
+
+\begin{equation}
+\Delta t=0.25.
+\end{equation}
+
+The final spectrum was evaluated on an
+$81\times81$ frequency grid over the interval used in the numerical
+validation.
+
+The direct frequency-domain calculation required a median wall-clock
+time of
+
+\begin{equation}
+\boxed{
+t_{\mathrm{FD}}
+=
+1.298\times10^{-3}\ \mathrm{s}.
+}
+\end{equation}
+
+For the time-domain calculation, explicit propagation required
+
+\begin{equation}
+t_{\mathrm{prop}}
+=
+3.726\times10^{-3}\ \mathrm{s},
+\end{equation}
+
+while the subsequent two-dimensional transform required
+
+\begin{equation}
+t_{\mathrm{FT}}
+=
+0.934\times10^{-3}\ \mathrm{s}.
+\end{equation}
+
+The total time-domain cost was therefore
+
+\begin{equation}
+\boxed{
+t_{\mathrm{TD}}
+=
+t_{\mathrm{prop}}
++
+t_{\mathrm{FT}}
+=
+4.660\times10^{-3}\ \mathrm{s}.
+}
+\end{equation}
+
+For this benchmark,
+
+\begin{equation}
+\boxed{
+\frac{t_{\mathrm{TD}}}{t_{\mathrm{FD}}}
+=
+3.59.
+}
+\end{equation}
+
+Thus, for the same $81\times81$ impulsive nonrephasing spectrum, the
+direct resolvent evaluation is approximately $3.6$ times faster than
+explicit time-domain propagation followed by transformation.
+
+The dominant contribution to the time-domain runtime is the
+construction of the two-dimensional response itself rather than the
+Fourier transformation.  Approximately $80\%$ of the total
+time-domain wall-clock time is associated with propagation over the
+$t_1$ and $t_3$ axes.  The direct frequency-domain formulation avoids
+this intermediate coherence-time response and evaluates the requested
+spectral points directly.
+
+At the present time-window and temporal spacing, the transformed
+time-domain spectrum differs from the direct resolvent result by
+approximately
+
+\begin{equation}
+1.08\%
+\end{equation}
+
+in the full complex two-dimensional Frobenius norm.  As shown below,
+this discrepancy is primarily a finite-time and temporal-discretization
+effect and decreases systematically as the time-domain calculation is
+converged.
+
+\subsection{Frequency-Domain versus Time-Domain Evaluation}
+\subsection{Cost of Finite-Pulse Dressing}
+\subsection{Scaling with Spectral Resolution}
+
+\section{Limitations and Outlook}
+
+\section{Conclusions}
 
 \appendix
-\section{Three-Level Preliminary Test}
-\section{Gaussian Matrix Integral}
-\section{Phase-Cycling Validation}
 
+\section{Phase-Resolved Three-Pulse Propagation}
 % ============================================================
 % Bibliography
 % ============================================================
