@@ -4609,6 +4609,7 @@ finite-width spectra?
 
 \end{enumerate}
 \section{Numerical Validation}
+\label{sec:Numerical_validation}
 
 % ============================================================
 \subsection{Linear Response}
@@ -6611,7 +6612,7 @@ pulse treatments.
 \label{sec:computational_performance}
 % ============================================================
 
-The numerical validations in Sec.~\ref{sec:numerical_validation}
+The numerical validations in Sec.~\ref{sec:Numerical_validation}
 establish the equivalence of the direct frequency-domain formulation
 with explicit time-domain propagation when the corresponding physical
 approximations and transform conventions are matched.  We now examine
@@ -6777,9 +6778,1017 @@ this discrepancy is primarily a finite-time and temporal-discretization
 effect and decreases systematically as the time-domain calculation is
 converged.
 
-\subsection{Frequency-Domain versus Time-Domain Evaluation}
+% ============================================================
 \subsection{Cost of Finite-Pulse Dressing}
-\subsection{Scaling with Spectral Resolution}
+\label{subsec:finite_pulse_cost}
+% ============================================================
+
+We next quantify the additional computational cost associated with
+including the temporal and spectral structure of finite laser pulses.
+Three frequency-domain formulations are compared on the same
+$81\times81$ spectral grid:
+
+\begin{enumerate}
+    \item the impulsive RWA response,
+    \item the short-pulse RWA response with scalar Gaussian spectral
+    factors, and
+    \item the finite-width response retaining the operator-valued
+    pulse-dressing matrices $F_1$, $F_2$, and $F_3$ together with the
+    full interaction superoperator $V$.
+\end{enumerate}
+
+The short-pulse formulation retains the spectral envelopes of the
+three pulses while neglecting molecular evolution across their
+temporal widths.  For the nonrephasing field signature $(+,-,+)$, the
+response can therefore be written schematically as
+
+\begin{equation}
+P_{\mathrm{short}}^{(3)}
+(\omega_3,T,\omega_1)
+=
+E_3^{(+)}(\omega_3)
+E_2^{(-)}(-\omega_1)
+E_1^{(+)}(\omega_1)
+M_{NR}^{(3)}
+(\omega_3,T,\omega_1),
+\end{equation}
+
+so that the finite laser pulses enter only through scalar
+frequency-dependent factors.
+
+By contrast, the finite-width formulation retains molecular evolution
+during the pulse offsets through the operator-valued factors derived
+in Sec.~\ref{sec:short_pulses}.  The corresponding response has the
+form
+
+\begin{equation}
+P_{\mathrm{finite}}^{(3)}
+(\omega_3,T,\omega_1)
+=
+\langle\!\langle\mu|
+G_\eta(\omega_3)
+V
+e^{\mathcal{L}T}
+F_3
+F_2
+V
+G_\eta(\omega_1)
+V
+F_1
+|\rho_{\mathrm{ref}}\rangle\rangle ,
+\end{equation}
+
+with the appropriate frequency arguments and field-component signs
+understood for each $F_j$.
+
+For the benchmark we use Gaussian pulses with
+
+\begin{equation}
+\sigma=1.25,
+\end{equation}
+
+and evaluate the three formulations on the same frequency grid.  The
+median wall-clock time for the impulsive RWA calculation is
+
+\begin{equation}
+\boxed{
+t_{\mathrm{imp}}
+=
+1.299\times10^{-3}\ \mathrm{s}.
+}
+\end{equation}
+
+Including the scalar Gaussian pulse factors increases the runtime only
+slightly,
+
+\begin{equation}
+\boxed{
+t_{\mathrm{short}}
+=
+1.334\times10^{-3}\ \mathrm{s},
+}
+\end{equation}
+
+corresponding to
+
+\begin{equation}
+\frac{
+t_{\mathrm{short}}
+}{
+t_{\mathrm{imp}}
+}
+=
+1.027.
+\end{equation}
+
+Thus, within this implementation, the computational overhead of the
+short-pulse scalar dressing is approximately $2.7\%$.
+
+The finite-width calculation requires
+
+\begin{equation}
+\boxed{
+t_{\mathrm{finite}}
+=
+7.336\times10^{-3}\ \mathrm{s}.
+}
+\end{equation}
+
+Relative to the short-pulse formulation,
+
+\begin{equation}
+\boxed{
+\frac{
+t_{\mathrm{finite}}
+}{
+t_{\mathrm{short}}
+}
+=
+5.50,
+}
+\end{equation}
+
+while relative to the impulsive calculation,
+
+\begin{equation}
+\boxed{
+\frac{
+t_{\mathrm{finite}}
+}{
+t_{\mathrm{imp}}
+}
+=
+5.65.
+}
+\end{equation}
+
+The increased cost arises primarily from the construction and
+application of the matrix-valued finite-pulse operators.  Whereas the
+short-pulse treatment requires only scalar spectral-envelope
+multiplications, the finite-width response evaluates matrix functions
+of the Liouvillian for the pulse-dressing factors and applies them
+within the third-order response sequence.
+
+This additional cost should be interpreted together with the physical
+content of the approximations.  The three calculations are not merely
+different numerical implementations of the same response.  The
+finite-width formulation retains molecular evolution during the pulse
+offsets and the full interaction superoperator, whereas the impulsive
+and short-pulse RWA expressions neglect some or all of these effects.
+Consequently, the factor of approximately $5.5$ represents the
+computational price of the additional finite-pulse dynamics rather
+than an inefficiency relative to an equivalent calculation.
+
+For the present $16$-dimensional Liouville-space benchmark, the
+complete finite-width $81\times81$ spectrum is nevertheless obtained
+in approximately $7.3$ ms.  The results therefore show that
+operator-valued pulse dressing introduces a measurable but still
+modest absolute computational cost for the present model.
+
+% ============================================================
+\subsection{Scaling with Requested Frequency-Grid Density}
+\label{subsec:frequency_grid_scaling}
+% ============================================================
+
+The previous benchmark considered a fixed $81\times81$ spectral grid.
+We next examine how the computational cost changes as the number of
+requested frequency samples is increased.
+
+We denote by $N_\omega$ the number of requested frequencies along each
+spectral axis.  The resulting two-dimensional spectrum therefore
+contains
+
+\begin{equation}
+\boxed{
+N_{\mathrm{spec}}
+=
+N_\omega^2
+}
+\end{equation}
+
+complex spectral points.  For example,
+
+\begin{equation}
+N_\omega=201
+\end{equation}
+
+corresponds to a $201\times201$ spectrum containing
+
+\begin{equation}
+40\,401
+\end{equation}
+
+spectral points.
+
+Importantly, increasing $N_\omega$ at fixed frequency interval only
+increases the density with which the final spectrum is sampled.  It
+does not by itself improve the intrinsic Fourier resolution of a
+finite-time calculation.  The latter is controlled primarily by the
+coherence-time window and is examined separately in
+Sec.~\ref{subsec:time_window_scaling}.
+
+For the present benchmark, the frequency interval was held fixed at
+
+\begin{equation}
+0.6
+\leq
+\omega_1,\omega_3
+\leq
+1.4,
+\end{equation}
+
+while $N_\omega$ was varied.  The time-domain calculation retained the
+same coherence-time grid,
+
+\begin{equation}
+t_{\max}=100,
+\qquad
+\Delta t=0.25,
+\end{equation}
+
+for all values of $N_\omega$.
+
+The two approaches have different computational structures.  In the
+time-domain formulation, the molecular response
+$R^{(3)}(t_3,T,t_1)$ is propagated once on the fixed time grid.
+Increasing $N_\omega$ therefore affects only the cost of transforming
+this previously generated response onto a denser frequency grid.  The
+total time-domain cost can be written as
+
+\begin{equation}
+t_{\mathrm{TD}}(N_\omega)
+=
+t_{\mathrm{prop}}
++
+t_{\mathrm{FT}}(N_\omega),
+\end{equation}
+
+where $t_{\mathrm{prop}}$ is independent of the number of requested
+frequency points.
+
+The direct frequency-domain formulation instead evaluates the
+resolvent response directly at the requested frequencies.  Its cost
+therefore increases continuously with $N_\omega$.  The implementation
+used here also exploits multiple right-hand sides when applying the
+$\omega_3$ resolvent, so that the full $N_\omega^2$ spectrum does not
+require $N_\omega^2$ completely independent linear solves.
+
+For sparse and moderately sized frequency grids, the avoidance of the
+two-dimensional time-domain propagation provides a substantial
+advantage.  At
+
+\begin{equation}
+N_\omega=21,
+\end{equation}
+
+corresponding to only $441$ spectral points, the measured runtimes are
+
+\begin{equation}
+t_{\mathrm{FD}}
+=
+2.44\times10^{-4}\ \mathrm{s},
+\end{equation}
+
+and
+
+\begin{equation}
+t_{\mathrm{TD}}
+=
+4.00\times10^{-3}\ \mathrm{s},
+\end{equation}
+
+giving
+
+\begin{equation}
+\boxed{
+\frac{t_{\mathrm{TD}}}{t_{\mathrm{FD}}}
+=
+16.4.
+}
+\end{equation}
+
+For the standard $81\times81$ benchmark, the corresponding ratio is
+
+\begin{equation}
+\frac{t_{\mathrm{TD}}}{t_{\mathrm{FD}}}
+\simeq
+3.6,
+\end{equation}
+
+in agreement with the direct timing comparison of
+Sec.~\ref{subsec:fd_vs_td_performance}.
+
+As the requested grid becomes increasingly dense, the advantage of
+direct frequency-domain evaluation decreases.  At approximately
+
+\begin{equation}
+N_\omega=201,
+\end{equation}
+
+the two runtimes differ by only about $20\%$.  Extending the scan to
+larger grids reveals a crossover between
+
+\begin{equation}
+N_\omega=241
+\end{equation}
+
+and
+
+\begin{equation}
+N_\omega=261.
+\end{equation}
+
+The corresponding measured runtime ratios are
+
+\begin{equation}
+\frac{t_{\mathrm{TD}}}{t_{\mathrm{FD}}}
+=
+1.06
+\qquad
+(N_\omega=241),
+\end{equation}
+
+and
+
+\begin{equation}
+\frac{t_{\mathrm{TD}}}{t_{\mathrm{FD}}}
+=
+0.95
+\qquad
+(N_\omega=261).
+\end{equation}
+
+Thus, for the present implementation and model, the crossover occurs
+near
+
+\begin{equation}
+\boxed{
+N_\omega
+\sim
+250,
+}
+\end{equation}
+
+corresponding to approximately
+
+\begin{equation}
+N_\omega^2
+\sim
+6.3\times10^4
+\end{equation}
+
+requested spectral points.
+
+For still denser uniform grids, the explicit time-domain calculation
+becomes faster.  At
+
+\begin{equation}
+N_\omega=401,
+\end{equation}
+
+the measured ratio is
+
+\begin{equation}
+\frac{t_{\mathrm{TD}}}{t_{\mathrm{FD}}}
+=
+0.55,
+\end{equation}
+
+so that the time-domain calculation is approximately $1.8$ times
+faster for this dense output grid.
+
+These results identify the computational regime in which direct
+frequency-domain evaluation is most advantageous.  The largest gains
+occur when only selected frequencies or a moderately sized spectral
+window is required.  In this regime, the direct method avoids
+constructing a complete two-dimensional coherence-time response that
+may contain substantially more intermediate data than are ultimately
+needed.
+
+For very dense uniform frequency grids, however, the cost of evaluating
+many frequency-dependent resolvents eventually exceeds the fixed
+propagation cost of the time-domain calculation followed by
+transformation.  The precise crossover depends on the Liouville-space
+dimension, linear-algebra implementation, transform algorithm, and
+hardware, and should therefore not be regarded as a universal value.
+
+\begin{figure}[htbp]
+    \centering
+
+    \includegraphics[
+        width=0.78\textwidth
+    ]{
+    figures/05_computational_benchmarks/
+    runtime_vs_frequency_grid_density_final.pdf
+    }
+
+    \caption{
+    Computational cost as a function of the number of requested
+    frequencies per spectral axis, $N_\omega$.  The final
+    two-dimensional spectrum contains $N_\omega^2$ spectral points.
+    Direct frequency-domain evaluation is substantially faster for
+    sparse and moderately sized grids because it avoids construction
+    of the intermediate two-dimensional coherence-time response.
+    As the requested uniform grid becomes increasingly dense, the
+    frequency-dependent resolvent evaluations become progressively
+    more expensive and a crossover occurs near $N_\omega\simeq250$
+    for the present model and implementation.
+    }
+
+    \label{fig:frequency_grid_runtime}
+\end{figure}
+
+The comparison also emphasizes that frequency-grid density and
+spectral resolution are distinct quantities.  A dense set of
+frequency samples can be generated from a fixed finite time window
+without increasing the intrinsic frequency resolution.  The
+computational consequences of improving the actual finite-time
+convergence are considered next.
+
+% ============================================================
+\subsection{Time-Window and Temporal-Discretization Convergence}
+\label{subsec:time_window_scaling}
+% ============================================================
+
+The frequency-grid benchmark of
+Sec.~\ref{subsec:frequency_grid_scaling} varies the number of spectral
+points requested from a fixed time-domain response.  Increasing
+$N_\omega$ therefore increases the sampling density of the final
+spectrum but does not improve the convergence associated with the
+finite coherence-time window.
+
+A separate question is how the computational cost changes when the
+time-domain calculation itself is systematically converged toward the
+direct resolvent result.  We examine this dependence first with respect
+to the maximum coherence time $t_{\max}$ and subsequently with respect
+to the temporal spacing $\Delta t$.
+
+% ------------------------------------------------------------
+\subsubsection{Convergence with the coherence-time window}
+\label{subsubsec:tmax_convergence}
+% ------------------------------------------------------------
+
+For a time-domain Fourier transform extending from zero to
+$t_{\max}$, the nominal frequency scale associated with the finite
+window is
+
+\begin{equation}
+\Delta\omega_{\mathrm{FT}}
+\sim
+\frac{2\pi}{t_{\max}}.
+\end{equation}
+
+This quantity should not be interpreted as the physical linewidth of
+the spectrum, which is also determined by the dissipative dynamics and
+the finite damping parameter $\eta$.  It instead provides a convenient
+measure of the Fourier structure accessible within a finite temporal
+window.
+
+For fixed temporal spacing $\Delta t$, the number of points along each
+coherence-time axis is approximately
+
+\begin{equation}
+N_t
+=
+\frac{t_{\max}}{\Delta t}+1.
+\end{equation}
+
+The complete two-dimensional response therefore contains
+
+\begin{equation}
+\boxed{
+N_t^2
+}
+\end{equation}
+
+complex time-domain samples.
+
+To isolate this effect, the requested frequency-domain output was held
+fixed at
+
+\begin{equation}
+N_\omega=81,
+\end{equation}
+
+corresponding to an $81\times81$ spectrum with $6561$ spectral points,
+while the temporal spacing was fixed at
+
+\begin{equation}
+\Delta t=0.25.
+\end{equation}
+
+The coherence-time window was then increased from
+
+\begin{equation}
+t_{\max}=25
+\end{equation}
+
+to
+
+\begin{equation}
+t_{\max}=400.
+\end{equation}
+
+For the shortest window, $t_{\max}=25$, the transformed time-domain
+spectrum differs from the direct resolvent by approximately
+
+\begin{equation}
+40.9\%.
+\end{equation}
+
+The time-domain calculation is slightly faster than the direct
+frequency-domain evaluation in this case,
+
+\begin{equation}
+\frac{t_{\mathrm{TD}}}{t_{\mathrm{FD}}}
+=
+0.78,
+\end{equation}
+
+but the resulting spectrum is far from converged.
+
+Increasing the coherence-time window systematically reduces the
+finite-time error.  At
+
+\begin{equation}
+t_{\max}=100,
+\end{equation}
+
+the relative discrepancy falls to approximately
+
+\begin{equation}
+1.08\%,
+\end{equation}
+
+while the time-domain calculation becomes
+
+\begin{equation}
+\frac{t_{\mathrm{TD}}}{t_{\mathrm{FD}}}
+=
+3.79
+\end{equation}
+
+times slower than the direct resolvent.
+
+At
+
+\begin{equation}
+t_{\max}=150,
+\end{equation}
+
+the discrepancy is reduced below $0.1\%$,
+
+\begin{equation}
+\epsilon_{\mathrm{TD/FD}}
+\simeq
+0.098\%,
+\end{equation}
+
+at a time-domain cost approximately
+
+\begin{equation}
+7.46
+\end{equation}
+
+times that of the direct frequency-domain calculation.
+
+For
+
+\begin{equation}
+t_{\max}=200,
+\end{equation}
+
+the discrepancy reaches approximately
+
+\begin{equation}
+\boxed{
+0.030\%,
+}
+\end{equation}
+
+while the time-domain runtime is approximately
+
+\begin{equation}
+\boxed{
+11.7
+}
+\end{equation}
+
+times the direct frequency-domain runtime.
+
+Further increasing the propagation window to $t_{\max}=300$ and
+$t_{\max}=400$ produces little additional improvement in the spectral
+agreement.  The relative discrepancy saturates near
+
+\begin{equation}
+0.029\%.
+\end{equation}
+
+The computational cost nevertheless continues to increase.  At
+$t_{\max}=400$,
+
+\begin{equation}
+N_t=1601,
+\end{equation}
+
+so that the intermediate time-domain response contains
+
+\begin{equation}
+\boxed{
+1601^2
+=
+2\,563\,201
+}
+\end{equation}
+
+complex samples.  The corresponding time-domain calculation is
+approximately
+
+\begin{equation}
+\boxed{
+39.7
+}
+\end{equation}
+
+times slower than the direct resolvent evaluation of the same final
+$81\times81$ spectrum.
+
+The saturation of the error beyond $t_{\max}\approx200$ indicates that
+finite-window truncation is no longer the dominant numerical
+limitation.  The remaining discrepancy instead reflects the finite
+temporal discretization used in the numerical transform.
+
+\begin{figure}[htbp]
+    \centering
+
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+
+        \includegraphics[
+            width=\linewidth
+        ]{
+        figures/05_computational_benchmarks/
+        runtime_vs_time_window.pdf
+        }
+
+        \caption{
+        Wall-clock time as the coherence-time window is extended.
+        The requested frequency-domain output remains fixed at
+        $81\times81$ points.
+        }
+
+        \label{fig:runtime_vs_time_window}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+
+        \includegraphics[
+            width=\linewidth
+        ]{
+        figures/05_computational_benchmarks/
+        TD_error_vs_time_window.pdf
+        }
+
+        \caption{
+        Relative discrepancy between the transformed time-domain
+        spectrum and the direct resolvent as $t_{\max}$ is increased.
+        }
+
+        \label{fig:error_vs_time_window}
+    \end{subfigure}
+
+    \caption{
+    Accuracy--cost tradeoff associated with the finite
+    coherence-time window.  Increasing $t_{\max}$ systematically
+    converges the transformed time-domain response toward the direct
+    frequency-domain result, but requires propagation of an
+    increasingly large $t_1\times t_3$ response.  The error eventually
+    saturates near $0.03\%$ at fixed $\Delta t=0.25$, indicating the
+    onset of temporal-discretization error.
+    }
+
+    \label{fig:time_window_convergence}
+\end{figure}
+
+% ------------------------------------------------------------
+\subsubsection{Convergence with temporal discretization}
+\label{subsubsec:dt_convergence}
+% ------------------------------------------------------------
+
+To verify the origin of the residual error, the coherence-time window
+was fixed at
+
+\begin{equation}
+t_{\max}=200,
+\end{equation}
+
+where finite-window truncation is already small, and the temporal
+spacing was successively reduced.
+
+For
+
+\begin{equation}
+\Delta t=0.5,
+\end{equation}
+
+the relative difference between the transformed time-domain result and
+the direct resolvent is
+
+\begin{equation}
+0.1166\%.
+\end{equation}
+
+Reducing the temporal spacing to
+
+\begin{equation}
+\Delta t=0.25
+\end{equation}
+
+lowers the discrepancy to
+
+\begin{equation}
+0.0302\%.
+\end{equation}
+
+A further refinement to
+
+\begin{equation}
+\Delta t=0.125
+\end{equation}
+
+reduces the error to
+
+\begin{equation}
+0.0110\%,
+\end{equation}
+
+and at
+
+\begin{equation}
+\Delta t=0.0625
+\end{equation}
+
+the discrepancy reaches
+
+\begin{equation}
+\boxed{
+0.0084\%.
+}
+\end{equation}
+
+The initial reduction from $0.1166\%$ to $0.0302\%$ is close to a
+factor of four when $\Delta t$ is halved, consistent with the
+second-order convergence expected from the trapezoidal quadrature used
+in the numerical Fourier transform.  At finer temporal spacing the
+convergence becomes slower, indicating that the remaining
+finite-window and numerical errors are becoming comparable to the
+quadrature error.
+
+The computational consequence of this refinement is substantial.  At
+$\Delta t=0.0625$ and $t_{\max}=200$, each coherence-time axis contains
+
+\begin{equation}
+N_t=3201
+\end{equation}
+
+points, and the intermediate response therefore contains
+
+\begin{equation}
+\boxed{
+3201^2
+=
+10\,246\,401
+}
+\end{equation}
+
+complex time-domain samples.
+
+This large intermediate representation is required even though the
+final requested spectrum still contains only
+
+\begin{equation}
+81^2
+=
+6561
+\end{equation}
+
+frequency-domain points.
+
+The combined $t_{\max}$ and $\Delta t$ convergence tests therefore
+clarify an important distinction between the two approaches.  A dense
+uniform frequency grid can eventually favor a time-domain calculation
+once the underlying response has already been propagated.  However,
+obtaining a well-converged time-domain spectrum requires a sufficiently
+long and finely sampled two-dimensional coherence-time response.  The
+direct resolvent formulation avoids both the finite coherence-time
+cutoff and the associated intermediate $t_1\times t_3$ representation,
+evaluating the requested frequency-domain response directly.
+
+% ============================================================
+\subsection{Implementation-Level Comparison with QuDPy}
+\label{subsec:qudpy_performance}
+% ============================================================
+
+As a final computational benchmark, we compare the direct
+frequency-domain implementation with the independent pathway-based
+time-domain calculation provided by QuDPy.  This comparison is
+intended as an implementation-level benchmark rather than as a
+universal comparison between frequency-domain and time-domain
+spectroscopy algorithms.
+
+The same coupled-dimer Hamiltonian, Lindblad collapse operators,
+ground-state preparation, waiting time, coherence-time range, and
+frequency-domain transform convention used in the preceding
+nonrephasing benchmark were retained.  The local QuDPy source used for
+this calculation was adapted for compatibility with QuTiP~5.
+
+For the nonrephasing signal, QuDPy explicitly propagates the three
+double-sided pathways
+
+\begin{equation}
+R_4,
+\qquad
+R_5,
+\qquad
+R_6,
+\end{equation}
+
+generated using the UFSS diagram generator.  The complete
+nonrephasing response is then reconstructed as
+
+\begin{equation}
+R_{NR}^{(3)}
+=
+i
+\left(
+R_4-R_5-R_6
+\right).
+\end{equation}
+
+The resulting time-domain response was transformed using the same
+damped causal Fourier convention employed throughout the present
+work, rather than using an independent QuDPy transform convention.
+
+Before comparing runtimes, the QuDPy result was checked against the
+direct resolvent calculation.  For the $400\times400$ coherence-time
+grid with approximately
+
+\begin{equation}
+\Delta t
+=
+0.2506,
+\end{equation}
+
+the complete complex spectra agree with a relative Frobenius
+difference of
+
+\begin{equation}
+\boxed{
+\epsilon_{\mathrm{QuDPy/FD}}
+=
+1.45\%.
+}
+\end{equation}
+
+After removal of the small optimal global complex factor as a
+diagnostic, the remaining spectral-shape discrepancy is
+
+\begin{equation}
+\boxed{
+\epsilon_{\mathrm{shape}}
+=
+1.22\%.
+}
+\end{equation}
+
+These values reproduce the independent QuDPy validation discussed in
+Sec.~\ref{subsec:third_order_impulsive}, confirming that the timing
+comparison refers to the same physical nonrephasing response.
+
+Using serial QuDPy propagation, the median total runtime for the three
+nonrephasing pathways was approximately
+
+\begin{equation}
+4.79\ \mathrm{s}.
+\end{equation}
+
+QuDPy's parallel propagation option reduces the corresponding median
+propagation time to
+
+\begin{equation}
+2.243\ \mathrm{s}.
+\end{equation}
+
+The subsequent two-dimensional transform requires only approximately
+
+\begin{equation}
+1.01\times10^{-3}\ \mathrm{s},
+\end{equation}
+
+so that the complete parallel QuDPy calculation requires approximately
+
+\begin{equation}
+\boxed{
+t_{\mathrm{QuDPy}}
+\simeq
+2.244\ \mathrm{s}.
+}
+\end{equation}
+
+For comparison, the direct frequency-domain calculation of the same
+$81\times81$ nonrephasing spectrum requires
+
+\begin{equation}
+t_{\mathrm{FD}}
+=
+1.298\times10^{-3}\ \mathrm{s},
+\end{equation}
+
+while the custom explicit time-domain implementation developed for the
+present benchmark requires
+
+\begin{equation}
+t_{\mathrm{TD}}
+=
+4.660\times10^{-3}\ \mathrm{s}.
+\end{equation}
+
+The corresponding implementation-level runtime ratios are therefore
+
+\begin{equation}
+\boxed{
+\frac{
+t_{\mathrm{QuDPy}}
+}{
+t_{\mathrm{FD}}
+}
+\approx
+1.7\times10^{3},
+}
+\end{equation}
+
+and
+
+\begin{equation}
+\boxed{
+\frac{
+t_{\mathrm{QuDPy}}
+}{
+t_{\mathrm{TD}}
+}
+\approx
+4.8\times10^{2}.
+}
+\end{equation}
+
+\begin{figure}[htbp]
+    \centering
+
+    \includegraphics[
+        width=0.70\textwidth
+    ]{
+    figures/05_computational_benchmarks/
+    FD_TD_QuDPy_runtime_comparison.pdf
+    }
+
+    \caption{
+    Implementation-level wall-clock comparison for the same
+    $81\times81$ impulsive nonrephasing RWA spectrum.  Direct
+    frequency-domain evaluation is compared with the custom explicit
+    time-domain implementation and with parallel QuDPy pathway
+    propagation.  A logarithmic vertical scale is used because the
+    QuDPy pathway calculation is substantially more expensive for the
+    present benchmark.  The QuDPy comparison is implementation
+    specific and should not be interpreted as a universal scaling
+    relation between frequency-domain and time-domain methods.
+    }
+
+    \label{fig:runtime_implementation_comparison}
+\end{figure}
+
+The large difference relative to the custom time-domain implementation
+arises from the different computational organization of the two
+codes.  The present time-domain benchmark propagates the commutator
+response directly using matrix operations tailored to the small
+Liouville-space model, whereas QuDPy explicitly constructs and
+propagates the individual double-sided pathways over the complete
+two-dimensional delay grid.
+
+Consequently, the approximately three-orders-of-magnitude difference
+between QuDPy and the direct resolvent should not be interpreted as a
+general statement that frequency-domain methods are intrinsically
+three orders of magnitude faster than all time-domain approaches.
+Instead, it demonstrates that, for the present model and software
+implementations, direct resolvent evaluation can avoid a substantial
+amount of pathway-level time propagation.
+
+The comparison is nevertheless useful because QuDPy provides an
+independent and physically validated reference implementation.  The
+direct frequency-domain method reproduces the same nonrephasing
+spectrum while requiring substantially less wall-clock time for this
+benchmark.
+
 
 \section{Limitations and Outlook}
 
