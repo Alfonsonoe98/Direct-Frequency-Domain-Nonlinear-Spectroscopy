@@ -20,3 +20,4 @@ __pycache__/
 # Large generated numerical data
 data/*
 !data/README.md
+.virtual_documents/
