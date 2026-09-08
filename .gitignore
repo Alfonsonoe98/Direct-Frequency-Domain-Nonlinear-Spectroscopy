@@ -21,3 +21,11 @@ __pycache__/
 data/*
 !data/README.md
 .virtual_documents/
+
+# Virtual environments
+.venv/
+
+# Python packaging
+*.egg-info/
+build/
+dist/
