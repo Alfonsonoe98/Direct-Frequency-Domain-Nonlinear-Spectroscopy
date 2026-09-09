@@ -18,6 +18,17 @@ from .pulses import (
     pulse_dressing_1,
     pulse_dressing_2,
     pulse_dressing_3,
+    gaussian_spectrum
+)
+
+from .response import (
+    observable_bra,
+    third_order_response,
+    pathway_signs,
+    finite_pulse_response,
+    impulsive_response,
+    impulsive_rwa_response,
+    short_pulse_rwa_response,
 )
 
 __all__ = [
@@ -34,4 +45,12 @@ __all__ = [
     "pulse_dressing_1",
     "pulse_dressing_2",
     "pulse_dressing_3",
+    "observable_bra",
+    "third_order_response",
+    "pathway_signs",
+    "finite_pulse_response",
+    "impulsive_response",
+    "gaussian_spectrum"
+    "impulsive_rwa_response",
+    "short_pulse_rwa_response",
 ]

@@ -36,6 +36,38 @@ def gaussian_prefactor(sigma, E0=1.0, phase=0.0, sign=1):
 
     return C * np.exp(1j * sign * phase)
 
+def gaussian_spectrum(
+    omega,
+    omega_L,
+    sigma,
+    E0=1.0,
+    phase=0.0,
+    sign=1,
+):
+    """
+    Signed-frequency component of a Gaussian pulse in frequency space.
+
+        E^(s)(omega)
+        =
+        C exp(i s phase)
+        exp[-(sigma^2 / 2) (omega - s omega_L)^2]
+
+    where
+
+        C = (E0 / 2) sqrt(2 pi) sigma.
+    """
+    prefactor = gaussian_prefactor(
+        sigma=sigma,
+        E0=E0,
+        phase=phase,
+        sign=sign,
+    )
+
+    detuning = omega - sign * omega_L
+
+    return prefactor * np.exp(
+        -0.5 * sigma**2 * detuning**2
+    )
 
 def _gaussian_dressing(
     L_super,
