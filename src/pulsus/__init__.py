@@ -8,6 +8,8 @@ from .liouville import (
     stationary_state,
 )
 
+from .spectra import response_grid
+
 from .resolvents import (
     resolvent_action,
     resolvent_matrix,
@@ -53,4 +55,5 @@ __all__ = [
     "gaussian_spectrum"
     "impulsive_rwa_response",
     "short_pulse_rwa_response",
+    "response_grid",
 ]
