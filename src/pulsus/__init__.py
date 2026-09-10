@@ -8,6 +8,8 @@ from .liouville import (
     stationary_state,
 )
 
+from .plotting import plot_spectrum
+
 from .system import SpectroscopySystem
 
 from .spectra import (
@@ -79,4 +81,5 @@ __all__ = [
     "impulsive_rwa_spectrum",
     "impulsive_signal",
     "impulsive_spectrum",
+    "plot_spectrum",
 ]

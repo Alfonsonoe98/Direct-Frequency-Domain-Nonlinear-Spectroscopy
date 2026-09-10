@@ -2,6 +2,75 @@ import numpy as np
 
 import pulsus
 
+def test_finite_pulse_spectrum_matches_response_grid_rephasing():
+    model = build_dimer()
+
+    collapse_ops = [
+        model["L_a_down"],
+        model["L_a_up"],
+        model["L_b_down"],
+        model["L_b_up"],
+    ]
+
+    system = pulsus.SpectroscopySystem(
+        H=model["H_S"],
+        dipole=model["mu"],
+        collapse_ops=collapse_ops,
+        rho0=model["rho0"],
+        hbar=model["hbar"],
+    )
+
+    pulse = pulsus.GaussianPulse(
+        omega_L=1.10,
+        sigma=0.50,
+    )
+
+    omega1 = np.array([
+        -0.95,
+        -1.05,
+        -1.15,
+    ])
+
+    omega3 = np.array([
+        1.00,
+        1.20,
+    ])
+
+    optimized = pulsus.finite_pulse_spectrum(
+        system=system,
+        pulse1=pulse,
+        pulse2=pulse,
+        pulse3=pulse,
+        omega1=omega1,
+        omega3=omega3,
+        T=4.0,
+        eta=0.02,
+        pathway="R",
+    )
+
+    reference = pulsus.response_grid(
+        response_function=pulsus.finite_pulse_signal,
+        omega1=omega1,
+        omega3=omega3,
+        system=system,
+        pulse1=pulse,
+        pulse2=pulse,
+        pulse3=pulse,
+        T=4.0,
+        eta=0.02,
+        pathway="R",
+    )
+
+    assert optimized.shape == (
+        omega3.size,
+        omega1.size,
+    )
+
+    assert np.allclose(
+        optimized,
+        reference,
+    )
+
 def test_impulsive_spectrum_matches_response_grid():
     model = build_dimer()
 
