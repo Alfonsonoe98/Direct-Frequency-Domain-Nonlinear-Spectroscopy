@@ -18,6 +18,7 @@ from .response import (
     impulsive_rwa_signal,
 )
 
+
 def impulsive_spectrum(
     system,
     omega1,
@@ -27,18 +28,111 @@ def impulsive_spectrum(
     rho0=None,
 ):
     """
-    Evaluate the impulsive full-interaction third-order response
-    on a two-dimensional frequency grid.
+    Evaluate the impulsive full-interaction third-order
+    spectrum on a two-dimensional frequency grid.
+
+    The omega1- and omega3-dependent pieces are evaluated
+    separately and combined by matrix multiplication.
     """
-    return response_grid(
-        response_function=impulsive_signal,
-        omega1=omega1,
-        omega3=omega3,
-        system=system,
-        T=T,
-        eta=eta,
-        rho0=rho0,
+    omega1 = np.asarray(
+        omega1,
+        dtype=float,
     )
+
+    omega3 = np.asarray(
+        omega3,
+        dtype=float,
+    )
+
+    if omega1.ndim != 1 or omega3.ndim != 1:
+        raise ValueError(
+            "omega1 and omega3 must be one-dimensional"
+        )
+
+    if rho0 is None:
+        rho0 = system.rho0
+
+    if rho0 is None:
+        raise ValueError(
+            "An initial state must be supplied either through "
+            "system.rho0 or the rho0 argument"
+        )
+
+    L = np.asarray(
+        system.L,
+        dtype=complex,
+    )
+
+    V = np.asarray(
+        system.V,
+        dtype=complex,
+    )
+
+    rho_vec = vec(rho0)
+
+    mu_bra = observable_bra(
+        system.dipole
+    )
+
+    n = L.shape[0]
+
+    U_T = expm(
+        L * T
+    )
+
+    # --------------------------------------------------------
+    # omega1-dependent side
+    #
+    # R_i = V G1 V |rho0>>
+    # --------------------------------------------------------
+
+    right = np.empty(
+        (n, omega1.size),
+        dtype=complex,
+    )
+
+    for i, w1 in enumerate(omega1):
+
+        state = V @ rho_vec
+
+        state = resolvent_action(
+            L_super=L,
+            omega=w1,
+            rhs=state,
+            eta=eta,
+        )
+
+        state = V @ state
+
+        right[:, i] = state
+
+    # --------------------------------------------------------
+    # omega3-dependent side
+    #
+    # L_j = <<mu| G3 V exp(LT)
+    # --------------------------------------------------------
+
+    left = np.empty(
+        (omega3.size, n),
+        dtype=complex,
+    )
+
+    for j, w3 in enumerate(omega3):
+
+        bra_G3 = resolvent_action(
+            L_super=L.T,
+            omega=w3,
+            rhs=mu_bra,
+            eta=eta,
+        )
+
+        left[j, :] = (
+            bra_G3
+            @ V
+            @ U_T
+        )
+
+    return left @ right
 
 def response_grid(
     response_function,
