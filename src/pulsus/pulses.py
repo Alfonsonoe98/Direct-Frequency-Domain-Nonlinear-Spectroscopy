@@ -1,6 +1,28 @@
 import numpy as np
 from scipy.linalg import expm
+from dataclasses import dataclass
 
+@dataclass(frozen=True)
+class GaussianPulse:
+    """
+    Gaussian laser pulse.
+
+    Parameters
+    ----------
+    omega_L : float
+        Carrier frequency.
+    sigma : float
+        Temporal Gaussian width.
+    E0 : float, optional
+        Peak field amplitude.
+    phase : float, optional
+        Carrier phase.
+    """
+
+    omega_L: float
+    sigma: float
+    E0: float = 1.0
+    phase: float = 0.0
 
 def gaussian_prefactor(sigma, E0=1.0, phase=0.0, sign=1):
     """

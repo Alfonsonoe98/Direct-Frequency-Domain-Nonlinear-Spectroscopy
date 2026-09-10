@@ -89,6 +89,48 @@ def finite_eta_response(
         F3=F3,
     )
 
+def finite_eta_gaussian_factor(
+    pulse_number,
+    omega,
+    sign,
+    sigma,
+    omega_L,
+    eta,
+    E0=1.0,
+    phase=0.0,
+):
+    """
+    Scalar Gaussian pulse factor used in Notebook 04's
+    finite-eta damped-transform benchmark.
+
+    This is a regression-test convention, not the physical
+    eta -> 0 pulse spectrum used by the public PULSUS API.
+    """
+    C = (
+        0.5
+        * E0
+        * np.sqrt(2.0 * np.pi)
+        * sigma
+    )
+
+    if pulse_number in (1, 3):
+        detuning = omega - sign * omega_L
+
+    elif pulse_number == 2:
+        detuning = omega + sign * omega_L
+
+    else:
+        raise ValueError(
+            "pulse_number must be 1, 2, or 3"
+        )
+
+    z = -eta + 1j * detuning
+
+    return (
+        C
+        * np.exp(1j * sign * phase)
+        * np.exp(0.5 * sigma**2 * z**2)
+    )
 
 def test_notebook04_finite_pulse_reference():
     reference = np.load(REFERENCE_FILE)
@@ -171,6 +213,276 @@ def test_notebook04_finite_pulse_reference():
                 phase2=phase2,
                 phase3=phase3,
             )
+
+            assert np.allclose(
+                NR,
+                NR_reference[j, i],
+                rtol=1e-9,
+                atol=1e-11,
+            )
+
+            assert np.allclose(
+                R,
+                R_reference[j, i],
+                rtol=1e-9,
+                atol=1e-11,
+            )
+
+def test_notebook04_impulsive_rwa_reference():
+    reference = np.load(REFERENCE_FILE)
+
+    model = build_dimer()
+
+    L = model["L_super"]
+    mu = model["mu"]
+
+    rho_ss = pulsus.stationary_state(
+        L,
+        model["d"],
+    )
+
+    mu_up = (
+        model["sigma_a_plus"]
+        + model["sigma_b_plus"]
+    )
+
+    mu_down = (
+        model["sigma_a_minus"]
+        + model["sigma_b_minus"]
+    )
+
+    V_up = pulsus.interaction_superoperator(
+        mu_up,
+        hbar=model["hbar"],
+    )
+
+    V_down = pulsus.interaction_superoperator(
+        mu_down,
+        hbar=model["hbar"],
+    )
+
+    omega1_NR = reference["omega1_NR"]
+    omega1_R = reference["omega1_R"]
+    omega3 = reference["omega3"]
+
+    T = reference["T"].item()
+    eta = reference["eta"].item()
+
+    NR_reference = reference["NR_impulsive_RWA"]
+    R_reference = reference["R_impulsive_RWA"]
+
+    indices = [0, 20, 40, 60, 80]
+
+    for j in indices:
+        for i in indices:
+
+            NR = pulsus.impulsive_rwa_response(
+                L_super=L,
+                V_plus=V_up,
+                V_minus=V_down,
+                observable=mu,
+                rho0=rho_ss,
+                omega1=omega1_NR[i],
+                omega3=omega3[j],
+                T=T,
+                eta=eta,
+                pathway="NR",
+            )
+
+            R = pulsus.impulsive_rwa_response(
+                L_super=L,
+                V_plus=V_up,
+                V_minus=V_down,
+                observable=mu,
+                rho0=rho_ss,
+                omega1=omega1_R[i],
+                omega3=omega3[j],
+                T=T,
+                eta=eta,
+                pathway="R",
+            )
+
+            assert np.allclose(
+                NR,
+                NR_reference[j, i],
+                rtol=1e-9,
+                atol=1e-11,
+            )
+
+            assert np.allclose(
+                R,
+                R_reference[j, i],
+                rtol=1e-9,
+                atol=1e-11,
+            )
+
+def test_notebook04_short_pulse_rwa_reference():
+    reference = np.load(REFERENCE_FILE)
+
+    model = build_dimer()
+
+    L = model["L_super"]
+    mu = model["mu"]
+
+    rho_ss = pulsus.stationary_state(
+        L,
+        model["d"],
+    )
+
+    mu_up = (
+        model["sigma_a_plus"]
+        + model["sigma_b_plus"]
+    )
+
+    mu_down = (
+        model["sigma_a_minus"]
+        + model["sigma_b_minus"]
+    )
+
+    V_up = pulsus.interaction_superoperator(
+        mu_up,
+        hbar=model["hbar"],
+    )
+
+    V_down = pulsus.interaction_superoperator(
+        mu_down,
+        hbar=model["hbar"],
+    )
+
+    omega1_NR = reference["omega1_NR"]
+    omega1_R = reference["omega1_R"]
+    omega3 = reference["omega3"]
+
+    sigma = reference["sigma"].item()
+    T = reference["T"].item()
+    eta = reference["eta"].item()
+
+    omega_L1 = reference["omega_L1"].item()
+    omega_L2 = reference["omega_L2"].item()
+    omega_L3 = reference["omega_L3"].item()
+
+    E0 = reference["E0"].item()
+
+    phase1 = reference["phase1"].item()
+    phase2 = reference["phase2"].item()
+    phase3 = reference["phase3"].item()
+
+    NR_reference = reference["NR_short_RWA"]
+    R_reference = reference["R_short_RWA"]
+
+    indices = [0, 20, 40, 60, 80]
+
+    for j in indices:
+        for i in indices:
+
+            # ------------------------------------------------
+            # Nonrephasing: (+, -, +)
+            # ------------------------------------------------
+
+            w1_NR = omega1_NR[i]
+            w3 = omega3[j]
+
+            M_NR = pulsus.impulsive_rwa_response(
+                L_super=L,
+                V_plus=V_up,
+                V_minus=V_down,
+                observable=mu,
+                rho0=rho_ss,
+                omega1=w1_NR,
+                omega3=w3,
+                T=T,
+                eta=eta,
+                pathway="NR",
+            )
+
+            E1_NR = finite_eta_gaussian_factor(
+                1,
+                w1_NR,
+                +1,
+                sigma,
+                omega_L1,
+                eta,
+                E0,
+                phase1,
+            )
+
+            E2_NR = finite_eta_gaussian_factor(
+                2,
+                w1_NR,
+                -1,
+                sigma,
+                omega_L2,
+                eta,
+                E0,
+                phase2,
+            )
+
+            E3_NR = finite_eta_gaussian_factor(
+                3,
+                w3,
+                +1,
+                sigma,
+                omega_L3,
+                eta,
+                E0,
+                phase3,
+            )
+
+            NR = E3_NR * E2_NR * E1_NR * M_NR
+
+            # ------------------------------------------------
+            # Rephasing: (-, +, +)
+            # ------------------------------------------------
+
+            w1_R = omega1_R[i]
+
+            M_R = pulsus.impulsive_rwa_response(
+                L_super=L,
+                V_plus=V_up,
+                V_minus=V_down,
+                observable=mu,
+                rho0=rho_ss,
+                omega1=w1_R,
+                omega3=w3,
+                T=T,
+                eta=eta,
+                pathway="R",
+            )
+
+            E1_R = finite_eta_gaussian_factor(
+                1,
+                w1_R,
+                -1,
+                sigma,
+                omega_L1,
+                eta,
+                E0,
+                phase1,
+            )
+
+            E2_R = finite_eta_gaussian_factor(
+                2,
+                w1_R,
+                +1,
+                sigma,
+                omega_L2,
+                eta,
+                E0,
+                phase2,
+            )
+
+            E3_R = finite_eta_gaussian_factor(
+                3,
+                w3,
+                +1,
+                sigma,
+                omega_L3,
+                eta,
+                E0,
+                phase3,
+            )
+
+            R = E3_R * E2_R * E1_R * M_R
 
             assert np.allclose(
                 NR,

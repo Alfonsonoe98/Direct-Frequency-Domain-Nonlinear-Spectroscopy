@@ -8,6 +8,8 @@ from .liouville import (
     stationary_state,
 )
 
+from .system import SpectroscopySystem
+
 from .spectra import response_grid
 
 from .resolvents import (
@@ -20,7 +22,8 @@ from .pulses import (
     pulse_dressing_1,
     pulse_dressing_2,
     pulse_dressing_3,
-    gaussian_spectrum
+    gaussian_spectrum,
+    GaussianPulse
 )
 
 from .response import (
@@ -56,4 +59,6 @@ __all__ = [
     "impulsive_rwa_response",
     "short_pulse_rwa_response",
     "response_grid",
+    "GaussianPulse",
+    "SpectroscopySystem",
 ]
