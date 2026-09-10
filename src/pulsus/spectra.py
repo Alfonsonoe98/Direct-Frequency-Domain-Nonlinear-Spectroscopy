@@ -3,6 +3,7 @@ from scipy.linalg import expm
 
 from .liouville import vec
 from .pulses import (
+    gaussian_spectrum,
     pulse_dressing_1,
     pulse_dressing_2,
     pulse_dressing_3,
@@ -282,23 +283,91 @@ def short_pulse_rwa_spectrum(
     rho0=None,
 ):
     """
-    Evaluate the short-pulse RWA third-order spectrum on a
-    two-dimensional frequency grid.
+    Evaluate the short-pulse RWA third-order spectrum.
+
+    The molecular response is evaluated using the optimized
+    impulsive RWA spectrum and then dressed by the three
+    scalar Gaussian pulse spectra.
     """
-    return response_grid(
-        response_function=short_pulse_rwa_signal,
+    omega1 = np.asarray(
+        omega1,
+        dtype=float,
+    )
+
+    omega3 = np.asarray(
+        omega3,
+        dtype=float,
+    )
+
+    if omega1.ndim != 1 or omega3.ndim != 1:
+        raise ValueError(
+            "omega1 and omega3 must be one-dimensional"
+        )
+
+    s1, s2, s3 = pathway_signs(
+        pathway
+    )
+
+    molecular = impulsive_rwa_spectrum(
+        system=system,
         omega1=omega1,
         omega3=omega3,
-        system=system,
-        pulse1=pulse1,
-        pulse2=pulse2,
-        pulse3=pulse3,
         T=T,
         eta=eta,
         pathway=pathway,
         rho0=rho0,
     )
 
+    E1 = np.array(
+        [
+            gaussian_spectrum(
+                omega=w1,
+                omega_L=pulse1.omega_L,
+                sigma=pulse1.sigma,
+                E0=pulse1.E0,
+                phase=pulse1.phase,
+                sign=s1,
+            )
+            for w1 in omega1
+        ],
+        dtype=complex,
+    )
+
+    E2 = np.array(
+        [
+            gaussian_spectrum(
+                omega=-w1,
+                omega_L=pulse2.omega_L,
+                sigma=pulse2.sigma,
+                E0=pulse2.E0,
+                phase=pulse2.phase,
+                sign=s2,
+            )
+            for w1 in omega1
+        ],
+        dtype=complex,
+    )
+
+    E3 = np.array(
+        [
+            gaussian_spectrum(
+                omega=w3,
+                omega_L=pulse3.omega_L,
+                sigma=pulse3.sigma,
+                E0=pulse3.E0,
+                phase=pulse3.phase,
+                sign=s3,
+            )
+            for w3 in omega3
+        ],
+        dtype=complex,
+    )
+
+    return (
+        E3[:, np.newaxis]
+        * molecular
+        * (E2 * E1)[np.newaxis, :]
+    )
 
 def impulsive_rwa_spectrum(
     system,
@@ -312,14 +381,121 @@ def impulsive_rwa_spectrum(
     """
     Evaluate the impulsive RWA third-order spectrum on a
     two-dimensional frequency grid.
+
+    The omega1- and omega3-dependent parts are evaluated
+    separately and combined by matrix multiplication.
     """
-    return response_grid(
-        response_function=impulsive_rwa_signal,
-        omega1=omega1,
-        omega3=omega3,
-        system=system,
-        T=T,
-        eta=eta,
-        pathway=pathway,
-        rho0=rho0,
+    omega1 = np.asarray(
+        omega1,
+        dtype=float,
     )
+
+    omega3 = np.asarray(
+        omega3,
+        dtype=float,
+    )
+
+    if omega1.ndim != 1 or omega3.ndim != 1:
+        raise ValueError(
+            "omega1 and omega3 must be one-dimensional"
+        )
+
+    if system.V_plus is None or system.V_minus is None:
+        raise ValueError(
+            "RWA calculations require dipole_plus and "
+            "dipole_minus in SpectroscopySystem"
+        )
+
+    if rho0 is None:
+        rho0 = system.rho0
+
+    if rho0 is None:
+        raise ValueError(
+            "An initial state must be supplied either through "
+            "system.rho0 or the rho0 argument"
+        )
+
+    L = np.asarray(
+        system.L,
+        dtype=complex,
+    )
+
+    rho_vec = vec(rho0)
+
+    mu_bra = observable_bra(
+        system.dipole
+    )
+
+    s1, s2, s3 = pathway_signs(
+        pathway
+    )
+
+    def interaction(sign):
+        if sign == 1:
+            return system.V_plus
+
+        return system.V_minus
+
+    V1 = interaction(s1)
+    V2 = interaction(s2)
+    V3 = interaction(s3)
+
+    n = L.shape[0]
+
+    U_T = expm(
+        L * T
+    )
+
+    # --------------------------------------------------------
+    # omega1-dependent right-hand side
+    #
+    # R_i = V2 G1 V1 |rho0>>
+    # --------------------------------------------------------
+
+    right = np.empty(
+        (n, omega1.size),
+        dtype=complex,
+    )
+
+    for i, w1 in enumerate(omega1):
+
+        state = V1 @ rho_vec
+
+        state = resolvent_action(
+            L_super=L,
+            omega=w1,
+            rhs=state,
+            eta=eta,
+        )
+
+        state = V2 @ state
+
+        right[:, i] = state
+
+    # --------------------------------------------------------
+    # omega3-dependent left-hand side
+    #
+    # L_j = <<mu| G3 V3 exp(LT)
+    # --------------------------------------------------------
+
+    left = np.empty(
+        (omega3.size, n),
+        dtype=complex,
+    )
+
+    for j, w3 in enumerate(omega3):
+
+        bra_G3 = resolvent_action(
+            L_super=L.T,
+            omega=w3,
+            rhs=mu_bra,
+            eta=eta,
+        )
+
+        left[j, :] = (
+            bra_G3
+            @ V3
+            @ U_T
+        )
+
+    return left @ right

@@ -2,6 +2,114 @@ import numpy as np
 
 import pulsus
 
+def test_optimized_rwa_spectra_match_response_grid_rephasing():
+    model = build_dimer()
+
+    collapse_ops = [
+        model["L_a_down"],
+        model["L_a_up"],
+        model["L_b_down"],
+        model["L_b_up"],
+    ]
+
+    mu_plus = (
+        model["sigma_a_plus"]
+        + model["sigma_b_plus"]
+    )
+
+    mu_minus = (
+        model["sigma_a_minus"]
+        + model["sigma_b_minus"]
+    )
+
+    system = pulsus.SpectroscopySystem(
+        H=model["H_S"],
+        dipole=model["mu"],
+        collapse_ops=collapse_ops,
+        rho0=model["rho0"],
+        hbar=model["hbar"],
+        dipole_plus=mu_plus,
+        dipole_minus=mu_minus,
+    )
+
+    pulse = pulsus.GaussianPulse(
+        omega_L=1.10,
+        sigma=0.50,
+    )
+
+    omega1 = np.array([
+        -0.95,
+        -1.05,
+        -1.15,
+    ])
+
+    omega3 = np.array([
+        1.00,
+        1.20,
+    ])
+
+    # --------------------------------------------------------
+    # Impulsive RWA
+    # --------------------------------------------------------
+
+    impulsive_fast = pulsus.impulsive_rwa_spectrum(
+        system=system,
+        omega1=omega1,
+        omega3=omega3,
+        T=4.0,
+        eta=0.02,
+        pathway="R",
+    )
+
+    impulsive_reference = pulsus.response_grid(
+        response_function=pulsus.impulsive_rwa_signal,
+        omega1=omega1,
+        omega3=omega3,
+        system=system,
+        T=4.0,
+        eta=0.02,
+        pathway="R",
+    )
+
+    assert np.allclose(
+        impulsive_fast,
+        impulsive_reference,
+    )
+
+    # --------------------------------------------------------
+    # Short-pulse RWA
+    # --------------------------------------------------------
+
+    short_fast = pulsus.short_pulse_rwa_spectrum(
+        system=system,
+        pulse1=pulse,
+        pulse2=pulse,
+        pulse3=pulse,
+        omega1=omega1,
+        omega3=omega3,
+        T=4.0,
+        eta=0.02,
+        pathway="R",
+    )
+
+    short_reference = pulsus.response_grid(
+        response_function=pulsus.short_pulse_rwa_signal,
+        omega1=omega1,
+        omega3=omega3,
+        system=system,
+        pulse1=pulse,
+        pulse2=pulse,
+        pulse3=pulse,
+        T=4.0,
+        eta=0.02,
+        pathway="R",
+    )
+
+    assert np.allclose(
+        short_fast,
+        short_reference,
+    )
+
 def test_finite_pulse_spectrum_matches_response_grid_rephasing():
     model = build_dimer()
 
