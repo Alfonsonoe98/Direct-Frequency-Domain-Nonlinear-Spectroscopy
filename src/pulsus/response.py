@@ -479,3 +479,207 @@ def impulsive_response(
     bra = observable_bra(observable)
 
     return bra @ state
+
+def finite_pulse_signal(
+    system,
+    pulse1,
+    pulse2,
+    pulse3,
+    omega1,
+    omega3,
+    T,
+    eta,
+    pathway="NR",
+    rho0=None,
+):
+    """
+    Evaluate the finite-pulse third-order response using
+    SpectroscopySystem and GaussianPulse objects.
+
+    Parameters
+    ----------
+    system : SpectroscopySystem
+        Open quantum system containing the Liouvillian,
+        interaction superoperator, dipole, and initial state.
+    pulse1, pulse2, pulse3 : GaussianPulse
+        Three Gaussian laser pulses.
+    omega1 : float
+        Signed excitation frequency.
+    omega3 : float
+        Detection frequency.
+    T : float
+        Waiting time.
+    eta : float
+        Resolvent broadening parameter.
+    pathway : {"NR", "R"}, optional
+        Nonrephasing or rephasing field-sign sector.
+    rho0 : array_like, optional
+        Initial state. If omitted, system.rho0 is used.
+
+    Returns
+    -------
+    complex
+        Finite-pulse third-order response.
+    """
+    if rho0 is None:
+        rho0 = system.rho0
+
+    if rho0 is None:
+        raise ValueError(
+            "An initial state must be supplied either through "
+            "system.rho0 or the rho0 argument"
+        )
+
+    return finite_pulse_response(
+        L_super=system.L,
+        V=system.V,
+        observable=system.dipole,
+        rho0=rho0,
+        omega1=omega1,
+        omega3=omega3,
+        T=T,
+        eta=eta,
+        omega_L1=pulse1.omega_L,
+        omega_L2=pulse2.omega_L,
+        omega_L3=pulse3.omega_L,
+        sigma1=pulse1.sigma,
+        sigma2=pulse2.sigma,
+        sigma3=pulse3.sigma,
+        pathway=pathway,
+        E01=pulse1.E0,
+        E02=pulse2.E0,
+        E03=pulse3.E0,
+        phase1=pulse1.phase,
+        phase2=pulse2.phase,
+        phase3=pulse3.phase,
+    )
+
+def impulsive_rwa_signal(
+    system,
+    omega1,
+    omega3,
+    T,
+    eta,
+    pathway="NR",
+    rho0=None,
+):
+    """
+    Evaluate the impulsive RWA third-order response using
+    a SpectroscopySystem.
+    """
+    if system.V_plus is None or system.V_minus is None:
+        raise ValueError(
+            "RWA calculations require dipole_plus and "
+            "dipole_minus in SpectroscopySystem"
+        )
+
+    if rho0 is None:
+        rho0 = system.rho0
+
+    if rho0 is None:
+        raise ValueError(
+            "An initial state must be supplied either through "
+            "system.rho0 or the rho0 argument"
+        )
+
+    return impulsive_rwa_response(
+        L_super=system.L,
+        V_plus=system.V_plus,
+        V_minus=system.V_minus,
+        observable=system.dipole,
+        rho0=rho0,
+        omega1=omega1,
+        omega3=omega3,
+        T=T,
+        eta=eta,
+        pathway=pathway,
+    )
+
+
+def short_pulse_rwa_signal(
+    system,
+    pulse1,
+    pulse2,
+    pulse3,
+    omega1,
+    omega3,
+    T,
+    eta,
+    pathway="NR",
+    rho0=None,
+):
+    """
+    Evaluate the short-pulse RWA third-order response using
+    SpectroscopySystem and GaussianPulse objects.
+    """
+    if system.V_plus is None or system.V_minus is None:
+        raise ValueError(
+            "RWA calculations require dipole_plus and "
+            "dipole_minus in SpectroscopySystem"
+        )
+
+    if rho0 is None:
+        rho0 = system.rho0
+
+    if rho0 is None:
+        raise ValueError(
+            "An initial state must be supplied either through "
+            "system.rho0 or the rho0 argument"
+        )
+
+    return short_pulse_rwa_response(
+        L_super=system.L,
+        V_plus=system.V_plus,
+        V_minus=system.V_minus,
+        observable=system.dipole,
+        rho0=rho0,
+        omega1=omega1,
+        omega3=omega3,
+        T=T,
+        eta=eta,
+        omega_L1=pulse1.omega_L,
+        omega_L2=pulse2.omega_L,
+        omega_L3=pulse3.omega_L,
+        sigma1=pulse1.sigma,
+        sigma2=pulse2.sigma,
+        sigma3=pulse3.sigma,
+        pathway=pathway,
+        E01=pulse1.E0,
+        E02=pulse2.E0,
+        E03=pulse3.E0,
+        phase1=pulse1.phase,
+        phase2=pulse2.phase,
+        phase3=pulse3.phase,
+    )
+
+def impulsive_signal(
+    system,
+    omega1,
+    omega3,
+    T,
+    eta,
+    rho0=None,
+):
+    """
+    Evaluate the impulsive third-order response using the
+    full light-matter interaction superoperator.
+    """
+    if rho0 is None:
+        rho0 = system.rho0
+
+    if rho0 is None:
+        raise ValueError(
+            "An initial state must be supplied either through "
+            "system.rho0 or the rho0 argument"
+        )
+
+    return impulsive_response(
+        L_super=system.L,
+        V=system.V,
+        observable=system.dipole,
+        rho0=rho0,
+        omega1=omega1,
+        omega3=omega3,
+        T=T,
+        eta=eta,
+    )

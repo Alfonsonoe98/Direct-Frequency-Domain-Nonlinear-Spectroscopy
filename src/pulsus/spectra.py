@@ -1,5 +1,37 @@
 import numpy as np
+from .response import (
+    finite_pulse_signal,
+    short_pulse_rwa_signal,
+    impulsive_rwa_signal,
+)
+from .response import (
+    finite_pulse_signal,
+    impulsive_signal,
+    short_pulse_rwa_signal,
+    impulsive_rwa_signal,
+)
 
+def impulsive_spectrum(
+    system,
+    omega1,
+    omega3,
+    T,
+    eta,
+    rho0=None,
+):
+    """
+    Evaluate the impulsive full-interaction third-order response
+    on a two-dimensional frequency grid.
+    """
+    return response_grid(
+        response_function=impulsive_signal,
+        omega1=omega1,
+        omega3=omega3,
+        system=system,
+        T=T,
+        eta=eta,
+        rho0=rho0,
+    )
 
 def response_grid(
     response_function,
@@ -48,3 +80,114 @@ def response_grid(
             )
 
     return spectrum
+
+def finite_pulse_spectrum(
+    system,
+    pulse1,
+    pulse2,
+    pulse3,
+    omega1,
+    omega3,
+    T,
+    eta,
+    pathway="NR",
+    rho0=None,
+):
+    """
+    Evaluate a finite-pulse third-order spectrum on a 2D
+    frequency grid.
+
+    Parameters
+    ----------
+    system : SpectroscopySystem
+        Open quantum system.
+    pulse1, pulse2, pulse3 : GaussianPulse
+        Three Gaussian laser pulses.
+    omega1 : array_like
+        Signed excitation-frequency grid.
+    omega3 : array_like
+        Detection-frequency grid.
+    T : float
+        Waiting time.
+    eta : float
+        Resolvent broadening parameter.
+    pathway : {"NR", "R"}, optional
+        Nonrephasing or rephasing field-sign sector.
+    rho0 : array_like, optional
+        Initial density matrix. If omitted, system.rho0 is used.
+
+    Returns
+    -------
+    numpy.ndarray
+        Complex third-order spectrum with shape
+
+            (len(omega3), len(omega1)).
+    """
+    return response_grid(
+        response_function=finite_pulse_signal,
+        omega1=omega1,
+        omega3=omega3,
+        system=system,
+        pulse1=pulse1,
+        pulse2=pulse2,
+        pulse3=pulse3,
+        T=T,
+        eta=eta,
+        pathway=pathway,
+        rho0=rho0,
+    )
+
+def short_pulse_rwa_spectrum(
+    system,
+    pulse1,
+    pulse2,
+    pulse3,
+    omega1,
+    omega3,
+    T,
+    eta,
+    pathway="NR",
+    rho0=None,
+):
+    """
+    Evaluate the short-pulse RWA third-order spectrum on a
+    two-dimensional frequency grid.
+    """
+    return response_grid(
+        response_function=short_pulse_rwa_signal,
+        omega1=omega1,
+        omega3=omega3,
+        system=system,
+        pulse1=pulse1,
+        pulse2=pulse2,
+        pulse3=pulse3,
+        T=T,
+        eta=eta,
+        pathway=pathway,
+        rho0=rho0,
+    )
+
+
+def impulsive_rwa_spectrum(
+    system,
+    omega1,
+    omega3,
+    T,
+    eta,
+    pathway="NR",
+    rho0=None,
+):
+    """
+    Evaluate the impulsive RWA third-order spectrum on a
+    two-dimensional frequency grid.
+    """
+    return response_grid(
+        response_function=impulsive_rwa_signal,
+        omega1=omega1,
+        omega3=omega3,
+        system=system,
+        T=T,
+        eta=eta,
+        pathway=pathway,
+        rho0=rho0,
+    )

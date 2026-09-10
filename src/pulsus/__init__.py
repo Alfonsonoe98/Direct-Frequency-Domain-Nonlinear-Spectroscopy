@@ -10,7 +10,13 @@ from .liouville import (
 
 from .system import SpectroscopySystem
 
-from .spectra import response_grid
+from .spectra import (
+    response_grid,
+    finite_pulse_spectrum,
+    impulsive_spectrum,
+    short_pulse_rwa_spectrum,
+    impulsive_rwa_spectrum,
+)
 
 from .resolvents import (
     resolvent_action,
@@ -34,6 +40,10 @@ from .response import (
     impulsive_response,
     impulsive_rwa_response,
     short_pulse_rwa_response,
+    finite_pulse_signal,
+    impulsive_rwa_signal,
+    short_pulse_rwa_signal,
+    impulsive_signal,
 )
 
 __all__ = [
@@ -61,4 +71,12 @@ __all__ = [
     "response_grid",
     "GaussianPulse",
     "SpectroscopySystem",
+    "finite_pulse_signal",
+    "finite_pulse_spectrum",
+    "impulsive_rwa_signal",
+    "short_pulse_rwa_signal",
+    "short_pulse_rwa_spectrum",
+    "impulsive_rwa_spectrum",
+    "impulsive_signal",
+    "impulsive_spectrum",
 ]
