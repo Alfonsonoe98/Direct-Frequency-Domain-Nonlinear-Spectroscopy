@@ -16,6 +16,7 @@ from .response import (
     impulsive_signal,
     short_pulse_rwa_signal,
     impulsive_rwa_signal,
+    resolve_signature,
 )
 
 
@@ -193,6 +194,7 @@ def finite_pulse_spectrum(
     eta,
     pathway="NR",
     rho0=None,
+    signature=None,
 ):
     """
     Evaluate a finite-pulse third-order spectrum on a
@@ -249,10 +251,7 @@ def finite_pulse_spectrum(
         system.dipole
     )
 
-    s1, s2, s3 = pathway_signs(
-        pathway
-    )
-
+    s1, s2, s3 = resolve_signature(pathway=pathway,signature=signature,)
     n = L.shape[0]
 
     # Waiting-time propagation is identical everywhere
@@ -375,6 +374,7 @@ def short_pulse_rwa_spectrum(
     eta,
     pathway="NR",
     rho0=None,
+    signature=None,
 ):
     """
     Evaluate the short-pulse RWA third-order spectrum.
@@ -398,9 +398,8 @@ def short_pulse_rwa_spectrum(
             "omega1 and omega3 must be one-dimensional"
         )
 
-    s1, s2, s3 = pathway_signs(
-        pathway
-    )
+    
+    s1, s2, s3 = resolve_signature(pathway=pathway,signature=signature,)
 
     molecular = impulsive_rwa_spectrum(
         system=system,
@@ -410,8 +409,9 @@ def short_pulse_rwa_spectrum(
         eta=eta,
         pathway=pathway,
         rho0=rho0,
+        signature=signature,
     )
-
+    
     E1 = np.array(
         [
             gaussian_spectrum(
@@ -471,6 +471,7 @@ def impulsive_rwa_spectrum(
     eta,
     pathway="NR",
     rho0=None,
+    signature=None,
 ):
     """
     Evaluate the impulsive RWA third-order spectrum on a
@@ -520,9 +521,7 @@ def impulsive_rwa_spectrum(
         system.dipole
     )
 
-    s1, s2, s3 = pathway_signs(
-        pathway
-    )
+    s1, s2, s3 = resolve_signature(pathway=pathway,signature=signature,)
 
     def interaction(sign):
         if sign == 1:

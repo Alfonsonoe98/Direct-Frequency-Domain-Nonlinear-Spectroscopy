@@ -8,6 +8,21 @@ from .liouville import (
     stationary_state,
 )
 
+from .linear import (
+    impulsive_linear_response,
+    finite_pulse_linear_response,
+    impulsive_linear_rwa_response,
+    short_pulse_linear_rwa_response,
+    impulsive_linear_signal,
+    finite_pulse_linear_signal,
+    impulsive_linear_rwa_signal,
+    short_pulse_linear_rwa_signal,
+    impulsive_linear_spectrum,
+    finite_pulse_linear_spectrum,
+    impulsive_linear_rwa_spectrum,
+    short_pulse_linear_rwa_spectrum,
+)
+
 from .plotting import plot_spectrum
 
 from .system import SpectroscopySystem
@@ -46,6 +61,7 @@ from .response import (
     impulsive_rwa_signal,
     short_pulse_rwa_signal,
     impulsive_signal,
+    resolve_signature,
 )
 
 __all__ = [
@@ -82,4 +98,17 @@ __all__ = [
     "impulsive_signal",
     "impulsive_spectrum",
     "plot_spectrum",
+    "impulsive_linear_response",
+    "finite_pulse_linear_response",
+    "impulsive_linear_rwa_response",
+    "short_pulse_linear_rwa_response",
+    "impulsive_linear_signal",
+    "finite_pulse_linear_signal",
+    "impulsive_linear_rwa_signal",
+    "short_pulse_linear_rwa_signal",
+    "impulsive_linear_spectrum",
+    "finite_pulse_linear_spectrum",
+    "impulsive_linear_rwa_spectrum",
+    "short_pulse_linear_rwa_spectrum",
+    "resolve_signature",
 ]

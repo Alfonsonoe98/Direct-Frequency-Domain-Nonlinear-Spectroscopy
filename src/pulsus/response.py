@@ -34,6 +34,7 @@ def short_pulse_rwa_response(
     phase1=0.0,
     phase2=0.0,
     phase3=0.0,
+    signature=None,
 ):
     """
     Evaluate the short-pulse RWA response.
@@ -41,7 +42,7 @@ def short_pulse_rwa_response(
     Molecular evolution during each pulse is neglected, while
     the Gaussian spectral amplitudes are retained.
     """
-    s1, s2, s3 = pathway_signs(pathway)
+    s1, s2, s3 = resolve_signature(pathway=pathway,signature=signature,)
 
     molecular = impulsive_rwa_response(
         L_super=L_super,
@@ -54,6 +55,7 @@ def short_pulse_rwa_response(
         T=T,
         eta=eta,
         pathway=pathway,
+        signature=signature,
     )
 
     E1 = gaussian_spectrum(
@@ -97,12 +99,13 @@ def impulsive_rwa_response(
     T,
     eta,
     pathway="NR",
+    signature=None,
 ):
     """
     Evaluate the impulsive third-order response in the
     rotating-wave approximation.
     """
-    s1, s2, s3 = pathway_signs(pathway)
+    s1, s2, s3 = resolve_signature(pathway=pathway,signature=signature,)
 
     interactions = {
         1: np.asarray(V_plus, dtype=complex),
@@ -301,6 +304,54 @@ def pathway_signs(pathway):
 
     raise ValueError("pathway must be 'NR' or 'R'")
 
+def resolve_signature(
+    pathway="NR",
+    signature=None,
+):
+    """
+    Resolve a third-order field-sign signature.
+
+    Parameters
+    ----------
+    pathway : {"NR", "R"}, optional
+        Convenience alias used when signature is not supplied.
+
+        NR -> (+1, -1, +1)
+        R  -> (-1, +1, +1)
+
+    signature : sequence of three integers, optional
+        Explicit field-sign signature (s1, s2, s3).
+        Each sign must be +1 or -1.
+
+        If supplied, signature overrides pathway.
+
+    Returns
+    -------
+    tuple
+        (s1, s2, s3)
+    """
+    if signature is None:
+        return pathway_signs(
+            pathway
+        )
+
+    signs = tuple(signature)
+
+    if len(signs) != 3:
+        raise ValueError(
+            "signature must contain exactly three signs"
+        )
+
+    if any(
+        sign not in (-1, 1)
+        for sign in signs
+    ):
+        raise ValueError(
+            "signature entries must be +1 or -1"
+        )
+
+    return signs
+
 
 def finite_pulse_response(
     L_super,
@@ -324,6 +375,7 @@ def finite_pulse_response(
     phase1=0.0,
     phase2=0.0,
     phase3=0.0,
+    signature=None,
 ):
     """
     Evaluate the finite-pulse third-order response for a
@@ -368,8 +420,7 @@ def finite_pulse_response(
     complex
         Finite-pulse third-order response.
     """
-    s1, s2, s3 = pathway_signs(pathway)
-
+    s1, s2, s3 = resolve_signature(pathway=pathway,signature=signature,)
     F1 = pulse_dressing_1(
         L_super,
         omega1=omega1,
@@ -491,6 +542,7 @@ def finite_pulse_signal(
     eta,
     pathway="NR",
     rho0=None,
+    signature=None,
 ):
     """
     Evaluate the finite-pulse third-order response using
@@ -552,6 +604,7 @@ def finite_pulse_signal(
         phase1=pulse1.phase,
         phase2=pulse2.phase,
         phase3=pulse3.phase,
+        signature=signature,
     )
 
 def impulsive_rwa_signal(
@@ -562,6 +615,7 @@ def impulsive_rwa_signal(
     eta,
     pathway="NR",
     rho0=None,
+    signature=None,
 ):
     """
     Evaluate the impulsive RWA third-order response using
@@ -593,6 +647,7 @@ def impulsive_rwa_signal(
         T=T,
         eta=eta,
         pathway=pathway,
+        signature=signature,
     )
 
 
@@ -607,6 +662,7 @@ def short_pulse_rwa_signal(
     eta,
     pathway="NR",
     rho0=None,
+    signature=None,
 ):
     """
     Evaluate the short-pulse RWA third-order response using
@@ -650,6 +706,7 @@ def short_pulse_rwa_signal(
         phase1=pulse1.phase,
         phase2=pulse2.phase,
         phase3=pulse3.phase,
+        signature=signature,
     )
 
 def impulsive_signal(

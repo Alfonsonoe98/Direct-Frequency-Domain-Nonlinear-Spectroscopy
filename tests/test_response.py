@@ -4,6 +4,45 @@ from scipy.linalg import expm
 import pulsus
 from dimer_model import build_dimer
 
+def test_resolve_signature_rejects_invalid_signatures():
+    import pytest
+
+    with pytest.raises(ValueError):
+        pulsus.resolve_signature(
+            signature=(1, -1),
+        )
+
+    with pytest.raises(ValueError):
+        pulsus.resolve_signature(
+            signature=(1, 0, 1),
+        )
+
+def test_resolve_signature():
+    assert pulsus.resolve_signature(
+        pathway="NR"
+    ) == (
+        1,
+        -1,
+        1,
+    )
+
+    assert pulsus.resolve_signature(
+        pathway="R"
+    ) == (
+        -1,
+        1,
+        1,
+    )
+
+    assert pulsus.resolve_signature(
+        pathway="NR",
+        signature=(1, 1, 1),
+    ) == (
+        1,
+        1,
+        1,
+    )
+
 def test_impulsive_rwa_pathway_selection():
     model = build_dimer()
 
