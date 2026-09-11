@@ -174,10 +174,13 @@ omega1_NR = np.linspace(
     81,
 )
 
-# Rephasing uses signed negative omega1.
-# The corresponding positive excitation-frequency axis is
-# -omega1_R.
-omega1_R = -omega1_NR
+# Native signed rephasing frequency axis.
+#
+# Keep it increasing from left to right:
+#
+#     -1.5 ... -0.7
+#
+omega1_R = -omega1_NR[::-1]
 
 omega3 = np.linspace(
     0.7,
@@ -323,17 +326,6 @@ print(
 )
 
 # ============================================================
-# 12. Combine rephasing and nonrephasing signals
-# ============================================================
-
-S_combined = S_R + S_NR
-
-print(
-    "Maximum |S_R + S_NR|:",
-    np.max(np.abs(S_combined)),
-)
-
-# ============================================================
 # 13. Plot NR spectrum
 # ============================================================
 
@@ -354,7 +346,7 @@ fig_NR.tight_layout()
 # ============================================================
 
 fig_R, ax_R, contour_R = pulsus.plot_spectrum(
-    omega1=-omega1_R,
+    omega1=omega1_R,
     omega3=omega3,
     spectrum=S_R,
     component="imag",
@@ -364,20 +356,5 @@ fig_R, ax_R, contour_R = pulsus.plot_spectrum(
 
 fig_R.tight_layout()
 
-
-# ============================================================
-# 15. Plot combined R + NR spectrum
-# ============================================================
-
-fig_combined, ax_combined, contour_combined = pulsus.plot_spectrum(
-    omega1=omega1_NR,
-    omega3=omega3,
-    spectrum=S_combined,
-    component="imag",
-    normalize=True,
-    title="Finite-pulse R + NR spectrum",
-)
-
-fig_combined.tight_layout()
 
 plt.show()

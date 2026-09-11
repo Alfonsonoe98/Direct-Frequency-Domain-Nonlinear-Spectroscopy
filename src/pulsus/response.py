@@ -378,54 +378,19 @@ def finite_pulse_response(
     signature=None,
 ):
     """
-    Evaluate the finite-pulse third-order response for a
-    rephasing or nonrephasing field-sign sector.
-
-    The excitation frequency omega1 is signed:
-
-        omega1 > 0 for NR
-        omega1 < 0 for R
-
-    Parameters
-    ----------
-    L_super : array_like
-        Field-free Liouvillian.
-    V : array_like
-        Full light-matter interaction superoperator.
-    observable : array_like
-        Detection observable, typically the dipole operator.
-    rho0 : array_like
-        Initial density matrix or vectorized state.
-    omega1 : float
-        Signed excitation frequency.
-    omega3 : float
-        Detection frequency.
-    T : float
-        Waiting time.
-    eta : float
-        Resolvent broadening parameter.
-    omega_L1, omega_L2, omega_L3 : float
-        Carrier frequencies of the three pulses.
-    sigma1, sigma2, sigma3 : float
-        Gaussian temporal widths of the three pulses.
-    pathway : {"NR", "R"}, optional
-        Nonrephasing or rephasing field-sign sector.
-    E01, E02, E03 : float, optional
-        Pulse field amplitudes.
-    phase1, phase2, phase3 : float, optional
-        Carrier phases.
-
-    Returns
-    -------
-    complex
-        Finite-pulse third-order response.
+    Evaluate the finite-pulse third-order response using
+    the complete interaction superoperator V.
     """
-    s1, s2, s3 = resolve_signature(pathway=pathway,signature=signature,)
+    s1, s2, s3 = resolve_signature(
+        pathway=pathway,
+        signature=signature,
+    )
+
     F1 = pulse_dressing_1(
         L_super,
-        omega1=omega1,
-        omega_L=omega_L1,
-        sigma=sigma1,
+        omega1,
+        omega_L1,
+        sigma1,
         E0=E01,
         phase=phase1,
         sign=s1,
@@ -433,9 +398,9 @@ def finite_pulse_response(
 
     F2 = pulse_dressing_2(
         L_super,
-        omega1=omega1,
-        omega_L=omega_L2,
-        sigma=sigma2,
+        omega1,
+        omega_L2,
+        sigma2,
         E0=E02,
         phase=phase2,
         sign=s2,
@@ -443,27 +408,157 @@ def finite_pulse_response(
 
     F3 = pulse_dressing_3(
         L_super,
-        omega3=omega3,
-        omega_L=omega_L3,
-        sigma=sigma3,
+        omega3,
+        omega_L3,
+        sigma3,
         E0=E03,
         phase=phase3,
         sign=s3,
     )
 
-    return third_order_response(
+    state = vec(rho0)
+
+    state = F1 @ state
+    state = V @ state
+
+    state = resolvent_action(
         L_super=L_super,
-        V=V,
-        observable=observable,
-        rho0=rho0,
-        omega1=omega1,
-        omega3=omega3,
-        T=T,
+        omega=omega1,
+        rhs=state,
         eta=eta,
-        F1=F1,
-        F2=F2,
-        F3=F3,
     )
+
+    state = V @ state
+
+    state = F2 @ state
+    state = F3 @ state
+
+    state = expm(
+        L_super * T
+    ) @ state
+
+    state = V @ state
+
+    state = resolvent_action(
+        L_super=L_super,
+        omega=omega3,
+        rhs=state,
+        eta=eta,
+    )
+
+    return (
+        observable_bra(observable)
+        @ state
+    )
+
+
+def finite_pulse_rwa_response(
+    L_super,
+    V_plus,
+    V_minus,
+    observable,
+    rho0,
+    omega1,
+    omega3,
+    T,
+    eta,
+    omega_L1,
+    omega_L2,
+    omega_L3,
+    sigma1,
+    sigma2,
+    sigma3,
+    pathway="NR",
+    E01=1.0,
+    E02=1.0,
+    E03=1.0,
+    phase1=0.0,
+    phase2=0.0,
+    phase3=0.0,
+    signature=None,
+):
+    """
+    Evaluate the finite-pulse third-order response under
+    the molecular rotating-wave approximation.
+
+    Finite-pulse Liouvillian dressing is retained.
+    The interaction superoperator at each interaction is
+    selected according to the field-sign signature.
+    """
+    s1, s2, s3 = resolve_signature(
+        pathway=pathway,
+        signature=signature,
+    )
+
+    V1 = V_plus if s1 == 1 else V_minus
+    V2 = V_plus if s2 == 1 else V_minus
+    V3 = V_plus if s3 == 1 else V_minus
+
+    F1 = pulse_dressing_1(
+        L_super,
+        omega1,
+        omega_L1,
+        sigma1,
+        E0=E01,
+        phase=phase1,
+        sign=s1,
+    )
+
+    F2 = pulse_dressing_2(
+        L_super,
+        omega1,
+        omega_L2,
+        sigma2,
+        E0=E02,
+        phase=phase2,
+        sign=s2,
+    )
+
+    F3 = pulse_dressing_3(
+        L_super,
+        omega3,
+        omega_L3,
+        sigma3,
+        E0=E03,
+        phase=phase3,
+        sign=s3,
+    )
+
+    state = vec(rho0)
+
+    state = F1 @ state
+    state = V1 @ state
+
+    state = resolvent_action(
+        L_super=L_super,
+        omega=omega1,
+        rhs=state,
+        eta=eta,
+    )
+
+    state = V2 @ state
+
+    state = F2 @ state
+    state = F3 @ state
+
+    state = expm(
+        L_super * T
+    ) @ state
+
+    state = V3 @ state
+
+    state = resolvent_action(
+        L_super=L_super,
+        omega=omega3,
+        rhs=state,
+        eta=eta,
+    )
+
+    return (
+        observable_bra(observable)
+        @ state
+    )
+
 
 def impulsive_response(
     L_super,
@@ -547,31 +642,6 @@ def finite_pulse_signal(
     """
     Evaluate the finite-pulse third-order response using
     SpectroscopySystem and GaussianPulse objects.
-
-    Parameters
-    ----------
-    system : SpectroscopySystem
-        Open quantum system containing the Liouvillian,
-        interaction superoperator, dipole, and initial state.
-    pulse1, pulse2, pulse3 : GaussianPulse
-        Three Gaussian laser pulses.
-    omega1 : float
-        Signed excitation frequency.
-    omega3 : float
-        Detection frequency.
-    T : float
-        Waiting time.
-    eta : float
-        Resolvent broadening parameter.
-    pathway : {"NR", "R"}, optional
-        Nonrephasing or rephasing field-sign sector.
-    rho0 : array_like, optional
-        Initial state. If omitted, system.rho0 is used.
-
-    Returns
-    -------
-    complex
-        Finite-pulse third-order response.
     """
     if rho0 is None:
         rho0 = system.rho0
@@ -606,6 +676,66 @@ def finite_pulse_signal(
         phase3=pulse3.phase,
         signature=signature,
     )
+
+
+def finite_pulse_rwa_signal(
+    system,
+    pulse1,
+    pulse2,
+    pulse3,
+    omega1,
+    omega3,
+    T,
+    eta,
+    pathway="NR",
+    rho0=None,
+    signature=None,
+):
+    """
+    Evaluate the finite-pulse molecular-RWA third-order response
+    using SpectroscopySystem and GaussianPulse objects.
+    """
+    if system.V_plus is None or system.V_minus is None:
+        raise ValueError(
+            "RWA calculations require dipole_plus and "
+            "dipole_minus in SpectroscopySystem"
+        )
+
+    if rho0 is None:
+        rho0 = system.rho0
+
+    if rho0 is None:
+        raise ValueError(
+            "An initial state must be supplied either through "
+            "system.rho0 or the rho0 argument"
+        )
+
+    return finite_pulse_rwa_response(
+        L_super=system.L,
+        V_plus=system.V_plus,
+        V_minus=system.V_minus,
+        observable=system.dipole,
+        rho0=rho0,
+        omega1=omega1,
+        omega3=omega3,
+        T=T,
+        eta=eta,
+        omega_L1=pulse1.omega_L,
+        omega_L2=pulse2.omega_L,
+        omega_L3=pulse3.omega_L,
+        sigma1=pulse1.sigma,
+        sigma2=pulse2.sigma,
+        sigma3=pulse3.sigma,
+        pathway=pathway,
+        E01=pulse1.E0,
+        E02=pulse2.E0,
+        E03=pulse3.E0,
+        phase1=pulse1.phase,
+        phase2=pulse2.phase,
+        phase3=pulse3.phase,
+        signature=signature,
+    )
+
 
 def impulsive_rwa_signal(
     system,

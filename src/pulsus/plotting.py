@@ -11,12 +11,13 @@ def plot_spectrum(
     levels=31,
     ax=None,
     colorbar=True,
+    colorbar_label=None,
     title=None,
     xlabel=r"$\omega_1$",
     ylabel=r"$\omega_3$",
 ):
     """
-    Plot a two-dimensional spectrum.
+    Plot a two-dimensional complex spectrum.
 
     Parameters
     ----------
@@ -30,14 +31,17 @@ def plot_spectrum(
     component : {"real", "imag", "abs"}, optional
         Component of the complex spectrum to display.
     normalize : bool, optional
-        Normalize the displayed data by its maximum absolute
-        value. Default is False.
+        Normalize the displayed component by its maximum
+        absolute value. Default is False.
     levels : int, optional
         Number of contour levels.
     ax : matplotlib.axes.Axes, optional
         Existing axes on which to plot.
     colorbar : bool, optional
         Add a colorbar.
+    colorbar_label : str, optional
+        Custom colorbar label. If omitted, PULSUS chooses
+        a label from component and normalize.
     title : str, optional
         Plot title.
     xlabel, ylabel : str, optional
@@ -52,9 +56,25 @@ def plot_spectrum(
     contour : matplotlib.contour.QuadContourSet
         Contour object.
     """
-    omega1 = np.asarray(omega1, dtype=float)
-    omega3 = np.asarray(omega3, dtype=float)
-    spectrum = np.asarray(spectrum, dtype=complex)
+    omega1 = np.asarray(
+        omega1,
+        dtype=float,
+    )
+
+    omega3 = np.asarray(
+        omega3,
+        dtype=float,
+    )
+
+    spectrum = np.asarray(
+        spectrum,
+        dtype=complex,
+    )
+
+    if omega1.ndim != 1 or omega3.ndim != 1:
+        raise ValueError(
+            "omega1 and omega3 must be one-dimensional"
+        )
 
     expected_shape = (
         omega3.size,
@@ -71,12 +91,15 @@ def plot_spectrum(
 
     if component == "real":
         data = spectrum.real
+        default_label = "Real response"
 
     elif component == "imag":
         data = spectrum.imag
+        default_label = "Imaginary response"
 
     elif component == "abs":
         data = np.abs(spectrum)
+        default_label = r"Magnitude $|S|$"
 
     else:
         raise ValueError(
@@ -84,10 +107,23 @@ def plot_spectrum(
         )
 
     if normalize:
-        scale = np.max(np.abs(data))
+        scale = np.max(
+            np.abs(data)
+        )
 
         if scale > 0:
             data = data / scale
+
+        if component == "abs":
+            default_label = r"Normalized magnitude $|S|$"
+        else:
+            default_label = (
+                "Normalized "
+                + default_label.lower()
+            )
+
+    if colorbar_label is None:
+        colorbar_label = default_label
 
     if ax is None:
         fig, ax = plt.subplots()
@@ -96,7 +132,9 @@ def plot_spectrum(
         fig = ax.figure
 
     if component in ("real", "imag"):
-        vmax = np.max(np.abs(data))
+        vmax = np.max(
+            np.abs(data)
+        )
 
         if vmax == 0:
             vmax = 1.0
@@ -142,9 +180,13 @@ def plot_spectrum(
         ax.set_title(title)
 
     if colorbar:
-        fig.colorbar(
+        cbar = fig.colorbar(
             contour,
             ax=ax,
+        )
+
+        cbar.set_label(
+            colorbar_label
         )
 
     return fig, ax, contour

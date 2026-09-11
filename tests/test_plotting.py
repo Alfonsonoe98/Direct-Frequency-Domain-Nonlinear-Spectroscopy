@@ -8,6 +8,76 @@ import pytest
 import pulsus
 
 
+def test_plot_spectrum_automatic_colorbar_label():
+    omega1 = np.array([
+        0.9,
+        1.0,
+        1.1,
+    ])
+
+    omega3 = np.array([
+        1.0,
+        1.2,
+    ])
+
+    spectrum = np.array(
+        [
+            [1.0 + 1.0j, 0.5 + 0.2j, -0.5 + 0.4j],
+            [0.2 - 0.3j, 0.8 + 0.7j, -0.2 + 0.1j],
+        ],
+        dtype=complex,
+    )
+
+    fig, ax, contour = pulsus.plot_spectrum(
+        omega1=omega1,
+        omega3=omega3,
+        spectrum=spectrum,
+        component="imag",
+        normalize=True,
+    )
+
+    colorbar_axis = fig.axes[-1]
+
+    assert colorbar_axis.get_ylabel() == (
+        "Normalized imaginary response"
+    )
+
+    plt.close(fig)
+
+
+def test_plot_spectrum_custom_colorbar_label():
+    omega1 = np.array([
+        0.9,
+        1.0,
+        1.1,
+    ])
+
+    omega3 = np.array([
+        1.0,
+        1.2,
+    ])
+
+    spectrum = np.ones(
+        (2, 3),
+        dtype=complex,
+    )
+
+    fig, ax, contour = pulsus.plot_spectrum(
+        omega1=omega1,
+        omega3=omega3,
+        spectrum=spectrum,
+        component="real",
+        colorbar_label=r"$\mathrm{Re}\,P^{(3)}$",
+    )
+
+    colorbar_axis = fig.axes[-1]
+
+    assert colorbar_axis.get_ylabel() == (
+        r"$\mathrm{Re}\,P^{(3)}$"
+    )
+
+    plt.close(fig)
+
 def test_plot_spectrum():
     omega1 = np.array([
         0.9,
