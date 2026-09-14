@@ -475,7 +475,7 @@ These comparisons independently validate the time/frequency sign and transform c
 
 ## Test suite
 
-The current test suite contains **61 passing unit and regression tests** covering:
+The current test suite contains **63 passing unit and regression tests** covering:
 
 - Liouville-space vectorization and superoperators
 - Lindblad Liouvillian construction
