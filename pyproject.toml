@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=77.0.3", "wheel"]
 build-backend = "setuptools.build_meta"
 
 
@@ -9,7 +9,9 @@ version = "0.1.0.dev0"
 description = "Pulse-dressed Liouvillian Spectroscopy Using Superoperators"
 readme = "README.md"
 requires-python = ">=3.10"
-license = {file = "LICENSE"}
+
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
 
 authors = [
     {name = "Alfonso Castillo-Gonzalez"},
