@@ -4,7 +4,7 @@
 
 PULSUS is a Python package for direct frequency-domain spectroscopy of open quantum systems using Liouville-space superoperators.
 
-The current `v0.1` development version focuses on linear and third-order spectroscopy with time-independent Markovian Liouvillian dynamics, including finite Gaussian pulses, impulsive limits, rotating-wave approximations, arbitrary field-sign sectors, and complementary impulsive time-domain calculations.
+PULSUS `v0.1.0` focuses on linear and third-order spectroscopy with time-independent Markovian Liouvillian dynamics, including finite Gaussian pulses, impulsive limits, rotating-wave approximations, arbitrary field-sign sectors, and complementary impulsive time-domain calculations.
 
 
 ## Core idea
@@ -552,7 +552,7 @@ Separates the effects of the full-interaction, RWA, short-pulse, and impulsive a
 
 ## Current scope
 
-The current `v0.1` development version assumes:
+PULSUS `v0.1.0` assumes:
 
 - finite-dimensional quantum systems
 - time-independent Liouvillian dynamics
