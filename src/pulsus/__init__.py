@@ -95,7 +95,7 @@ __all__ = [
     "pathway_signs",
     "finite_pulse_response",
     "impulsive_response",
-    "gaussian_spectrum"
+    "gaussian_spectrum",
     "impulsive_rwa_response",
     "short_pulse_rwa_response",
     "response_grid",
