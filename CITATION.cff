@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use PULSUS in your research, please cite this software."
+title: "PULSUS: Pulse-dressed Liouvillian Spectroscopy Using Superoperators"
+type: software
+
+authors:
+  - given-names: "Alfonso"
+    family-names: "Castillo-Gonzalez"
+
+version: "0.1.0.dev0"
+
+license: "BSD-3-Clause"
+
+keywords:
+  - spectroscopy
+  - nonlinear spectroscopy
+  - open quantum systems
+  - Liouville space
+  - superoperators
+  - quantum dynamics
