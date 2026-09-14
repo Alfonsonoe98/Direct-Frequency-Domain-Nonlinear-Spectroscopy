@@ -4,7 +4,7 @@
 
 PULSUS is a Python package for direct frequency-domain spectroscopy of open quantum systems using Liouville-space superoperators.
 
-PULSUS `v0.1.0` focuses on linear and third-order spectroscopy with time-independent Markovian Liouvillian dynamics, including finite Gaussian pulses, impulsive limits, rotating-wave approximations, arbitrary field-sign sectors, and complementary impulsive time-domain calculations.
+PULSUS `v0.1.1` focuses on linear and third-order spectroscopy with time-independent Markovian Liouvillian dynamics, including finite Gaussian pulses, impulsive limits, rotating-wave approximations, arbitrary field-sign sectors, and complementary impulsive time-domain calculations.
 
 
 ## Core idea
@@ -100,7 +100,19 @@ pulsus.impulsive_linear_rwa_spectrum
 
 ## Installation
 
-From the repository root:
+Install the released package from PyPI with:
+
+```bash
+pip install pulsus-spec
+```
+
+The PyPI distribution is named `pulsus-spec`, while the Python package is imported as:
+
+```python
+import pulsus
+```
+
+For development from the repository source:
 
 ```bash
 python -m venv .venv
@@ -113,7 +125,6 @@ Run the test suite with:
 ```bash
 pytest -q
 ```
-
 
 ## Basic usage
 
@@ -552,7 +563,7 @@ Separates the effects of the full-interaction, RWA, short-pulse, and impulsive a
 
 ## Current scope
 
-PULSUS `v0.1.0` assumes:
+PULSUS `v0.1.1` assumes:
 
 - finite-dimensional quantum systems
 - time-independent Liouvillian dynamics
