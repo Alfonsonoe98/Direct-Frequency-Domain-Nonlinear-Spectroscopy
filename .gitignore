@@ -29,3 +29,9 @@ data/*
 *.egg-info/
 build/
 dist/
+
+# LaTeX build artifacts
+*.fdb_latexmk
+*.fls
+notes/technical_notes/main.pdf
+paper/main.pdf
