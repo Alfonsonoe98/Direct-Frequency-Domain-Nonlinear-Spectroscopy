@@ -1,0 +1,125 @@
+\documentclass[11pt]{article}
+
+% ============================================================
+% BASIC MATHEMATICS
+% ============================================================
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{physics}
+\usepackage{bm}
+
+% ============================================================
+% PHYSICAL UNITS
+% ============================================================
+
+\usepackage{siunitx}
+
+\sisetup{
+    separate-uncertainty = true,
+    per-mode = symbol
+}
+
+% ============================================================
+% FIGURES AND TABLES
+% ============================================================
+
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+
+\graphicspath{{figures/}}
+
+% ============================================================
+% PAGE FORMAT
+% ============================================================
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+
+% ============================================================
+% COLORS
+% ============================================================
+
+
+% ============================================================
+% REFERENCES
+% ============================================================
+
+\usepackage[numbers,sort&compress]{natbib}
+
+% ============================================================
+% LINKS
+% ============================================================
+
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=MidnightBlue,
+    citecolor=MidnightBlue,
+    urlcolor=MidnightBlue
+}
+
+% ============================================================
+% CROSS REFERENCES
+% ============================================================
+
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+% ============================================================
+% DOCUMENT INFORMATION
+% ============================================================
+
+\title{
+    \textbf{Beyond the Impulsive Rotating-Wave Approximation
+    in Multidimensional Spectroscopy}\\[0.4em]
+    \large Finite-Pulse Liouvillian Dressing with PULSUS
+}
+
+\author{
+    Alfonso Castillo
+    \and
+    Eric R. Bittner
+}
+
+\date{\today}
+
+% ============================================================
+% DOCUMENT
+% ============================================================
+
+\begin{document}
+
+\maketitle
+
+\input{Abstract}
+
+\input{Introduction}
+
+\input{Theory}
+
+\input{Software}
+
+\input{Validation}
+
+\input{RegimeStudy}
+
+\input{Experiment}
+
+\input{Conclusion}
+
+\input{EndMatter}
+
+% ============================================================
+% BIBLIOGRAPHY
+% ============================================================
+
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+
+\end{document}

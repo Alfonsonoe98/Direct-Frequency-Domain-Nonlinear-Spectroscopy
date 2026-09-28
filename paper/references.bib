@@ -1,0 +1,822 @@
+% ============================================================
+% FOUNDATIONAL / GENERAL MULTIDIMENSIONAL SPECTROSCOPY
+% ============================================================
+
+% USE FOR:
+% - Broad background on coherent multidimensional optical spectroscopy.
+% - Response-function and Liouville-space descriptions of excitonic systems.
+% - Standard discussion of exciton manifolds, pathways, Lindblad/open-system
+%   dynamics, and nonlinear response functions.
+%
+% PULSUS RELEVANCE:
+% - Good general citation for the conventional theoretical framework.
+% - Useful in Introduction/Theory when introducing third-order response,
+%   excitons, Liouville pathways, and open-system spectroscopy.
+%
+% DO NOT USE AS:
+% - Evidence that direct frequency-domain resolvents or finite-pulse
+%   Liouvillian dressing are new.
+@article{Abramavicius2009CoherentMultidimensional,
+  author  = {Darius Abramavicius and Benoit Palmieri and Dmitri V. Voronine
+             and Franti{\v{s}}ek {\v{S}}anda and Shaul Mukamel},
+  title   = {Coherent Multidimensional Optical Spectroscopy of Excitons in
+             Molecular Aggregates: Quasiparticle versus Supermolecule Perspectives},
+  journal = {Chemical Reviews},
+  year    = {2009},
+  volume  = {109},
+  number  = {6},
+  pages   = {2350--2408},
+  doi     = {10.1021/cr800268n}
+}
+
+
+% USE FOR:
+% - Stochastic-Liouville treatment of coherent multidimensional spectroscopy.
+% - Explicit bath/spectral-diffusion effects in excitonic dimers.
+% - Historical example of Liouville-space treatment of 2D spectra.
+%
+% PULSUS RELEVANCE:
+% - Useful when discussing open-system excitonic models.
+% - Demonstrates that Liouville-space formulations of nonlinear spectroscopy
+%   long predate PULSUS.
+@article{SandaMukamel2008StochasticLiouville,
+  author  = {Franti{\v{s}}ek {\v{S}}anda and Shaul Mukamel},
+  title   = {Stochastic Liouville Equations for Coherent Multidimensional
+             Spectroscopy of Excitons},
+  journal = {The Journal of Physical Chemistry B},
+  year    = {2008},
+  volume  = {112},
+  number  = {45},
+  pages   = {14212--14220},
+  doi     = {10.1021/jp801457c}
+}
+
+
+% USE FOR:
+% - Historical response-function/pump-probe treatment at finite temperature.
+% - Non-Condon and condensed-phase response-function background.
+%
+% NOTE:
+% - Correct title. Do not use the incorrect title that appeared in an earlier
+%   bibliography we inspected.
+@article{TanimuraMukamel1993PumpProbe,
+  author  = {Yoshitaka Tanimura and Shaul Mukamel},
+  title   = {Temperature Dependence and Non-Condon Effects in Pump--Probe
+             Spectroscopy in the Condensed Phase},
+  journal = {Journal of the Optical Society of America B},
+  year    = {1993},
+  volume  = {10},
+  number  = {12},
+  pages   = {2263--2268},
+  doi     = {10.1364/JOSAB.10.002263}
+}
+
+
+% ============================================================
+% FINITE-PULSE ANALYTICAL THEORY
+% ============================================================
+
+% USE FOR:
+% - Analytical third-order finite-pulse Bloch-model solutions.
+% - Gaussian finite-duration pulses in multidimensional spectroscopy.
+% - Finite-pulse corrections can depend on the Feynman pathway.
+% - Finite pulses modify both spectral amplitude and phase.
+% - Pulse chirp and laser bandwidth effects.
+% - External analytical benchmark for PULSUS/UF2.
+%
+% IMPORTANT FOR OUR PAPER:
+% - Their finite-pulse formulas retain molecular evolution during the pulse.
+% - Their full 3D Fourier representation can produce scalar finite-pulse
+%   factors exactly under their model assumptions.
+% - Therefore scalar factors are NOT automatically synonymous with a
+%   short-pulse approximation.
+%
+% BENCHMARK:
+% - Their three-level V system is the model reproduced by Rose & Krich UF2.
+% - We can reproduce a separated-pulse version with PULSUS B.
+@article{Smallwood2017FinitePulse,
+  author  = {Christopher L. Smallwood and Travis M. Autry and Steven T. Cundiff},
+  title   = {Analytical Solutions to the Finite-Pulse Bloch Model for
+             Multidimensional Coherent Spectroscopy},
+  journal = {Journal of the Optical Society of America B},
+  year    = {2017},
+  volume  = {34},
+  number  = {2},
+  pages   = {419--429},
+  doi     = {10.1364/JOSAB.34.000419}
+}
+
+
+% USE FOR:
+% - Independent analytical treatment of finite-pulse effects.
+% - Comparison of single-quantum and double-quantum spectroscopy.
+% - Pulse overlap, time ordering, and counter-rotating contributions.
+% - Demonstrates that double-quantum spectra may be especially sensitive
+%   to finite-pulse corrections and absorptive/dispersive mixing.
+%
+% PULSUS RELEVANCE:
+% - Supporting citation that finite-pulse effects are not merely simple
+%   bandwidth truncation.
+% - Relevant to our discussion of overlap and non-RWA contributions.
+@article{Perlik2017FinitePulse,
+  author  = {V{\'a}clav Perl{\'i}k and J{\"u}rgen Hauer
+             and Franti{\v{s}}ek {\v{S}}anda},
+  title   = {Finite Pulse Effects in Single and Double Quantum Spectroscopies},
+  journal = {Journal of the Optical Society of America B},
+  year    = {2017},
+  volume  = {34},
+  number  = {2},
+  pages   = {430--439},
+  doi     = {10.1364/JOSAB.34.000430}
+}
+
+
+% USE FOR:
+% - Finite-pulse 2D spectra without conventional brute-force triple integration.
+% - Multiplication of arbitrary pulse spectra with a 2D spectral response.
+% - Exact scalar spectral factorization when the response is independent of
+%   population time.
+% - Modified exact/accurate formulas for quantum beats and exponential decay.
+%
+% CENTRAL PULSUS CONNECTION:
+% - For R(T) ~ exp(-i Xi T), finite-pulse dynamics appear as shifted,
+%   possibly complex, pulse-frequency arguments.
+% - This is closely related to evaluating our F_j(L,omega) on a Liouvillian
+%   eigenmode with lambda = -i Xi.
+%
+% CRITICAL WARNING:
+% - Do NOT say that scalar pulse-spectrum multiplication necessarily means
+%   molecular evolution during the pulse was neglected.
+% - Our C approximation must instead be defined physically by
+%   exp[L(u3-u2)] ~ I.
+@article{DoGelinTan2017FinitePulse,
+  author  = {Thanh Nhut Do and Maxim F. Gelin and Howe-Siang Tan},
+  title   = {Simplified Expressions That Incorporate Finite Pulse Effects into
+             Coherent Two-Dimensional Optical Spectra},
+  journal = {The Journal of Chemical Physics},
+  year    = {2017},
+  volume  = {147},
+  number  = {14},
+  pages   = {144103},
+  doi     = {10.1063/1.4985888}
+}
+
+
+% USE FOR:
+% - Alternative mixed time/frequency formulation of 2D spectroscopy.
+% - Computationally efficient evaluation using pulse Fourier transforms and
+%   doorway/window-like representations.
+% - Their construction does not require a simple impulsive picture and is
+%   relevant to finite-pulse and pulse-ordering discussions.
+%
+% PULSUS RELEVANCE:
+% - Important prior art when describing mixed time/frequency approaches.
+%
+% DO NOT CLAIM:
+% - PULSUS is the first mixed time/frequency finite-pulse formulation.
+@article{GelinDomcke2016AlternativeView,
+  author  = {Maxim F. Gelin and Wolfgang Domcke},
+  title   = {Alternative View of Two-Dimensional Spectroscopy},
+  journal = {The Journal of Chemical Physics},
+  year    = {2016},
+  volume  = {144},
+  number  = {19},
+  pages   = {194104},
+  doi     = {10.1063/1.4948790}
+}
+
+
+% ============================================================
+% FINITE-PULSE NUMERICAL METHODS
+% ============================================================
+
+% USE FOR:
+% - Numerical treatment of finite laser pulses in 2DES.
+% - HEOM plus equation-of-motion phase matching.
+% - Shows explicitly that finite pulse width can change peak positions,
+%   amplitudes, line shapes, and observed dynamics.
+% - Demonstrates that quantum beats require simultaneous excitation of the
+%   relevant excitonic states by the finite pulse bandwidth.
+%
+% PULSUS RELEVANCE:
+% - Strong prior-art citation showing that molecular evolution under finite
+%   pulses has already been studied numerically.
+%
+% DO NOT CLAIM:
+% - Existing finite-pulse approaches neglect molecular dynamics during pulses.
+@article{Leng2017FinitePulseWidth,
+  author  = {Xuan Leng and Shuai Yue and Yu-Xiang Weng and Kai Song and Qiang Shi},
+  title   = {Effects of Finite Laser Pulse Width on Two-Dimensional Electronic
+             Spectroscopy},
+  journal = {Chemical Physics Letters},
+  year    = {2017},
+  volume  = {667},
+  pages   = {79--86},
+  doi     = {10.1016/j.cplett.2016.11.030}
+}
+
+
+% USE FOR:
+% - UF^2 / Ultrafast Software Suite finite-pulse algorithm.
+% - Arbitrary sampled finite-duration pulse shapes.
+% - Open-system calculations with secular Redfield, full Redfield, and
+%   Lindblad dynamics.
+% - Fourier-convolution algorithm in the Liouvillian eigenbasis.
+% - Comparison against direct RKE time propagation.
+% - Strong computational benchmark for finite-pulse spectroscopy.
+%
+% VALIDATION:
+% - Reproduces Smallwood's analytical finite-Gaussian result.
+% - Approximately 1% accuracy obtained in their example with a pulse grid
+%   containing only 25 points.
+%
+% PULSUS COMPARISON:
+% - UF2 computes finite-pulse dynamics through time-domain pulse convolution
+%   and subsequently Fourier-transforms scanned coherence delays.
+% - PULSUS instead evaluates selected coherence frequencies directly through
+%   resolvents and operator-valued pulse dressing.
+% - UF2 supports arbitrary sampled pulse shapes; current closed-form PULSUS
+%   finite-pulse operators are Gaussian-specific.
+%
+% IMPORTANT:
+% - UF2 is NOT intrinsically RWA-only. Its formal interaction includes
+%   rotating and counter-rotating contributions.
+% - Do not claim "PULSUS goes beyond RWA whereas UF2 cannot."
+@article{RoseKrich2021UF2,
+  author  = {Peter A. Rose and Jacob J. Krich},
+  title   = {Efficient Numerical Method for Predicting Nonlinear Optical
+             Spectroscopies of Open Systems},
+  journal = {The Journal of Chemical Physics},
+  year    = {2021},
+  volume  = {154},
+  number  = {3},
+  pages   = {034108},
+  doi     = {10.1063/5.0024104}
+}
+
+
+% USE FOR:
+% - Automatic generation of Feynman diagrams for nonlinear spectroscopy.
+% - Explicit treatment of additional temporal orderings caused by pulse overlap.
+% - Fifth-order spectroscopy and overlapping-pulse calculations.
+%
+% PULSUS RELEVANCE:
+% - Important citation when discussing why the current factorized F3*F2
+%   formulation assumes separated pulses.
+% - Shows that overlapping pulses can activate additional interaction
+%   orderings/pathways.
+@article{RoseKrich2021DiagramGenerator,
+  author  = {Peter A. Rose and Jacob J. Krich},
+  title   = {Automatic Feynman Diagram Generation for Nonlinear Optical
+             Spectroscopies and Application to Fifth-Order Spectroscopy with
+             Pulse Overlaps},
+  journal = {The Journal of Chemical Physics},
+  year    = {2021},
+  volume  = {154},
+  number  = {3},
+  pages   = {034109},
+  doi     = {10.1063/5.0024105}
+}
+
+
+% ============================================================
+% BEYOND PERTURBATIVE / BEYOND RESONANT-RWA REGIMES
+% ============================================================
+
+% USE FOR:
+% - Nonperturbative time-evolution treatment of 2D spectroscopy.
+% - Dependence on finite pulse width AND field amplitude.
+% - Comparison of heterodyne-detected and fluorescence-detected 2DES.
+% - Maps regions of pulse-parameter space where common approximations fail.
+%
+% PULSUS RELEVANCE:
+% - Important boundary on our scope: PULSUS is perturbative in field amplitude.
+% - Their "full" treatment means nonperturbative field evolution, whereas our
+%   "full V" means retaining the complete molecular dipole superoperator
+%   within perturbative third-order response.
+%
+% DO NOT CONFLATE:
+% - PULSUS A is NOT a nonperturbative strong-field calculation.
+@article{AndaCole2021BeyondPerturbative,
+  author  = {Andr{\'e} Anda and Jared H. Cole},
+  title   = {Two-Dimensional Spectroscopy Beyond the Perturbative Limit:
+             The Influence of Finite Pulses and Detection Modes},
+  journal = {The Journal of Chemical Physics},
+  year    = {2021},
+  volume  = {154},
+  number  = {11},
+  pages   = {114113},
+  doi     = {10.1063/5.0038550}
+}
+
+
+% USE FOR:
+% - Explicit theory of 2D spectroscopy under intense optical fields.
+% - Saturation, bleaching, and intensity-dependent effects absent from
+%   conventional third-order perturbative response theory.
+%
+% PULSUS RELEVANCE:
+% - Defines another clear boundary of the current PULSUS paper:
+%   weak-field perturbative spectroscopy.
+@article{BressanVanThor2021IntenseFields,
+  author  = {Giovanni Bressan and Jasper J. van Thor},
+  title   = {Theory of Two-Dimensional Spectroscopy with Intense Laser Fields},
+  journal = {The Journal of Chemical Physics},
+  year    = {2021},
+  volume  = {154},
+  number  = {24},
+  pages   = {244111},
+  doi     = {10.1063/5.0051435}
+}
+
+
+% USE FOR:
+% - Nonresonant contributions to coherent 2D spectroscopy.
+% - Optical Kerr effect, cross-phase modulation, two-photon absorption,
+%   excited-state coherence, and stimulated Raman contributions.
+% - Explicit example where a purely resonant/RWA interpretation is inadequate.
+%
+% PULSUS RELEVANCE:
+% - Supporting citation for why counter-rotating/nonresonant contributions may
+%   become physically relevant in some regimes.
+@article{Dostal2022Nonresonant,
+  author  = {Jakub Dost{\'a}l},
+  title   = {Nonresonant Coherent Two-Dimensional Spectroscopy},
+  journal = {Spectrochimica Acta Part A: Molecular and Biomolecular Spectroscopy},
+  year    = {2022},
+  volume  = {267},
+  pages   = {120441},
+  doi     = {10.1016/j.saa.2021.120441}
+}
+
+
+% ============================================================
+% FREQUENCY-DOMAIN / GREEN-FUNCTION PRIOR ART
+% ============================================================
+
+% USE FOR:
+% - Frequency-domain Green-function treatment of coherent nonlinear optical
+%   signals in multi-exciton systems.
+% - Quasiparticle / Bethe--Salpeter representation.
+% - Third- and fifth-order nonlinear optical signals.
+%
+% PULSUS RELEVANCE:
+% - Important prior art showing that frequency-domain Green functions have
+%   previously been used for nonlinear spectroscopy.
+%
+% DO NOT CLAIM:
+% - PULSUS is the first nonlinear-spectroscopy Green-function formulation.
+%
+% DISTINCTION:
+% - Their Green functions describe quasiparticle/multi-exciton propagation
+%   and scattering, rather than our general Liouvillian resolvent
+%   G(omega)=[(0+-i omega)I-L]^{-1}.
+@article{Roslyak2013Quasiparticle,
+  author  = {Oleksiy Roslyak and Benjamin P. Fingerhut
+             and Kochise Bennett and Shaul Mukamel},
+  title   = {Quasiparticle Representation of Coherent Nonlinear Optical Signals
+             of Multi-Excitons},
+  journal = {New Journal of Physics},
+  year    = {2013},
+  volume  = {15},
+  number  = {8},
+  pages   = {083049},
+  doi     = {10.1088/1367-2630/15/8/083049}
+}
+
+
+% ============================================================
+% SOFTWARE / COMPUTATIONAL SPECTROSCOPY
+% ============================================================
+
+% USE FOR:
+% - Example of modern spectroscopy/quantum-dynamics software.
+% - Modular construction of coupled quantum systems.
+% - Lindblad density-matrix propagation.
+% - Simulation of coherent multidimensional spectroscopy.
+%
+% PULSUS RELEVANCE:
+% - Useful in Introduction when positioning PULSUS among existing open-source
+%   computational tools.
+@article{Kenneweg2024QDT,
+  author  = {Tristan Kenneweg and Stefan M{\"u}ller
+             and Tobias Brixner and Walter Pfeiffer},
+  title   = {{QDT}---A {Matlab} Toolbox for the Simulation of Coupled Quantum
+             Systems and Coherent Multidimensional Spectroscopy},
+  journal = {Computer Physics Communications},
+  year    = {2024},
+  volume  = {296},
+  pages   = {109031},
+  doi     = {10.1016/j.cpc.2023.109031}
+}
+
+
+% ============================================================
+% MANY-BODY EXCITON / EXPERIMENTAL CONTEXT
+% ============================================================
+
+% USE FOR:
+% - Review of optical signatures of stochastic processes and many-body
+%   exciton scattering.
+% - Broad physical context for nonlinear exciton spectroscopy.
+% - Particularly relevant because it includes Bittner and collaborators.
+%
+% PULSUS RELEVANCE:
+% - Good Introduction/background reference for why coherent nonlinear spectra
+%   contain information on exciton interactions, stochastic dynamics, and
+%   many-body effects.
+@article{Li2023OpticalSignatures,
+  author  = {Hao Li and S. A. Shah and Ajay Ram Srimath Kandada
+             and Carlos Silva and Andrei Piryatinski and Eric R. Bittner},
+  title   = {The Optical Signatures of Stochastic Processes in Many-Body
+             Exciton Scattering},
+  journal = {Annual Review of Physical Chemistry},
+  year    = {2023},
+  volume  = {74},
+  pages   = {467--492},
+  doi     = {10.1146/annurev-physchem-102822-100922}
+}
+
+
+% USE FOR:
+% - Experimental coherent 2D electronic spectroscopy of a realistic
+%   Ruddlesden--Popper tin iodide.
+% - Multiple nearby excitonic features, dephasing, spectral diffusion,
+%   exciton--exciton interactions, and biexcitonic signatures.
+%
+% PULSUS RELEVANCE:
+% - Candidate source of physically realistic optical energies, excitonic
+%   splittings, and linewidths for our dimer/regime study.
+% - Potential later experimental application/parameter set.
+%
+% IMPORTANT:
+% - Verify any exact pulse duration or numerical parameter against the paper
+%   before inserting it into the manuscript. Do not rely on our preliminary
+%   notes alone.
+@article{RojasGatjens2023TinIodide,
+  author  = {Esteban Rojas-Gatjens and Hao Li and Alejandro Vega-Flick
+             and Daniele Cortecchia and Annamaria Petrozza
+             and Eric R. Bittner and Ajay Ram Srimath Kandada
+             and Carlos Silva-Acu{\~n}a},
+  title   = {Many-Exciton Quantum Dynamics in a Ruddlesden--Popper Tin Iodide},
+  journal = {The Journal of Physical Chemistry C},
+  year    = {2023},
+  volume  = {127},
+  number  = {43},
+  pages   = {21194--21203},
+  doi     = {10.1021/acs.jpcc.3c04896}
+}% ============================================================
+% REMAINING PAPERS FROM LITERATURE ARCHIVE
+% ============================================================
+
+
+% ============================================================
+% EARLY / GENERAL TWO-DIMENSIONAL ELECTRONIC SPECTROSCOPY
+% ============================================================
+
+% STATUS: TO REVIEW
+%
+% LIKELY USE FOR:
+% - Early experimental demonstration of two-dimensional electronic
+%   spectroscopy.
+% - Historical background for phase-matched three-pulse electronic
+%   spectroscopy.
+% - Selection of coherence order using pulse ordering,
+%   phase-matching geometry, and Fourier-transform variables.
+%
+% PULSUS RELEVANCE:
+% - Good historical citation in the Introduction when explaining
+%   the development of optical 2D spectroscopy.
+% - Useful background for why scanning time delays and Fourier
+%   transforming them is the conventional experimental/theoretical
+%   construction.
+%
+% DO NOT USE YET FOR:
+% - Specific finite-pulse or RWA validity claims until reviewed
+%   more carefully.
+@article{Hybl1998TwoDimensional,
+  author  = {John D. Hybl and Allison W. Albrecht
+             and Sarah M. Gallagher Faeder and David M. Jonas},
+  title   = {Two-Dimensional Electronic Spectroscopy},
+  journal = {Chemical Physics Letters},
+  year    = {1998},
+  volume  = {297},
+  number  = {3-4},
+  pages   = {307--313},
+  doi     = {10.1016/S0009-2614(98)01140-3}
+}
+
+
+% ============================================================
+% FLUORESCENCE-DETECTED 2D SPECTROSCOPY
+% ============================================================
+
+% STATUS: TO REVIEW
+%
+% LIKELY USE FOR:
+% - Fluorescence-detected two-dimensional spectroscopy (F-2DES).
+% - Initial exciton delocalization in coupled chromophores.
+% - Analytical heterodimer model and fourth-order perturbative response.
+% - Coherence between coupled donor/acceptor states before conventional
+%   incoherent transfer becomes the appropriate description.
+%
+% PULSUS RELEVANCE:
+% - Useful physical background for coupled-chromophore/dimer models.
+% - Relevant if we later discuss action-detected spectroscopy or
+%   extensions beyond conventional heterodyne-detected third-order 2DES.
+%
+% NOT CENTRAL TO PAPER 1:
+% - Our first PULSUS manuscript is currently focused on coherent
+%   third-order spectroscopy, so this is likely supporting rather
+%   than central literature.
+@article{Schroter2018FluorescenceDetected,
+  author  = {Marco Schr{\"o}ter and T{\~o}nu Pullerits and Oliver K{\"u}hn},
+  title   = {Using Fluorescence Detected Two-Dimensional Spectroscopy
+             to Investigate Initial Exciton Delocalization between
+             Coupled Chromophores},
+  journal = {The Journal of Chemical Physics},
+  year    = {2018},
+  volume  = {149},
+  number  = {11},
+  pages   = {114107},
+  doi     = {10.1063/1.5046645}
+}
+
+
+% STATUS: TO REVIEW
+%
+% LIKELY USE FOR:
+% - Interpretation of fluorescence-detected 2DES.
+% - Differences between conventional coherent 2DES and F-2DES.
+% - Liouville pathways, excited-state absorption, annihilation,
+%   and delocalization signatures.
+% - Discussion of signals at very short population times and during
+%   pulse overlap.
+%
+% PULSUS RELEVANCE:
+% - Potential supporting citation when discussing pulse-overlap
+%   complications and alternative detection schemes.
+% - Useful later if PULSUS is extended to action-detected observables.
+@article{KuhnMancalPullerits2020InterpretingF2DES,
+  author  = {Oliver K{\"u}hn and Tom{\'a}{\v{s}} Man{\v{c}}al
+             and T{\~o}nu Pullerits},
+  title   = {Interpreting Fluorescence Detected Two-Dimensional
+             Electronic Spectroscopy},
+  journal = {The Journal of Physical Chemistry Letters},
+  year    = {2020},
+  volume  = {11},
+  number  = {3},
+  pages   = {838--842},
+  doi     = {10.1021/acs.jpclett.9b03851}
+}
+
+
+% ============================================================
+% MANY-BODY EXCITON DYNAMICS / REALISTIC LINESHAPES
+% ============================================================
+
+% STATUS: TO REVIEW
+%
+% LIKELY USE FOR:
+% - Excitation-induced dephasing and many-body exciton interactions.
+% - Time-dependent nonlinear coherent exciton lineshapes.
+% - Population-time evolution of complex 2D spectral line shapes.
+% - Mixing of absorptive and dispersive spectral components.
+% - Exciton-exciton scattering and dynamic Coulomb screening.
+%
+% PULSUS RELEVANCE:
+% - Good motivation that realistic nonlinear spectra contain
+%   time-dependent many-body physics beyond simple isolated
+%   two-level-system line shapes.
+% - Possible physical context for later applications of PULSUS.
+%
+% IMPORTANT:
+% - This is not presently a finite-pulse-method citation.
+% - Review in detail before using it to support a statement about
+%   pulse duration or approximation validity.
+@article{Kandada2020StochasticScattering,
+  author  = {Ajay Ram Srimath Kandada and Hao Li and F{\'e}lix Thouin
+             and Eric R. Bittner and Carlos Silva},
+  title   = {Stochastic Scattering Theory for Excitation-Induced
+             Dephasing: Time-Dependent Nonlinear Coherent Exciton
+             Lineshapes},
+  journal = {The Journal of Chemical Physics},
+  year    = {2020},
+  volume  = {153},
+  number  = {16},
+  pages   = {164706},
+  doi     = {10.1063/5.0026351}
+}
+
+
+% STATUS: TO REVIEW
+%
+% LIKELY USE FOR:
+% - Coherent 2D excitation spectroscopy of conjugated polymers.
+% - H/J-type photophysical aggregates.
+% - Vibronic structure and excitonic inter-chromophore coupling.
+% - Population-time-dependent phase evolution of complex 2D spectra.
+%
+% PULSUS RELEVANCE:
+% - Potential source of realistic excitonic energy scales,
+%   disorder/coupling parameters, and linewidths.
+% - Candidate later application system because Bittner and the
+%   Montreal collaborators are authors.
+%
+% IMPORTANT:
+% - This entry corresponds to the arXiv version present in our archive.
+% - Before citing in the final manuscript, check whether a journal
+%   version has appeared and replace this entry if appropriate.
+@misc{Kantrow2024PhotophysicalAggregates,
+  author        = {Henry J. Kantrow and Elizabeth Guti{\'e}rrez-Meza
+                   and Hongmo Li and Qiao He and Martin Heeney
+                   and Natalie Stingelin and Eric R. Bittner
+                   and Carlos Silva-Acu{\~n}a and Hao Li
+                   and F{\'e}lix Thouin},
+  title         = {Quantum Dynamics of Photophysical Aggregates
+                   in Conjugated Polymers},
+  year          = {2024},
+  eprint        = {2411.14675},
+  archivePrefix = {arXiv},
+  primaryClass  = {cond-mat.soft},
+  note          = {arXiv:2411.14675v3}
+}
+
+
+% ============================================================
+% NONLINEAR EXCITON PROPAGATION / FREQUENCY-DOMAIN PRIOR ART
+% ============================================================
+
+% STATUS: TO REVIEW
+%
+% LIKELY USE FOR:
+% - Direct nonlinear exciton propagation (NEP).
+% - Simulation of multidimensional nonlinear spectra with
+%   time-dependent Hamiltonian and transition-dipole fluctuations.
+% - Avoidance of explicit calculation of individual Liouville
+%   pathways through nonlinear exciton equations.
+% - Photon-echo and double-quantum-coherence spectroscopy.
+%
+% PULSUS RELEVANCE:
+% - Important computational prior art for "direct propagation"
+%   language.
+% - Shows another strategy for avoiding costly explicit sums over
+%   many individual Liouville pathways.
+% - Relevant to the broader computational-methods paragraph
+%   of the Introduction.
+%
+% DO NOT CLAIM:
+% - PULSUS is the first direct computational treatment of nonlinear
+%   spectroscopy.
+@article{Falvo2009DirectNonlinearExciton,
+  author  = {Cyril Falvo and Benoit Palmieri and Shaul Mukamel},
+  title   = {Coherent Infrared Multidimensional Spectra of the
+             {OH} Stretching Band in Liquid Water Simulated by
+             Direct Nonlinear Exciton Propagation},
+  journal = {The Journal of Chemical Physics},
+  year    = {2009},
+  volume  = {130},
+  number  = {18},
+  pages   = {184501},
+  doi     = {10.1063/1.3120771}
+}
+
+
+% ============================================================
+% DOUBLE-QUANTUM / MANY-EXCITON SPECTROSCOPY
+% ============================================================
+
+% STATUS: TO REVIEW
+%
+% LIKELY USE FOR:
+% - Two-dimensional electronic double-quantum coherence spectroscopy.
+% - Experimental sensitivity to electron-electron interactions and
+%   correlated double-excitation states.
+% - Relationship between single- and double-excited manifolds.
+% - Time-ordered ultrashort optical pulse sequences.
+%
+% PULSUS RELEVANCE:
+% - Background for double-quantum/multi-exciton spectroscopy.
+% - Useful if we discuss extending direct frequency-domain methods
+%   to higher-order or double-quantum signals.
+%
+% NOT CENTRAL TO INITIAL A/B/C/D STUDY:
+% - Probably supporting literature rather than a core finite-pulse
+%   reference.
+@article{Kim2009DoubleQuantum,
+  author  = {Jeongho Kim and Vanessa M. Huxter and Carles Curutchet
+             and Gregory D. Scholes},
+  title   = {Measurement of Electron--Electron Interactions and
+             Correlations Using Two-Dimensional Electronic
+             Double-Quantum Coherence Spectroscopy},
+  journal = {The Journal of Physical Chemistry A},
+  year    = {2009},
+  volume  = {113},
+  number  = {44},
+  pages   = {12122--12133},
+  doi     = {10.1021/jp907327m}
+}
+
+
+% STATUS: PARTIALLY CHECKED
+%
+% USE FOR:
+% - Double-quantum coherent spectroscopy of excitonic systems.
+% - Single- and double-exciton manifolds in the FMO complex.
+% - Alternative quasiparticle/exciton-scattering interpretation.
+% - Conventional impulsive third-order spectroscopy and RWA-resolved
+%   pathways.
+%
+% PARTICULARLY RELEVANT TO PULSUS:
+% - The paper explicitly notes that for ultrashort NONOVERLAPPING
+%   pulses, pulse-center delays coincide with interaction-time delays.
+% - This is directly relevant to our distinction between nominal
+%   pulse separation T and the actual interaction separation
+%   T + u3 - u2 for finite pulses.
+%
+% USEFUL WARNING:
+% - Their formulation provides historical precedent for Green-function/
+%   quasiparticle approaches and multi-exciton spectroscopy.
+@article{Abramavicius2008DoubleQuantumFMO,
+  author  = {Darius Abramavicius and Dmitri V. Voronine
+             and Shaul Mukamel},
+  title   = {Double-Quantum Resonances and Exciton-Scattering in
+             Coherent {2D} Spectroscopy of Photosynthetic Complexes},
+  journal = {Proceedings of the National Academy of Sciences
+             of the United States of America},
+  year    = {2008},
+  volume  = {105},
+  number  = {25},
+  pages   = {8525--8530},
+  doi     = {10.1073/pnas.0802926105}
+}
+
+
+% ============================================================
+% BROADER MULTIDIMENSIONAL SPECTROSCOPY
+% ============================================================
+
+% STATUS: TO REVIEW
+%
+% LIKELY USE FOR:
+% - Broad review of multidimensional ultrafast spectroscopy.
+% - Historical and experimental development of multidimensional
+%   optical methods.
+% - Different frequency ranges and cross-peak spectroscopies.
+% - Pulse shaping and multidimensional experimental techniques.
+%
+% PULSUS RELEVANCE:
+% - Strong general Introduction citation.
+% - Useful for motivating the breadth and importance of
+%   multidimensional spectroscopy without relying exclusively on
+%   methodology papers.
+%
+% PROBABLY NOT:
+% - A source for detailed claims about our finite-pulse approximation
+%   hierarchy.
+@article{Oliver2018MultidimensionalReview,
+  author  = {Thomas A. A. Oliver},
+  title   = {Recent Advances in Multidimensional Ultrafast Spectroscopy},
+  journal = {Royal Society Open Science},
+  year    = {2018},
+  volume  = {5},
+  number  = {1},
+  pages   = {171425},
+  doi     = {10.1098/rsos.171425}
+}
+
+
+% ============================================================
+% MULTIDIMENSIONAL MAGNETIC / THz SPECTROSCOPY
+% ============================================================
+
+% STATUS: TO REVIEW
+%
+% LIKELY USE FOR:
+% - Coherent two-dimensional terahertz magnetic resonance.
+% - Third-order nonlinear magnon signals, spin echoes, and
+%   two-quantum signals.
+% - Demonstration that multidimensional coherent spectroscopy is
+%   applicable beyond conventional electronic optical transitions.
+%
+% PULSUS RELEVANCE:
+% - Potential general-background citation if emphasizing that the
+%   Liouville-space machinery is not intrinsically restricted to
+%   visible electronic spectroscopy.
+% - Relevant to QuDPy-FDGF's spin-chain/magnon examples.
+%
+% NOT CENTRAL TO:
+% - Finite optical pulse validity or our excitonic dimer study.
+@article{Lu2017THzMagnetic2D,
+  author  = {Jian Lu and Xian Li and Harold Y. Hwang
+             and Benjamin K. Ofori-Okai and Takayuki Kurihara
+             and Tohru Suemoto and Keith A. Nelson},
+  title   = {Coherent Two-Dimensional Terahertz Magnetic Resonance
+             Spectroscopy of Collective Spin Waves},
+  journal = {Physical Review Letters},
+  year    = {2017},
+  volume  = {118},
+  number  = {20},
+  pages   = {207204},
+  doi     = {10.1103/PhysRevLett.118.207204}
+}
