@@ -169,3 +169,109 @@ def test_finite_pulse_rwa_matches_manual_construction():
         rtol=1e-12,
         atol=1e-12,
     )
+def test_finite_pulse_rwa_spectrum_matches_pointwise_signal():
+    model = build_dimer()
+
+    collapse_ops = [
+        model["L_a_down"],
+        model["L_a_up"],
+        model["L_b_down"],
+        model["L_b_up"],
+    ]
+
+    mu_plus = (
+        model["sigma_a_plus"]
+        + model["sigma_b_plus"]
+    )
+
+    mu_minus = (
+        model["sigma_a_minus"]
+        + model["sigma_b_minus"]
+    )
+
+    system = pulsus.SpectroscopySystem(
+        H=model["H_S"],
+        dipole=model["mu"],
+        collapse_ops=collapse_ops,
+        rho0=model["rho0"],
+        hbar=model["hbar"],
+        dipole_plus=mu_plus,
+        dipole_minus=mu_minus,
+    )
+
+    pulse1 = pulsus.GaussianPulse(
+        omega_L=1.10,
+        sigma=0.45,
+    )
+
+    pulse2 = pulsus.GaussianPulse(
+        omega_L=1.10,
+        sigma=0.50,
+    )
+
+    pulse3 = pulsus.GaussianPulse(
+        omega_L=1.10,
+        sigma=0.55,
+    )
+
+    omega1 = np.array([
+        0.90,
+        1.00,
+        1.10,
+    ])
+
+    omega3 = np.array([
+        1.05,
+        1.15,
+    ])
+
+    T = 4.0
+    eta = 0.02
+
+    signature = (
+        +1,
+        -1,
+        +1,
+    )
+
+    from pulsus.spectra import finite_pulse_rwa_spectrum
+
+    optimized = finite_pulse_rwa_spectrum(
+        system=system,
+        pulse1=pulse1,
+        pulse2=pulse2,
+        pulse3=pulse3,
+        omega1=omega1,
+        omega3=omega3,
+        T=T,
+        eta=eta,
+        signature=signature,
+    )
+
+    pointwise = np.empty(
+        (omega3.size, omega1.size),
+        dtype=complex,
+    )
+
+    for j, w3 in enumerate(omega3):
+        for i, w1 in enumerate(omega1):
+            pointwise[j, i] = (
+                pulsus.finite_pulse_rwa_signal(
+                    system=system,
+                    pulse1=pulse1,
+                    pulse2=pulse2,
+                    pulse3=pulse3,
+                    omega1=w1,
+                    omega3=w3,
+                    T=T,
+                    eta=eta,
+                    signature=signature,
+                )
+            )
+
+    assert np.allclose(
+        optimized,
+        pointwise,
+        rtol=1e-12,
+        atol=1e-12,
+    )

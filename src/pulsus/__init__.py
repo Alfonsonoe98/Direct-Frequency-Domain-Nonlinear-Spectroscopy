@@ -43,6 +43,7 @@ from .spectra import (
     impulsive_spectrum,
     short_pulse_rwa_spectrum,
     impulsive_rwa_spectrum,
+    finite_pulse_rwa_spectrum,
 )
 
 from .resolvents import (
@@ -103,6 +104,7 @@ __all__ = [
     "SpectroscopySystem",
     "finite_pulse_signal",
     "finite_pulse_spectrum",
+    "finite_pulse_rwa_spectrum",
     "impulsive_rwa_signal",
     "short_pulse_rwa_signal",
     "short_pulse_rwa_spectrum",

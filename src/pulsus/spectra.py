@@ -362,6 +362,199 @@ def finite_pulse_spectrum(
 
     return left @ right
 
+def finite_pulse_rwa_spectrum(
+    system,
+    pulse1,
+    pulse2,
+    pulse3,
+    omega1,
+    omega3,
+    T,
+    eta,
+    pathway="NR",
+    rho0=None,
+    signature=None,
+):
+    """
+    Evaluate a finite-pulse third-order RWA spectrum on a
+    two-dimensional frequency grid.
+
+    The implementation caches all quantities that depend only
+    on omega1 or omega3 and evaluates the final grid by matrix
+    multiplication.
+
+    Returns
+    -------
+    numpy.ndarray
+        Complex spectrum with shape
+
+            (len(omega3), len(omega1)).
+    """
+    omega1 = np.asarray(
+        omega1,
+        dtype=float,
+    )
+
+    omega3 = np.asarray(
+        omega3,
+        dtype=float,
+    )
+
+    if omega1.ndim != 1 or omega3.ndim != 1:
+        raise ValueError(
+            "omega1 and omega3 must be one-dimensional"
+        )
+
+    if rho0 is None:
+        rho0 = system.rho0
+
+    if rho0 is None:
+        raise ValueError(
+            "An initial state must be supplied either through "
+            "system.rho0 or the rho0 argument"
+        )
+
+    if system.V_plus is None or system.V_minus is None:
+        raise ValueError(
+            "RWA calculations require dipole_plus and "
+            "dipole_minus in SpectroscopySystem"
+        )
+
+    L = np.asarray(
+        system.L,
+        dtype=complex,
+    )
+
+    rho_vec = vec(rho0)
+
+    mu_bra = observable_bra(
+        system.dipole
+    )
+
+    s1, s2, s3 = resolve_signature(
+        pathway=pathway,
+        signature=signature,
+    )
+
+    V1 = (
+        system.V_plus
+        if s1 == 1
+        else system.V_minus
+    )
+
+    V2 = (
+        system.V_plus
+        if s2 == 1
+        else system.V_minus
+    )
+
+    V3 = (
+        system.V_plus
+        if s3 == 1
+        else system.V_minus
+    )
+
+    n = L.shape[0]
+
+    # Waiting-time propagation is identical everywhere
+    # on the frequency grid.
+    U_T = expm(
+        L * T
+    )
+
+    # --------------------------------------------------------
+    # Right-hand objects: depend only on omega1
+    #
+    # R_i = F2 V2 G1 V1 F1 |rho0>>
+    # --------------------------------------------------------
+
+    right = np.empty(
+        (n, omega1.size),
+        dtype=complex,
+    )
+
+    for i, w1 in enumerate(omega1):
+
+        F1 = pulse_dressing_1(
+            L_super=L,
+            omega1=w1,
+            omega_L=pulse1.omega_L,
+            sigma=pulse1.sigma,
+            E0=pulse1.E0,
+            phase=pulse1.phase,
+            sign=s1,
+        )
+
+        F2 = pulse_dressing_2(
+            L_super=L,
+            omega1=w1,
+            omega_L=pulse2.omega_L,
+            sigma=pulse2.sigma,
+            E0=pulse2.E0,
+            phase=pulse2.phase,
+            sign=s2,
+        )
+
+        state = F1 @ rho_vec
+        state = V1 @ state
+
+        state = resolvent_action(
+            L_super=L,
+            omega=w1,
+            rhs=state,
+            eta=eta,
+        )
+
+        state = V2 @ state
+        state = F2 @ state
+
+        right[:, i] = state
+
+    # --------------------------------------------------------
+    # Left-hand objects: depend only on omega3
+    #
+    # L_j = <<mu| G3 V3 exp(LT) F3
+    # --------------------------------------------------------
+
+    left = np.empty(
+        (omega3.size, n),
+        dtype=complex,
+    )
+
+    for j, w3 in enumerate(omega3):
+
+        F3 = pulse_dressing_3(
+            L_super=L,
+            omega3=w3,
+            omega_L=pulse3.omega_L,
+            sigma=pulse3.sigma,
+            E0=pulse3.E0,
+            phase=pulse3.phase,
+            sign=s3,
+        )
+
+        bra_G3 = resolvent_action(
+            L_super=L.T,
+            omega=w3,
+            rhs=mu_bra,
+            eta=eta,
+        )
+
+        left[j, :] = (
+            bra_G3
+            @ V3
+            @ U_T
+            @ F3
+        )
+
+    # --------------------------------------------------------
+    # Entire 2D spectrum
+    #
+    # S[j, i] = L_j R_i
+    # --------------------------------------------------------
+
+    return left @ right
+
 
 def short_pulse_rwa_spectrum(
     system,
