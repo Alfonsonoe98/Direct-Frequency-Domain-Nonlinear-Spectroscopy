@@ -1,2 +1,107 @@
 \section{Numerical Validation}
 \label{sec:validation}
+
+\subsection{External Finite-Pulse Benchmark}
+\label{sec:validation_smallwood}
+
+We first validate the finite-pulse implementation against an
+independent analytical result.
+Smallwood \textit{et al.} derived perturbative third-order solutions of
+the optical Bloch equations for finite-duration Gaussian pulses,
+providing an analytical benchmark for two-dimensional coherent
+spectroscopy beyond the impulsive limit
+\cite{Smallwood2017FinitePulse}.
+The same model was subsequently used by Rose and Krich to validate the
+UF$^2$ finite-pulse algorithm
+\cite{RoseKrich2021UF2}.
+
+We reproduce this three-level rephasing two-dimensional photon-echo
+benchmark using Model B of Sec.~\ref{sec:theory}, since the analytical
+treatment retains finite pulse duration while employing the
+rotating-wave approximation.
+The spectral coordinates are identified as
+$\omega_1=\omega_\tau$ and $\omega_3=\omega_t$.
+Because the two calculations employ different Fourier and response
+normalizations, the analytical Smallwood result is converted to the
+PULSUS convention through the fixed relation
+%
+\begin{equation}
+S_{\mathrm{PULSUS}}
+=
+-i\,2\pi\,S_{\mathrm{Smallwood}} .
+\label{eq:smallwood_conversion}
+\end{equation}
+%
+This factor follows entirely from the respective transform conventions
+and is not fitted to the numerical result.
+
+For the primary comparison, the waiting time is chosen as
+$T=2\pi\sigma$, for which the pulses are sufficiently separated for
+the factorization used in the PULSUS finite-pulse formulation.
+Using the relative Frobenius discrepancy
+%
+\begin{equation}
+\epsilon_{\mathrm{val}}
+=
+\frac{
+\left\|
+S_{\mathrm{num}}-S_{\mathrm{ana}}
+\right\|_F
+}{
+\left\|
+S_{\mathrm{ana}}
+\right\|_F
+},
+\label{eq:validation_error}
+\end{equation}
+%
+PULSUS agrees with the analytical spectrum to
+$\epsilon_{\mathrm{val}}=7.33\times10^{-6}$,
+corresponding to a relative discrepancy of $0.000733\%$.
+For the same benchmark, the discretized UF$^2$ result used here differs
+from the analytical spectrum by $0.343\%$.
+The comparison is intended as an implementation and convention check,
+rather than as a general accuracy ranking between the two numerical
+methods.
+
+Increasing the pulse separation to $T=8\sigma$ reduces the PULSUS
+discrepancy to $1.70\times10^{-8}$.
+The decrease is consistent with the remaining error at finite
+separation arising from the separated-pulse time-ordering
+approximation rather than from the Gaussian Liouvillian dressing
+itself.
+
+The resulting spectra and pointwise discrepancies are shown in
+Fig.~\ref{fig:external_validation}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[
+        width=\textwidth
+    ]{
+        02_external_validation/Figure02_external_validation.pdf
+    }
+
+    \caption{
+    External validation of the finite-pulse implementation against the
+    analytical Gaussian-pulse benchmark of Smallwood \textit{et al.}
+    at waiting time $T=2\pi\sigma$.
+    (a) Magnitude of the analytical Smallwood spectrum.
+    (b) Corresponding UF$^2$ result.
+    (c) PULSUS Model B finite-pulse RWA result.
+    The spectra in panels (a)--(c) are normalized by the maximum
+    magnitude of the analytical spectrum.
+    (d) Pointwise discrepancy between UF$^2$ and the analytical result,
+    shown as
+    $\log_{10}(|\Delta S|/\max|S_{\mathrm{Smallwood}}|)$;
+    the relative $L_2$ discrepancy is $0.343\%$.
+    (e) Corresponding discrepancy for PULSUS Model B, with relative
+    $L_2$ error $0.000733\%$.
+    The frequency axes are expressed in units of the characteristic
+    frequency $\omega_0$.
+    The analytical result is converted to the PULSUS Fourier convention
+    using Eq.~\eqref{eq:smallwood_conversion}, with no fitted
+    normalization or phase factor.
+    }
+    \label{fig:external_validation}
+\end{figure}

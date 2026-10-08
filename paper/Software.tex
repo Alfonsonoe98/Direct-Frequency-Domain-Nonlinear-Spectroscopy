@@ -1,2 +1,232 @@
 \section{PULSUS Implementation}
 \label{sec:software}
+
+The formulation developed in Sec.~\ref{sec:theory} is implemented in
+PULSUS, a Python package for direct frequency-domain spectroscopy of
+open quantum systems.
+The software separates the specification of the molecular system,
+laser pulses, and requested spectral coordinates from the numerical
+evaluation of the response.
+Both the complete light--matter interaction and the controlled
+approximations introduced above are exposed through a common
+Liouville-space representation.
+
+\subsection{System and Pulse Representation}
+\label{sec:software_system}
+
+A molecular model is represented by the \texttt{SpectroscopySystem}
+object.
+The required inputs are the system Hamiltonian $H$ and the complete
+dipole operator $\mu$, together with optional Lindblad collapse
+operators and an initial density matrix.
+From these quantities, PULSUS constructs the field-free Liouvillian
+$\mathcal{L}$ and the complete interaction superoperator $V$ using the
+column-stacking convention of Sec.~\ref{sec:theory}.
+If no initial state is stored with the system, one may instead be
+supplied when a response is evaluated; the stationary state of
+$\mathcal{L}$ can also be obtained directly from the system object.
+
+Calculations employing the molecular rotating-wave approximation
+additionally require the positive- and negative-frequency components
+of the dipole, $\mu_{+}$ and $\mu_{-}$.
+These components are supplied explicitly by the user and are converted
+to the corresponding interaction superoperators $V_{+}$ and $V_{-}$.
+Full-interaction calculations require only the complete dipole
+operator and therefore do not require this decomposition.
+
+Each finite-duration laser pulse is represented by a
+\texttt{GaussianPulse} object specified by its carrier frequency
+$\omega_L$, temporal width $\sigma$, peak field amplitude $E_0$, and
+carrier phase $\Phi$.
+These parameters determine both the scalar Gaussian spectra used in
+the short-pulse model and the Liouvillian dressing operators
+$F_j(\mathcal{L},\omega)$ used in the finite-pulse calculations.
+
+\subsection{Direct Cartesian Spectral Evaluation}
+\label{sec:software_cartesian}
+
+For a Cartesian spectral grid, PULSUS exploits the separable dependence
+of the third-order response on the excitation and detection frequencies.
+Let $\{\omega_{1,i}\}_{i=1}^{N_1}$ and
+$\{\omega_{3,j}\}_{j=1}^{N_3}$ denote the requested frequency axes.
+For the finite-pulse full-interaction model, the excitation-frequency
+dependent vectors are constructed as
+%
+\begin{equation}
+|R_i\rangle\rangle
+=
+F_2(\mathcal{L},\omega_{1,i})
+V
+G(\omega_{1,i})
+V
+F_1(\mathcal{L},\omega_{1,i})
+|\rho_0\rangle\rangle ,
+\label{eq:software_right}
+\end{equation}
+%
+while the detection-frequency dependent covectors are
+%
+\begin{equation}
+\langle\langle L_j|
+=
+\langle\langle\mu|
+G(\omega_{3,j})
+V
+e^{\mathcal{L}T}
+F_3(\mathcal{L},\omega_{3,j}) .
+\label{eq:software_left}
+\end{equation}
+%
+The complete spectrum is then obtained from the contractions
+%
+\begin{equation}
+S_{ji}^{(3)}
+=
+\langle\langle L_j|R_i\rangle\rangle .
+\label{eq:software_factorization}
+\end{equation}
+
+This factorization avoids independently reconstructing the complete
+Liouville-space pathway at every point of the two-dimensional grid.
+For a Liouville-space dimension $n$, PULSUS stores the right-hand
+objects as an $n\times N_1$ matrix and the left-hand objects as an
+$N_3\times n$ matrix.
+The full $N_3\times N_1$ spectrum is therefore produced by a final
+matrix multiplication.
+The waiting-time propagator $e^{\mathcal{L}T}$ is also constructed only
+once for a given waiting time.
+
+The frequency-domain resolvents are applied through linear solves rather
+than by explicitly forming the inverse matrix.
+For each requested frequency, PULSUS solves
+%
+\begin{equation}
+\left[
+(\eta-i\omega)I-\mathcal{L}
+\right]
+|x\rangle\rangle
+=
+|b\rangle\rangle ,
+\label{eq:software_resolvent_solve}
+\end{equation}
+%
+so that $|x\rangle\rangle=G_{\eta}(\omega)|b\rangle\rangle$.
+On the detection side, the corresponding transposed linear system is
+solved to construct the action of
+$\langle\langle\mu|G_{\eta}(\omega_3)$ without explicitly evaluating
+the full resolvent matrix.
+
+The same grid-level organization is used for the finite-pulse RWA,
+short-pulse RWA, impulsive RWA, and full-interaction impulsive models.
+Consequently, the approximation hierarchy of
+Sec.~\ref{sec:theory} can be evaluated on a common set of spectral
+coordinates without changing the underlying grid representation.
+
+\subsection{Arbitrary Spectral Coordinates}
+\label{sec:software_points}
+
+A complete Cartesian grid is not always the most efficient
+representation of a multidimensional spectrum.
+For example, spectral weight may occupy only a restricted region of the
+frequency plane, or a reconstruction procedure may require an
+irregular set of sampling coordinates.
+PULSUS therefore also supports direct evaluation at arbitrary paired
+spectral coordinates.
+
+Given $K$ requested points
+%
+\begin{equation}
+\left\{
+(\omega_{1,k},\omega_{3,k})
+\right\}_{k=1}^{K},
+\end{equation}
+%
+the paired-coordinate interface evaluates only
+%
+\begin{equation}
+S_k^{(3)}
+=
+\langle\langle
+L(\omega_{3,k})
+|
+R(\omega_{1,k})
+\rangle\rangle ,
+\qquad
+k=1,\ldots,K,
+\label{eq:software_points}
+\end{equation}
+%
+rather than constructing the Cartesian product of all distinct
+$\omega_1$ and $\omega_3$ values.
+
+The implementation further identifies repeated values along each
+frequency coordinate.
+If the requested set contains $N_1^{\mathrm{u}}$ unique excitation
+frequencies and $N_3^{\mathrm{u}}$ unique detection frequencies, the
+corresponding right- and left-hand Liouville-space objects are
+constructed only
+$N_1^{\mathrm{u}}$ and $N_3^{\mathrm{u}}$ times, respectively.
+The previously constructed objects are then selected and contracted
+pairwise according to the requested coordinates.
+Consequently, the calculation does not evaluate spectral points that
+are absent from the requested set.
+
+This interface makes irregular masks, locally refined regions, and
+targeted spectral sampling possible without modifying the underlying
+response calculation.
+The selection of sampling coordinates is deliberately separated from
+the spectroscopy solver: PULSUS evaluates the coordinates supplied by
+the user but does not require a particular adaptive-sampling algorithm.
+This separation allows different sampling or reconstruction strategies
+to be built on the same direct frequency-domain response engine.
+
+\subsection{Field-Sign Sectors and Spectral Conventions}
+\label{sec:software_signatures}
+
+PULSUS retains the complete complex-valued third-order response and is
+not restricted to the conventional rephasing and nonrephasing sectors.
+The standard pathway labels provide the aliases
+%
+\begin{equation}
+\mathrm{NR}\rightarrow(+,-,+),
+\qquad
+\mathrm{R}\rightarrow(-,+,+),
+\end{equation}
+%
+but an arbitrary field-sign signature
+%
+\begin{equation}
+(s_1,s_2,s_3),
+\qquad
+s_j\in\{-1,+1\},
+\end{equation}
+%
+may instead be supplied explicitly.
+This permits all eight third-order field-sign sectors to be evaluated
+within the same finite-pulse or impulsive response framework and is
+used below to resolve the non-rotating-wave contributions to the
+nonrephasing signal.
+
+For Cartesian calculations, spectra are returned as complex arrays
+with the convention
+%
+\begin{equation}
+S_{ji}
+=
+S^{(3)}(\omega_{3,j},T,\omega_{1,i}),
+\end{equation}
+%
+so that the first array dimension corresponds to the detection
+frequency and the second to the excitation frequency.
+PULSUS uses signed first-coherence frequencies internally.
+Thus, under the convention adopted here, the nonrephasing sector is
+evaluated for $\omega_1>0$, whereas the rephasing sector is evaluated
+for $\omega_1<0$.
+For visualization, the latter may be displayed against the positive
+spectroscopic excitation coordinate $-\omega_1$.
+
+The numerical routines preserve the full complex response throughout
+the calculation.
+Real, imaginary, or magnitude spectra can therefore be selected only
+at the analysis or visualization stage rather than being fixed by the
+response solver itself.

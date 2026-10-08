@@ -42,7 +42,7 @@ git -C "$MIRROR" commit -m "$MSG"
 
 echo
 echo "Pushing manuscript to Overleaf..."
-git -C "$MIRROR" push
+git -C "$MIRROR" push overleaf-paper HEAD:main
 
 echo
 echo "Manuscript synchronized with Overleaf."
