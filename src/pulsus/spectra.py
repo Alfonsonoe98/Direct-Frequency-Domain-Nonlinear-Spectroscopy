@@ -362,6 +362,213 @@ def finite_pulse_spectrum(
 
     return left @ right
 
+def finite_pulse_points(
+    system,
+    pulse1,
+    pulse2,
+    pulse3,
+    omega1,
+    omega3,
+    T,
+    eta,
+    pathway="NR",
+    rho0=None,
+    signature=None,
+):
+    """
+    Evaluate a finite-pulse third-order spectrum at paired
+    frequency coordinates.
+
+    Unlike ``finite_pulse_spectrum``, which evaluates the full
+    Cartesian product of two frequency axes, this function
+    evaluates only the requested pairs
+
+        (omega1[k], omega3[k]).
+
+    Repeated omega1 and omega3 values are cached so that each
+    unique frequency-dependent object is constructed only once.
+
+    Parameters
+    ----------
+    omega1, omega3 : array_like
+        One-dimensional arrays of equal length defining paired
+        spectral coordinates.
+
+    Returns
+    -------
+    numpy.ndarray
+        Complex spectrum values with shape ``(len(omega1),)``.
+    """
+
+    omega1 = np.asarray(
+        omega1,
+        dtype=float,
+    )
+
+    omega3 = np.asarray(
+        omega3,
+        dtype=float,
+    )
+
+    if omega1.ndim != 1 or omega3.ndim != 1:
+        raise ValueError(
+            "omega1 and omega3 must be one-dimensional"
+        )
+
+    if omega1.shape != omega3.shape:
+        raise ValueError(
+            "omega1 and omega3 must have the same shape"
+        )
+
+    if rho0 is None:
+        rho0 = system.rho0
+
+    if rho0 is None:
+        raise ValueError(
+            "An initial state must be supplied either through "
+            "system.rho0 or the rho0 argument"
+        )
+
+    L = np.asarray(
+        system.L,
+        dtype=complex,
+    )
+
+    V = np.asarray(
+        system.V,
+        dtype=complex,
+    )
+
+    rho_vec = vec(rho0)
+
+    mu_bra = observable_bra(
+        system.dipole
+    )
+
+    s1, s2, s3 = resolve_signature(
+        pathway=pathway,
+        signature=signature,
+    )
+
+    n = L.shape[0]
+
+    U_T = expm(
+        L * T
+    )
+
+    # --------------------------------------------------------
+    # Unique omega1-dependent right-hand objects
+    # --------------------------------------------------------
+
+    unique_omega1, inverse_omega1 = np.unique(
+        omega1,
+        return_inverse=True,
+    )
+
+    right = np.empty(
+        (n, unique_omega1.size),
+        dtype=complex,
+    )
+
+    for i, w1 in enumerate(unique_omega1):
+
+        F1 = pulse_dressing_1(
+            L_super=L,
+            omega1=w1,
+            omega_L=pulse1.omega_L,
+            sigma=pulse1.sigma,
+            E0=pulse1.E0,
+            phase=pulse1.phase,
+            sign=s1,
+        )
+
+        F2 = pulse_dressing_2(
+            L_super=L,
+            omega1=w1,
+            omega_L=pulse2.omega_L,
+            sigma=pulse2.sigma,
+            E0=pulse2.E0,
+            phase=pulse2.phase,
+            sign=s2,
+        )
+
+        state = F1 @ rho_vec
+        state = V @ state
+
+        state = resolvent_action(
+            L_super=L,
+            omega=w1,
+            rhs=state,
+            eta=eta,
+        )
+
+        state = V @ state
+        state = F2 @ state
+
+        right[:, i] = state
+
+    # --------------------------------------------------------
+    # Unique omega3-dependent left-hand objects
+    # --------------------------------------------------------
+
+    unique_omega3, inverse_omega3 = np.unique(
+        omega3,
+        return_inverse=True,
+    )
+
+    left = np.empty(
+        (unique_omega3.size, n),
+        dtype=complex,
+    )
+
+    for j, w3 in enumerate(unique_omega3):
+
+        F3 = pulse_dressing_3(
+            L_super=L,
+            omega3=w3,
+            omega_L=pulse3.omega_L,
+            sigma=pulse3.sigma,
+            E0=pulse3.E0,
+            phase=pulse3.phase,
+            sign=s3,
+        )
+
+        bra_G3 = resolvent_action(
+            L_super=L.T,
+            omega=w3,
+            rhs=mu_bra,
+            eta=eta,
+        )
+
+        left[j, :] = (
+            bra_G3
+            @ V
+            @ U_T
+            @ F3
+        )
+
+    # --------------------------------------------------------
+    # Evaluate only the requested frequency pairs
+    #
+    # S[k] = L(omega3[k]) R(omega1[k])
+    # --------------------------------------------------------
+
+    left_selected = left[
+        inverse_omega3,
+        :
+    ]
+
+    right_selected = right[
+        :,
+        inverse_omega1,
+    ]
+
+    return np.einsum(
+        "ki,ik->k",
+        left_selected,
+        right_selected,
+    )
+
 def finite_pulse_rwa_spectrum(
     system,
     pulse1,

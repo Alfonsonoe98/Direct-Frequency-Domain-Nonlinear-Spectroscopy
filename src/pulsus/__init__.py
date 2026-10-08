@@ -40,6 +40,7 @@ from .system import SpectroscopySystem
 from .spectra import (
     response_grid,
     finite_pulse_spectrum,
+    finite_pulse_points,
     impulsive_spectrum,
     short_pulse_rwa_spectrum,
     impulsive_rwa_spectrum,
@@ -104,6 +105,7 @@ __all__ = [
     "SpectroscopySystem",
     "finite_pulse_signal",
     "finite_pulse_spectrum",
+    "finite_pulse_points",
     "finite_pulse_rwa_spectrum",
     "impulsive_rwa_signal",
     "short_pulse_rwa_signal",
