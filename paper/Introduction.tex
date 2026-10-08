@@ -1,7 +1,86 @@
 \section{Introduction}
 \label{sec:introduction}
 
-% CENTRAL QUESTION:
-% Under what physical conditions do finite-pulse molecular dynamics
-% and/or non-RWA interactions make the conventional impulsive-RWA
-% description quantitatively inaccurate?
+Multidimensional coherent spectroscopy provides direct access to
+correlations between excitation and detection frequencies and has
+become an important tool for resolving electronic couplings,
+coherences, relaxation pathways, and many-body interactions in
+molecular and condensed-phase systems
+\cite{Abramavicius2009CoherentMultidimensional}.
+Interpreting these spectra generally requires comparison with a
+microscopic dynamical model, making efficient numerical calculation of
+nonlinear optical response functions an important part of the
+spectroscopic analysis.
+
+Theoretical treatments are often simplified by assuming impulsive
+optical interactions and applying the rotating-wave approximation
+(RWA).
+These approximations provide a compact pathway picture and are
+appropriate in broad regions of parameter space, but neither is
+controlled solely by the statement that a pulse is ``short.''
+Finite pulse duration introduces spectral filtering and can allow
+substantial molecular evolution during the interaction, while
+sufficiently broadband pulses can also reduce the separation between
+resonant and counter-rotating light--matter processes.
+Analytical finite-pulse treatments have shown that pulse duration can
+produce nontrivial changes in multidimensional spectra, including
+amplitude and phase corrections that are absent in the impulsive
+limit
+\cite{Smallwood2017FinitePulse}.
+Consequently, the validity of the impulsive and rotating-wave
+approximations must ultimately be assessed relative to the molecular
+and optical timescales of the system under study.
+
+A number of computational approaches have been developed to include
+finite pulse shapes in nonlinear spectroscopy.
+For example, the UF$^2$ method evaluates perturbative nonlinear
+signals using Fourier convolution in the eigenbasis of the
+Liouvillian and can treat arbitrary pulse envelopes efficiently for
+open quantum systems
+\cite{RoseKrich2021UF2}.
+Other open-source frameworks provide flexible numerical tools for
+constructing and evaluating nonlinear optical response functions
+\cite{shah2023qudpy}.
+These methods have substantially expanded the range of finite-pulse
+spectroscopy that can be treated numerically.
+The present work addresses a complementary computational question:
+whether the multidimensional response can be evaluated directly at
+the desired spectral coordinates while retaining both finite-pulse
+molecular dynamics and, when required, the complete light--matter
+interaction.
+
+Here we introduce PULSUS, a Python implementation of a direct
+frequency-domain Liouville-space formulation for multidimensional
+spectroscopy of open quantum systems.
+The method represents the coherence-frequency intervals through
+Liouvillian resolvents and incorporates finite Gaussian pulses through
+operator-valued functions of the field-free Liouvillian.
+This construction avoids first generating a time-domain interferogram
+for the excitation and detection dimensions and permits the response
+to be evaluated directly on either Cartesian frequency grids or
+arbitrary sets of paired spectral coordinates.
+The complete interaction superoperator may be retained, while the RWA,
+short-pulse, and impulsive limits arise as controlled reductions of the
+same formulation.
+
+This common framework enables both computational and physical
+comparisons.
+We validate the finite-pulse implementation against the analytical
+Gaussian-pulse benchmark of Smallwood \textit{et al.} and verify
+agreement between Cartesian-grid and arbitrary-coordinate evaluations.
+We then demonstrate targeted spectral sampling in which the evaluated
+frequency coordinates are concentrated toward regions containing
+significant spectral weight.
+Finally, using a coupled electronic dimer, we construct a hierarchy of
+four models that separately isolates the effects of the RWA,
+molecular evolution during the pulse envelopes, and finite spectral
+bandwidth.
+The resulting regime map shows that the total error of the
+impulsive-RWA approximation is nonmonotonic in pulse duration and is
+smallest in an intermediate regime.
+For ultrashort pulses, the dominant nonrephasing RWA correction is
+traced to a coupling-enabled $(+,+,-)$ field-sign sector that is
+removed by the conventional RWA.
+Together, these results establish PULSUS as both a direct
+frequency-domain computational tool and a framework for diagnosing
+which approximations control a given multidimensional spectrum.

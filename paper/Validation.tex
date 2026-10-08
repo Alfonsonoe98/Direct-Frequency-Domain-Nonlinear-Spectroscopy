@@ -105,3 +105,209 @@ Fig.~\ref{fig:external_validation}.
     }
     \label{fig:external_validation}
 \end{figure}
+
+\subsection{Internal Consistency of Spectral Evaluation}
+\label{sec:validation_internal}
+
+We next verify that the Cartesian-grid and arbitrary-coordinate
+interfaces evaluate the same underlying response.
+A finite-pulse Model-A spectrum was first calculated on a Cartesian
+frequency grid using \texttt{finite\_pulse\_spectrum}.
+The same spectral coordinates were then supplied as paired points to
+\texttt{finite\_pulse\_points}, and the resulting values were reshaped
+to the original grid.
+
+The relative discrepancy was evaluated as
+%
+\begin{equation}
+\epsilon_{\mathrm{grid/pts}}
+=
+\frac{
+\left\|
+S_{\mathrm{points}}-S_{\mathrm{grid}}
+\right\|_F
+}{
+\left\|
+S_{\mathrm{grid}}
+\right\|_F
+}.
+\label{eq:grid_points_error}
+\end{equation}
+%
+For the benchmark calculation,
+%
+\begin{equation}
+\epsilon_{\mathrm{grid/pts}}
+=
+1.14\times10^{-16},
+\end{equation}
+%
+showing agreement at numerical precision.
+This test confirms that arbitrary-coordinate evaluation changes only
+the set of requested spectral coordinates and not the underlying
+finite-pulse response calculation.
+
+The implementation additionally reuses frequency-dependent
+Liouville-space objects whenever repeated values of $\omega_1$ or
+$\omega_3$ occur in the requested coordinate set.
+This makes the paired-coordinate interface suitable for sparse,
+structured, and locally refined sampling patterns without introducing
+a separate spectroscopic approximation.
+
+\subsection{Targeted Frequency Sampling}
+\label{sec:validation_sampling}
+
+The arbitrary-coordinate interface also permits the spectral sampling
+pattern to be adapted to the region in which the response carries
+significant weight.
+To demonstrate this capability, we use the same coupled-dimer model
+analyzed in Sec.~\ref{sec:regime_study} and consider the full
+finite-pulse nonrephasing response (Model A) at
+$J=40~\mathrm{meV}$, $T=100~\mathrm{fs}$, and a pulse intensity
+FWHM of $20~\mathrm{fs}$.
+
+A dense reference spectrum was first evaluated on a
+$641\times641$ Cartesian grid spanning
+$1.75$--$2.25~\mathrm{eV}$ along both frequency axes.
+A coarse $21\times21$ survey was then used to identify the region
+containing the dominant spectral weight.
+Using a threshold of $10\%$ of the maximum response magnitude,
+followed by a one-cell padding of the selected region, gives the target
+window
+%
+\begin{equation}
+1.925 \le E_1 \le 2.075~\mathrm{eV},
+\qquad
+1.925 \le E_3 \le 2.100~\mathrm{eV},
+\label{eq:sampling_target_window}
+\end{equation}
+%
+where $E_j=\hbar\omega_j$.
+
+We compare three sampling strategies at approximately equal coordinate
+budgets: a uniform global grid, a separable grid restricted to the
+target region, and a structured pattern that combines coarse global
+coverage with denser sampling in the target region.
+In each case, the sampled values are interpolated back onto the dense
+reference grid, and the reconstruction error is quantified from the
+full complex spectrum as
+%
+\begin{equation}
+\epsilon_{\mathrm{rec}}
+=
+\frac{
+\left\|
+S_{\mathrm{rec}}-S_{\mathrm{ref}}
+\right\|_F
+}{
+\left\|
+S_{\mathrm{ref}}
+\right\|_F
+}.
+\label{eq:reconstruction_error}
+\end{equation}
+%
+This quantity measures the error introduced by the sampling and
+reconstruction procedure; it is distinct from the physical
+approximation errors defined in Sec.~\ref{sec:theory}.
+
+At a coordinate budget of approximately $3.7\times10^3$ points,
+the uniform global sampling strategy gives a reconstruction error of
+$21.3\%$.
+Restricting the sampling density toward the identified spectral region
+reduces the error to $6.21\%$ for the targeted separable grid and to
+$3.24\%$ for the structured adaptive pattern.
+Thus, for this benchmark, redistributing a fixed sampling budget toward
+the spectrally active region substantially improves reconstruction of
+the full complex response.
+The corresponding spectra and sampling patterns are shown in
+Fig.~\ref{fig:targeted_sampling}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[
+        width=\textwidth
+    ]{
+        03_targeted_frequency_sampling/Figure03_targeted_frequency_sampling.pdf
+    }
+
+    \caption{
+    Targeted frequency sampling of the finite-pulse nonrephasing
+    spectrum for the coupled-dimer benchmark.
+    (a) Dense $641\times641$ reference spectrum.
+    (b) Reconstruction from a uniform global grid with
+    $N=3721$ sampled coordinates, giving
+    $\epsilon_{\mathrm{rec}}=21.3\%$.
+    (c) Reconstruction obtained from the structured adaptive sampling
+    pattern with the same coordinate budget,
+    giving $\epsilon_{\mathrm{rec}}=3.24\%$.
+    Panels (a)--(c) show the response magnitude normalized by the
+    maximum of the dense reference spectrum.
+    (d) Initial $21\times21$ survey used to identify the spectrally
+    active region.
+    The white contour indicates the $10\%$ magnitude threshold and the
+    dashed rectangle shows the padded target window defined in
+    Eq.~\eqref{eq:sampling_target_window}.
+    (e) Uniform global sampling grid with $N=3721$.
+    (f) Targeted separable grid with $N=3660$, concentrating sampling
+    along frequencies intersecting the target region.
+    (g) Structured adaptive coordinate cloud with $N=3721$, combining
+    coarse global coverage with dense sampling inside the target
+    window.
+    The sampling-coordinate selection is performed externally to the
+    PULSUS response solver; each requested coordinate is evaluated
+    directly using the paired-coordinate interface described in
+    Sec.~\ref{sec:software_points}.
+    }
+    \label{fig:targeted_sampling}
+\end{figure}
+
+The advantage of redistributing the sampling coordinates persists over
+a range of sampling budgets, as shown in
+Fig.~\ref{fig:sampling_efficiency}.
+For a reconstruction error of approximately $10\%$, the uniform global
+grid requires $8649$ evaluated spectral coordinates and a median
+wall-clock time of $13.87~\mathrm{ms}$.
+The structured adaptive strategy reaches a comparable error
+($9.10\%$) using $1392$ evaluated coordinates and
+$7.79~\mathrm{ms}$, including the initial survey.
+For this benchmark, this corresponds to a reduction of approximately
+$6.2\times$ in the number of evaluated spectral coordinates and
+$1.8\times$ in wall-clock time.
+The targeted separable strategy gives intermediate performance,
+showing that the gain arises progressively as the coordinate budget is
+concentrated toward the spectrally active region.
+These factors are specific to the present model and reconstruction
+procedure and are not intended as universal performance bounds.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[
+        width=\textwidth
+    ]{
+        04_sampling_efficiency/Figure04_sampling_efficiency.pdf
+    }
+
+    \caption{
+    Sampling and computational efficiency of the arbitrary-coordinate
+    finite-pulse calculation.
+    (a) Relative complex spectral reconstruction error,
+    Eq.~\eqref{eq:reconstruction_error}, as a function of the number
+    of evaluated spectral coordinates for the uniform global grid,
+    targeted separable grid, and structured adaptive coordinate cloud.
+    (b) The same reconstruction error plotted against the median
+    wall-clock time required to obtain the sampled spectrum.
+    Horizontal dashed lines indicate representative reconstruction
+    errors of $10\%$, $5\%$, and $2\%$.
+    Near the $10\%$ level, the uniform calculation requires
+    $8649$ coordinates and $13.87~\mathrm{ms}$, whereas the structured
+    adaptive strategy reaches $9.10\%$ error using $1392$ coordinates
+    and $7.79~\mathrm{ms}$.
+    The timing for the structured strategy includes the initial coarse
+    survey used to identify the target region.
+    The observed efficiency gains are specific to this benchmark and
+    depend on the localization of the spectral response and on the
+    reconstruction strategy.
+    }
+    \label{fig:sampling_efficiency}
+\end{figure}

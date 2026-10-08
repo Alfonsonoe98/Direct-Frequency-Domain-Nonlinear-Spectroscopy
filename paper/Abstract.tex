@@ -1,5 +1,36 @@
 \begin{abstract}
 
-% Write after the main results are established.
+We introduce PULSUS, a direct frequency-domain framework for
+multidimensional spectroscopy of open quantum systems beyond the
+impulsive rotating-wave approximation.
+The method represents coherence-frequency intervals through
+Liouvillian resolvents and incorporates finite Gaussian pulses through
+operator-valued functions of the field-free Liouvillian.
+This construction permits spectra to be evaluated directly on
+Cartesian grids or at arbitrary paired spectral coordinates while
+retaining molecular evolution during the pulse envelopes and, when
+required, the complete light--matter interaction.
+
+The finite-pulse implementation is validated against an analytical
+Gaussian-pulse benchmark, with a relative discrepancy of
+$7.33\times10^{-6}$ at a pulse separation of $T=2\pi\sigma$.
+Arbitrary-coordinate and Cartesian-grid evaluations agree to numerical
+precision.
+For a coupled-dimer benchmark, targeted spectral sampling reduces the
+number of evaluated coordinates required for approximately $10\%$
+reconstruction error by a factor of about $6.2$, with a corresponding
+wall-clock reduction of about $1.8$.
+
+A controlled hierarchy of four models is then used to separate errors
+arising from the rotating-wave approximation, molecular evolution
+during finite pulses, and finite spectral bandwidth.
+The resulting regime map reveals a nonmonotonic dependence of the total
+impulsive-RWA error on pulse duration, with the highest accuracy
+occurring in an intermediate regime.
+For ultrashort pulses, the dominant nonrephasing beyond-RWA correction
+is traced to a coupling-enabled $(+,+,-)$ field-sign sector.
+PULSUS therefore provides both a direct computational route to
+finite-pulse multidimensional spectra and a framework for diagnosing
+the approximations that control them.
 
 \end{abstract}
