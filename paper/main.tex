@@ -1,11 +1,16 @@
-\documentclass[11pt]{article}
+\documentclass[
+    aip,
+    jcp,
+    amsmath,
+    amssymb,
+    preprint,
+    numerical
+]{revtex4-2}
 
 % ============================================================
 % BASIC MATHEMATICS
 % ============================================================
 
-\usepackage{amsmath}
-\usepackage{amssymb}
 \usepackage{mathtools}
 \usepackage{physics}
 \usepackage{bm}
@@ -26,11 +31,8 @@
 % ============================================================
 
 \usepackage{graphicx}
-\usepackage{float}
-\usepackage{subcaption}
 \usepackage{booktabs}
 \usepackage[dvipsnames]{xcolor}
-\usepackage{tikz}
 
 \graphicspath{{figures/}}
 
@@ -38,19 +40,8 @@
 % PAGE FORMAT
 % ============================================================
 
-\usepackage[margin=1in]{geometry}
 \usepackage{microtype}
 
-% ============================================================
-% COLORS
-% ============================================================
-
-
-% ============================================================
-% REFERENCES
-% ============================================================
-
-\usepackage[numbers,sort&compress]{natbib}
 
 % ============================================================
 % LINKS
@@ -71,30 +62,32 @@
 
 \usepackage[nameinlink,noabbrev]{cleveref}
 
-% ============================================================
-% DOCUMENT INFORMATION
-% ============================================================
-
-\title{
-    \textbf{Beyond the Impulsive Rotating-Wave Approximation
-    in Multidimensional Spectroscopy}\\[0.4em]
-    \large Finite-Pulse Liouvillian Dressing with PULSUS
-}
-
-\author{
-    Alfonso Castillo
-    \and
-    Eric R. Bittner
-}
-
-\date{\today}
 
 % ============================================================
 % DOCUMENT
 % ============================================================
 
 \begin{document}
+\title{
+PULSUS: Direct Frequency-Domain Multidimensional Spectroscopy
+Beyond the Impulsive Rotating-Wave Approximation
+}
 
+\author{Alfonso Castillo-Gonzalez}
+\affiliation{
+Department of Physics,
+University of Houston,
+Houston, Texas 77204-5005, USA
+}
+
+\author{Eric R. Bittner}
+\affiliation{
+Department of Physics,
+University of Houston,
+Houston, Texas 77204-5005, USA
+}
+
+\date{\today}
 \maketitle
 
 \input{Abstract}
@@ -109,7 +102,6 @@
 
 \input{RegimeStudy}
 
-\input{Experiment}
 
 \input{Conclusion}
 
