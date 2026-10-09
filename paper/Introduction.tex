@@ -6,7 +6,10 @@ correlations between excitation and detection frequencies and has
 become an important tool for resolving electronic couplings,
 coherences, relaxation pathways, and many-body interactions in
 molecular and condensed-phase systems
-\cite{Abramavicius2009CoherentMultidimensional}.
+\cite{
+Abramavicius2009CoherentMultidimensional,
+Oliver2018MultidimensionalReview,
+Hybl1998TwoDimensional}.
 Interpreting these spectra generally requires comparison with a
 microscopic dynamical model, making efficient numerical calculation of
 nonlinear optical response functions an important part of the
@@ -15,56 +18,78 @@ spectroscopic analysis.
 Theoretical treatments are often simplified by assuming impulsive
 optical interactions and applying the rotating-wave approximation
 (RWA).
-These approximations provide a compact pathway picture and are
-appropriate in broad regions of parameter space, but neither is
-controlled solely by the statement that a pulse is ``short.''
-Finite pulse duration introduces spectral filtering and can allow
-substantial molecular evolution during the interaction, while
-sufficiently broadband pulses can also reduce the separation between
-resonant and counter-rotating light--matter processes.
-Analytical finite-pulse treatments have shown that pulse duration can
-produce nontrivial changes in multidimensional spectra, including
-amplitude and phase corrections that are absent in the impulsive
-limit
+These approximations provide a compact pathway picture and are useful
+over broad regions of parameter space, but finite pulse duration can
+introduce effects that are absent from the impulsive description.
+Finite-pulse treatments have demonstrated modifications of spectral
+amplitudes, phases, line shapes, and observed dynamical signatures,
+with the importance of these effects depending on pulse bandwidth,
+resonance conditions, and the molecular dynamics occurring during the
+interaction
+\cite{
+Smallwood2017FinitePulse,
+Perlik2017FinitePulse,
+DoGelinTan2017FinitePulse,
+Leng2017FinitePulseWidth}.
+For sufficiently broadband fields, the spectral suppression of
+counter-rotating light--matter processes can become less effective,
+allowing non-RWA contributions to become appreciable
 \cite{Smallwood2017FinitePulse}.
 Consequently, the validity of the impulsive and rotating-wave
-approximations must ultimately be assessed relative to the molecular
-and optical timescales of the system under study.
+approximations must ultimately be assessed relative to the molecular and
+optical timescales of the system under study.
 
-A number of computational approaches have been developed to include
-finite pulse shapes in nonlinear spectroscopy.
-For example, the UF$^2$ method evaluates perturbative nonlinear
-signals using Fourier convolution in the eigenbasis of the
-Liouvillian and can treat arbitrary pulse envelopes efficiently for
-open quantum systems
+A variety of analytical and numerical strategies have been developed
+for treating nonlinear spectroscopy outside the simplest impulsive
+picture.
+Mixed time--frequency formulations and finite-pulse response
+constructions provide alternatives to direct multidimensional
+time-domain propagation
+\cite{
+GelinDomcke2016AlternativeView,
+DoGelinTan2017FinitePulse}.
+Frequency-domain Green-function approaches have also been used to
+describe nonlinear multi-exciton signals
+\cite{Roslyak2013Quasiparticle}.
+For open quantum systems, the UF$^2$ method evaluates nonlinear signals
+through Fourier convolution in the eigenbasis of the Liouvillian and
+can efficiently incorporate arbitrary sampled pulse envelopes
 \cite{RoseKrich2021UF2}.
-Other open-source frameworks provide flexible numerical tools for
-constructing and evaluating nonlinear optical response functions
-\cite{shah2023qudpy}.
-These methods have substantially expanded the range of finite-pulse
-spectroscopy that can be treated numerically.
-The present work addresses a complementary computational question:
-whether the multidimensional response can be evaluated directly at
-the desired spectral coordinates while retaining both finite-pulse
-molecular dynamics and, when required, the complete light--matter
-interaction.
+Automated diagram generation further provides a systematic treatment
+of the additional temporal orderings that arise when pulses overlap
+\cite{RoseKrich2021DiagramGenerator}.
+Open-source packages such as QuDPy and QDT provide complementary
+frameworks for constructing and evaluating multidimensional optical
+response functions
+\cite{shah2023qudpy,Kenneweg2024QDT}.
+
+The present work addresses a different but complementary computational
+organization of the problem.
+We consider whether the coherence-frequency coordinates can be
+evaluated directly, without first constructing a two-dimensional
+time-domain interferogram, while retaining molecular evolution during
+finite Gaussian pulse envelopes and, when required, the complete
+light--matter interaction.
+The treatment remains perturbative in the optical field; strong-field
+and nonperturbative two-dimensional spectroscopy constitute a distinct
+regime that has been considered elsewhere
+\cite{
+AndaCole2021BeyondPerturbative,
+BressanVanThor2021IntenseFields}.
 
 Here we introduce PULSUS, a Python implementation of a direct
 frequency-domain Liouville-space formulation for multidimensional
 spectroscopy of open quantum systems.
-The method represents the coherence-frequency intervals through
-Liouvillian resolvents and incorporates finite Gaussian pulses through
+The coherence-frequency intervals are represented through Liouvillian
+resolvents, while finite Gaussian pulses are incorporated through
 operator-valued functions of the field-free Liouvillian.
-This construction avoids first generating a time-domain interferogram
-for the excitation and detection dimensions and permits the response
-to be evaluated directly on either Cartesian frequency grids or
-arbitrary sets of paired spectral coordinates.
+This construction permits the response to be evaluated directly on
+either Cartesian frequency grids or arbitrary sets of paired spectral
+coordinates.
 The complete interaction superoperator may be retained, while the RWA,
 short-pulse, and impulsive limits arise as controlled reductions of the
 same formulation.
 
-This common framework enables both computational and physical
-comparisons.
 We validate the finite-pulse implementation against the analytical
 Gaussian-pulse benchmark of Smallwood \textit{et al.} and verify
 agreement between Cartesian-grid and arbitrary-coordinate evaluations.
@@ -78,9 +103,10 @@ bandwidth.
 The resulting regime map shows that the total error of the
 impulsive-RWA approximation is nonmonotonic in pulse duration and is
 smallest in an intermediate regime.
-For ultrashort pulses, the dominant nonrephasing RWA correction is
-traced to a coupling-enabled $(+,+,-)$ field-sign sector that is
-removed by the conventional RWA.
-Together, these results establish PULSUS as both a direct
-frequency-domain computational tool and a framework for diagnosing
+For ultrashort pulses, the dominant
+nonrephasing beyond-RWA correction is traced to a coupling-enabled
+molecular-interaction sequence
+$\mathbf{m}=(+,+,-)$ that is removed by the conventional RWA.
+Together, these results establish PULSUS as a direct
+frequency-domain computational tool and as a framework for diagnosing
 which approximations control a given multidimensional spectrum.

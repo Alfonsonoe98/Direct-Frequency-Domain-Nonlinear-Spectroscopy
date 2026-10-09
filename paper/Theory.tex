@@ -12,6 +12,12 @@ finite-pulse approximations.
 
 We consider a finite-dimensional open quantum system described by a
 density operator $\rho$ and a time-independent system Hamiltonian $H$.
+Liouville-space descriptions of dissipative multidimensional
+spectroscopy provide a standard framework for incorporating relaxation
+and dephasing into nonlinear response calculations
+\cite{
+Abramavicius2009CoherentMultidimensional,
+SandaMukamel2008StochasticLiouville}.
 In the absence of an external field, the dynamics are assumed to be
 Markovian and are written in Lindblad form,
 %
@@ -390,6 +396,12 @@ V_{\downarrow}.
 %
 Within the rotating-wave approximation (RWA), the interaction sequence
 is restricted according to the selected optical phase signature.
+This pathway decomposition is the conventional basis for separating
+rephasing, nonrephasing, and related phase-matched multidimensional
+signals
+\cite{
+Hybl1998TwoDimensional,
+Abramavicius2009CoherentMultidimensional}.
 
 For the nonrephasing (NR) branch, the RWA signature is
 %
@@ -544,7 +556,10 @@ C_j
 For finite-width pulses, the light--matter interactions may occur away
 from the nominal pulse centers. We continue to assume that the pulses
 are sufficiently separated that their chronological ordering is well
-defined. In particular, the causality factor associated with the second
+defined. When pulse envelopes overlap appreciably, additional temporal
+orderings and response pathways can contribute and must in general be
+treated explicitly
+\cite{RoseKrich2021DiagramGenerator}. In particular, the causality factor associated with the second
 and third interactions is approximated as
 %
 \begin{equation}
@@ -557,6 +572,14 @@ and third interactions is approximated as
 over the region in which the pulse envelopes have appreciable weight.
 This separated-pulse approximation does not neglect molecular evolution
 during the pulse durations.
+
+Previous finite-pulse formulations have shown that pulse-envelope
+effects can enter the nonlinear response in ways that depend on the
+molecular pathway and dynamics
+\cite{
+Smallwood2017FinitePulse,
+Perlik2017FinitePulse,
+DoGelinTan2017FinitePulse}.
 
 Retaining that evolution leads naturally to operator-valued pulse
 factors. For a field-sign signature
@@ -775,7 +798,7 @@ $C\rightarrow D$ removes the finite spectral bandwidth of the pulses.
 This hierarchy will be used below to identify which approximation
 dominates the error in different spectroscopic regimes.
 
-\begin{figure}[t]
+\begin{figure*}[t]
     \centering
     \includegraphics[
         width=\textwidth
@@ -807,7 +830,7 @@ dominates the error in different spectroscopic regimes.
     $A-D$ measures the total impulsive-RWA error.
     }
     \label{fig:method_workflow}
-\end{figure}
+\end{figure*}
 
 \subsection{Physical Regimes and Dimensionless Parameters}
 \label{sec:physical_regimes}
@@ -865,7 +888,8 @@ $\Omega\simeq\omega_L$, giving the approximate scale
 Large $\chi_{\mathrm{RWA}}$ corresponds to many carrier oscillations
 within the pulse envelope and favors dynamical suppression of
 counter-rotating contributions, whereas sufficiently small
-$\chi_{\mathrm{RWA}}$ indicates that the RWA may fail.
+$\chi_{\mathrm{RWA}}$ indicates that the RWA may fail
+\cite{Smallwood2017FinitePulse}.
 
 The conventional short-pulse RWA description therefore occupies an
 intermediate timescale regime that can be summarized schematically as

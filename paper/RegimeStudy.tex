@@ -78,16 +78,24 @@ positive- and negative-frequency components are obtained directly from
 the excitation-raising and excitation-lowering terms in
 Eq.~\eqref{eq:dimer_dipole}.
 
-Dissipation is described by independent local Lindblad relaxation
-channels with rate
-%
+Dissipation is described by independent local zero-temperature
+Lindblad relaxation channels with jump operators
+
 \begin{equation}
-\gamma = 0.020~\mathrm{fs}^{-1},
-\label{eq:dimer_gamma}
+L_a=\sqrt{\gamma}\,a_a,
+\qquad
+L_b=\sqrt{\gamma}\,a_b,
 \end{equation}
-%
-and zero thermal occupation.
-The initial state is the electronic ground state.
+
+and a common relaxation rate
+
+\begin{equation}
+\gamma = 0.020~\mathrm{fs}^{-1}.
+\end{equation}
+
+Because the thermal occupation is taken to be zero, no upward thermal
+jump operators are included. The initial state is the electronic
+ground state.
 
 All three laser pulses are taken to be identical, transform-limited
 Gaussians centered at
@@ -187,41 +195,50 @@ removing the finite pulse bandwidth altogether.
 
 The $A-B$ comparison isolates the effect of the rotating-wave
 approximation while retaining the same finite-pulse treatment.
-Model A uses the complete interaction superoperator $V$, whereas
-Model B retains only the resonant raising- and lowering-frequency
-components associated with the selected spectroscopic pathway.
-For the nonrephasing signal, the conventional RWA contribution has the
-field-sign signature
-%
-\begin{equation}
-(+,-,+).
-\label{eq:nr_rwa_signature}
-\end{equation}
+Model A uses the complete interaction superoperator
+$V=V_{+}+V_{-}$ at each molecular interaction, whereas Model B
+retains only the resonant sequence of raising- and lowering-frequency
+molecular interactions associated with the selected spectroscopic
+pathway.
 
-When the complete interaction is retained, the finite-pulse
-third-order response can be decomposed into all eight combinations
+For the nonrephasing signal, the phase-matched field signature remains
+fixed at
 %
 \begin{equation}
-(s_1,s_2,s_3),
+\mathbf{s}_{\mathrm{NR}}=(+,-,+).
+\end{equation}
+%
+To resolve the molecular origin of the beyond-RWA correction, we
+expand the three complete interaction operators in Model A
+independently. We denote a molecular-interaction sequence by
+%
+\begin{equation}
+\mathbf{m}=(m_1,m_2,m_3),
 \qquad
-s_j\in\{-1,+1\}.
-\label{eq:all_signatures}
+m_j\in\{-1,+1\},
 \end{equation}
 %
-The full Model-A nonrephasing response may therefore be written as
+where $m_j=+1$ selects $V_{+}$ and $m_j=-1$ selects $V_{-}$ at the
+$j$th molecular interaction. With the nonrephasing field signature
+$\mathbf{s}_{\mathrm{NR}}$ held fixed, the full Model-A response may
+therefore be decomposed as
 %
 \begin{equation}
-S_A^{\mathrm{NR}}
+S^{\mathrm{NR}}_{A}
 =
-\sum_{s_1,s_2,s_3=\pm1}
-S_{s_1s_2s_3}^{(3)},
-\label{eq:nr_signature_sum}
+\sum_{m_1,m_2,m_3=\pm1}
+S^{(3),\mathrm{NR}}_{m_1m_2m_3}.
 \end{equation}
 %
-while Model B retains only the $(+,-,+)$ sector.
-This decomposition is evaluated directly using the arbitrary
-field-sign interface described in
-Sec.~\ref{sec:software_signatures}.
+Model B retains only the resonant molecular sequence
+%
+\begin{equation}
+\mathbf{m}_{\mathrm{NR}}=(+,-,+).
+\end{equation}
+%
+Thus, the eight terms in this decomposition are molecular-interaction
+sequences evaluated for the same nonrephasing field signature, rather
+than eight different phase-matched field-sign sectors.
 
 A useful qualitative measure of the expected RWA validity is the
 dimensionless carrier-scale parameter
@@ -235,108 +252,44 @@ dimensionless carrier-scale parameter
 %
 introduced in Sec.~\ref{sec:theory}.
 For long pulses, the rapidly oscillating counter-rotating contributions
-are strongly suppressed and the RWA becomes accurate.
-For sufficiently short pulses, this averaging is incomplete and
-additional field-sign sectors can contribute appreciably.
+are strongly suppressed and the RWA becomes accurate. For sufficiently
+short pulses, this averaging is incomplete and counter-rotating
+molecular-interaction sequences can contribute appreciably
+\cite{Smallwood2017FinitePulse}.
 As with $\chi_{\mathrm{dyn}}$, however,
 $\chi_{\mathrm{RWA}}$ is only a timescale indicator and does not by
 itself determine the magnitude of the spectroscopic error.
 
 The numerical decomposition shows that the beyond-RWA correction is
-not distributed uniformly among the discarded sectors.
-For short pulses, the largest omitted contribution to the
-nonrephasing signal is the
+not distributed uniformly among the molecular-interaction sequences
+discarded by the RWA. For short pulses, the largest omitted
+contribution to the nonrephasing signal is the molecular sequence
 %
 \begin{equation}
-(+,+,-)
+\mathbf{m}=(+,+,-).
 \end{equation}
 %
-sector.
-At a pulse intensity FWHM of $0.10~\mathrm{fs}$, its Frobenius norm is
-approximately $37\%$ of the conventional RWA nonrephasing response for
-$J=20~\mathrm{meV}$ and approximately $45\%$ for
-$J=40~\mathrm{meV}$.
-In the uncoupled limit, $J=0$, this contribution vanishes for the model
-considered here.
+At a pulse intensity FWHM of 0.10~fs, its Frobenius norm is
+approximately 37\% of the conventional RWA molecular sequence
+$\mathbf{m}_{\mathrm{NR}}=(+,-,+)$ for $J=20$~meV and approximately
+45\% for $J=40$~meV. In the uncoupled limit, $J=0$, this contribution
+vanishes for the model considered here.
 
 The corresponding spectra and coupling dependence are shown in
 Fig.~\ref{fig:beyond_rwa_mechanism}.
-The conventional $(+,-,+)$ and discarded $(+,+,-)$ sectors occupy
-similar regions of the two-dimensional spectrum, but the latter is
-absent in the RWA and grows rapidly with electronic coupling.
+The conventional $\mathbf{m}=(+,-,+)$ and discarded
+$\mathbf{m}=(+,+,-)$ molecular sequences occupy similar regions of
+the two-dimensional spectrum, but the latter is absent in the RWA and
+grows rapidly with electronic coupling.
 The short-pulse RWA breakdown therefore reflects a coupling-enabled
 spectroscopic pathway rather than a uniform rescaling of the
 conventional RWA spectrum.
 More generally, the RWA error depends not only on the pulse duration
 relative to the optical carrier period, but also on the molecular
-couplings that determine how discarded field-sign sectors connect the
-available Liouville-space pathways.
+couplings that determine how discarded molecular-interaction sequences
+connect the available Liouville-space pathways.
 
-
-\subsection{Spectroscopic Regime Map}
-\label{subsec:regime_map}
-
-The separate comparisons above can be combined into a single map of
-the approximation hierarchy.
-For each electronic coupling $J$ and pulse duration
-$\tau_{\mathrm{FWHM}}$, we evaluate Models A--D and compute the
-combined rephasing and nonrephasing discrepancy defined in
-Sec.~\ref{sec:theory}.
-The four comparisons
-%
-\begin{equation}
-A-B,\qquad
-B-C,\qquad
-C-D,\qquad
-A-D
-\end{equation}
-%
-therefore quantify, respectively, the RWA error, the error from
-neglecting in-pulse molecular dynamics, the finite-bandwidth
-contribution, and the total error of the impulsive-RWA description.
-
-Across the parameter range considered here, the dominant source of
-error changes with pulse duration.
-For extremely short pulses, the finite-bandwidth correction is small,
-but the rotating-wave approximation can fail because counter-rotating
-field-sign sectors are no longer efficiently averaged out.
-At intermediate pulse durations, both the RWA and in-pulse dynamical
-errors can be simultaneously small, producing a region in which the
-impulsive-RWA description closely reproduces the full finite-pulse
-response.
-For longer pulses, molecular evolution during the pulse envelopes and
-the finite spectral bandwidth become increasingly important.
-
-The total $A-D$ discrepancy therefore exhibits a nonmonotonic
-dependence on pulse duration.
-For the present dimer, the smallest combined discrepancy found in the
-two-dimensional scan is approximately
-%
-\begin{equation}
-\epsilon_{AD}^{\mathrm{comb}}
-\simeq 0.93\%,
-\end{equation}
-%
-occurring near
-%
-\begin{equation}
-J\simeq56~\mathrm{meV},
-\qquad
-\tau_{\mathrm{FWHM}}\simeq0.70~\mathrm{fs}.
-\end{equation}
-%
-This minimum lies between the short-pulse regime dominated by
-non-RWA contributions and the long-pulse regime dominated by
-finite-pulse molecular dynamics and bandwidth.
-
-The resulting regime map is summarized in
-Fig.~\ref{fig:regime_map}.
-Contours at $1\%$, $5\%$, and $10\%$ provide convenient visual guides
-to the accuracy of each approximation.
-These boundaries are specific to the present molecular model and
-error metric; they should not be interpreted as universal thresholds.
-
-\begin{figure}[t]
+\begin{figure*}[t]
     \centering
     \includegraphics[
         width=\textwidth
@@ -370,7 +323,139 @@ error metric; they should not be interpreted as universal thresholds.
     $\epsilon_{AD}^{\mathrm{comb}}\simeq0.93\%$.
     }
     \label{fig:regime_map}
-\end{figure}
+\end{figure*}
+
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[
+        width=\textwidth
+    ]{
+        06_representative_spectra/Figure06_representative_spectral_errors.pdf
+    }
+
+    \caption{
+    Representative pointwise spectral discrepancies between the full
+    finite-pulse calculation (Model A) and the impulsive-RWA
+    approximation (Model D) at $J=40~\mathrm{meV}$ and
+    $T=100~\mathrm{fs}$.
+    The upper row shows the nonrephasing response and the lower row
+    the rephasing response.
+    Columns correspond to pulse intensity FWHM values of
+    $0.10~\mathrm{fs}$, $0.70~\mathrm{fs}$, and
+    $20.0~\mathrm{fs}$, representing the short-pulse RWA-sensitive,
+    intermediate high-accuracy, and long-pulse finite-pulse regimes,
+    respectively.
+    The color scale shows the pointwise difference
+    $|S_D-S_A|/\max|S_A|$.
+    The labels in each panel give the corresponding full-complex
+    relative spectral discrepancy.
+    At $0.10~\mathrm{fs}$ the NR response is strongly RWA-sensitive
+    while the R response remains accurate; at $0.70~\mathrm{fs}$
+    both pathways agree with Model A to approximately $1\%$; and at
+    $20~\mathrm{fs}$ both pathways exhibit large finite-pulse
+    corrections.
+    }
+    \label{fig:representative_spectra}
+\end{figure*}
+
+% The Figure 7 float is kept after Figures 5 and 6 so that the
+% manuscript numbering remains fixed, although it is discussed
+% conceptually in Sec.~\ref{subsec:nonrwa}.
+\begin{figure*}[t]
+    \centering
+    \includegraphics[
+        width=\textwidth
+    ]{
+        07_beyond_rwa_mechanism/Figure07_beyond_RWA_mechanism.pdf
+    }
+
+    \caption{
+    Dominant beyond-RWA molecular-interaction contribution to the
+short-pulse nonrephasing response. (a) Magnitude of the conventional
+RWA molecular sequence $\mathbf{m}=(+,-,+)$. (b) Magnitude of the
+dominant discarded molecular sequence $\mathbf{m}=(+,+,-)$ under
+the same conditions. In both panels, the nonrephasing field signature
+is held fixed at $\mathbf{s}_{\mathrm{NR}}=(+,-,+)$. Both spectra are
+normalized by the maximum magnitude of the conventional
+$\mathbf{m}=(+,-,+)$ contribution. (c) Coupling dependence of the
+Frobenius-norm ratio
+$\|S_{++-}\|_F/\|S_{+-+}\|_F$
+for an intensity FWHM of 0.10~fs and $T=100$~fs. The contribution
+vanishes at $J=0$ and increases rapidly with electronic coupling,
+reaching approximately 45\% at $J=40$~meV, indicated by the
+vertical dashed line. The result identifies the
+$\mathbf{m}=(+,+,-)$ molecular sequence as the dominant
+coupling-enabled beyond-RWA contribution in the present
+nonrephasing benchmark.
+    }
+    \label{fig:beyond_rwa_mechanism}
+\end{figure*}
+
+\subsection{Spectroscopic Regime Map}
+\label{subsec:regime_map}
+
+The separate comparisons above can be combined into a single map of
+the approximation hierarchy.
+For each electronic coupling $J$ and pulse duration
+$\tau_{\mathrm{FWHM}}$, we evaluate Models A--D and compute the
+combined rephasing and nonrephasing discrepancy defined in
+Sec.~\ref{sec:theory}.
+The four comparisons
+%
+\begin{equation}
+A-B,\qquad
+B-C,\qquad
+C-D,\qquad
+A-D
+\end{equation}
+%
+therefore quantify, respectively, the RWA error, the error from
+neglecting in-pulse molecular dynamics, the finite-bandwidth
+contribution, and the total error of the impulsive-RWA description.
+
+Across the parameter range considered here, the dominant source of
+error changes with pulse duration.
+For extremely short pulses, the finite-bandwidth correction
+is small, but the rotating-wave approximation can fail
+because nonresonant molecular-interaction sequences are no longer
+efficiently averaged out.
+At intermediate pulse durations, both the RWA and in-pulse dynamical
+errors can be simultaneously small, producing a region in which the
+impulsive-RWA description closely reproduces the full finite-pulse
+response.
+For longer pulses, molecular evolution during the pulse envelopes and
+the finite spectral bandwidth become increasingly important.
+
+The total $A-D$ discrepancy therefore exhibits a nonmonotonic
+dependence on pulse duration.
+For the present dimer, the smallest combined discrepancy found in the
+two-dimensional scan is approximately
+%
+\begin{equation}
+\epsilon_{AD}^{\mathrm{comb}}
+\simeq 0.93\%,
+\end{equation}
+%
+occurring near
+%
+\begin{equation}
+J\simeq56~\mathrm{meV},
+\qquad
+\tau_{\mathrm{FWHM}}\simeq0.70~\mathrm{fs}.
+\end{equation}
+%
+This minimum lies between the short-pulse regime dominated by
+non-RWA contributions and the long-pulse regime dominated by
+finite-pulse molecular dynamics and bandwidth.
+
+The resulting regime map is summarized in
+Fig.~\ref{fig:regime_map}.
+
+Contours at $1\%$, $5\%$, and $10\%$ provide convenient visual guides
+to the accuracy of each approximation.
+These boundaries are specific to the present molecular model and
+error metric; they should not be interpreted as universal thresholds.
 
 The low-error region in Fig.~\ref{fig:regime_map}(d) forms a narrow
 intermediate-pulse-duration window rather than extending monotonically
@@ -403,39 +488,6 @@ $161.25\%$ and $153.98\%$ for NR and R, respectively.
 The total approximation error is therefore both nonmonotonic in pulse
 duration and pathway dependent.
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[
-        width=\textwidth
-    ]{
-        06_representative_spectra/Figure06_representative_spectral_errors.pdf
-    }
-
-    \caption{
-    Representative pointwise spectral discrepancies between the full
-    finite-pulse calculation (Model A) and the impulsive-RWA
-    approximation (Model D) at $J=40~\mathrm{meV}$ and
-    $T=100~\mathrm{fs}$.
-    The upper row shows the nonrephasing response and the lower row
-    the rephasing response.
-    Columns correspond to pulse intensity FWHM values of
-    $0.10~\mathrm{fs}$, $0.70~\mathrm{fs}$, and
-    $20.0~\mathrm{fs}$, representing the short-pulse RWA-sensitive,
-    intermediate high-accuracy, and long-pulse finite-pulse regimes,
-    respectively.
-    The color scale shows the pointwise difference
-    $|S_D-S_A|/\max|S_A|$.
-    The labels in each panel give the corresponding full-complex
-    relative spectral discrepancy.
-    At $0.10~\mathrm{fs}$ the NR response is strongly RWA-sensitive
-    while the R response remains accurate; at $0.70~\mathrm{fs}$
-    both pathways agree with Model A to approximately $1\%$; and at
-    $20~\mathrm{fs}$ both pathways exhibit large finite-pulse
-    corrections.
-    }
-    \label{fig:representative_spectra}
-\end{figure}
-
 Taken together, Figs.~\ref{fig:regime_map} and
 \ref{fig:representative_spectra} show that there is no single
 ``short-pulse'' limit in which all approximations improve
@@ -445,36 +497,3 @@ and broadens the available bandwidth, but eventually exposes
 counter-rotating contributions that are removed by the RWA.
 The intermediate high-accuracy region therefore results from the
 competition between these distinct physical limits.
-
-% The Figure 7 float is kept after Figures 5 and 6 so that the
-% manuscript numbering remains fixed, although it is discussed
-% conceptually in Sec.~\ref{subsec:nonrwa}.
-\begin{figure}[t]
-    \centering
-    \includegraphics[
-        width=\textwidth
-    ]{
-        07_beyond_rwa_mechanism/Figure07_beyond_RWA_mechanism.pdf
-    }
-
-    \caption{
-    Dominant beyond-RWA contribution to the short-pulse nonrephasing
-    response.
-    (a) Magnitude of the conventional nonrephasing field-sign sector
-    $(+,-,+)$.
-    (b) Magnitude of the dominant discarded beyond-RWA sector
-    $(+,+,-)$ under the same conditions.
-    Both spectra are normalized by the maximum magnitude of the
-    conventional $(+,-,+)$ contribution.
-    (c) Coupling dependence of the Frobenius-norm ratio
-    $\|S_{++-}\|_F/\|S_{+-+}\|_F$ for an intensity FWHM of
-    $0.10~\mathrm{fs}$ and $T=100~\mathrm{fs}$.
-    The contribution vanishes at $J=0$ and increases rapidly with
-    electronic coupling, reaching approximately $45\%$ at
-    $J=40~\mathrm{meV}$, indicated by the vertical dashed line.
-    The result identifies the $(+,+,-)$ sector as the dominant
-    coupling-enabled beyond-RWA contribution in the present
-    nonrephasing benchmark.
-    }
-    \label{fig:beyond_rwa_mechanism}
-\end{figure}

@@ -56,13 +56,16 @@ S_{\mathrm{ana}}
 \end{equation}
 %
 PULSUS agrees with the analytical spectrum to
-$\epsilon_{\mathrm{val}}=7.33\times10^{-6}$,
-corresponding to a relative discrepancy of $0.000733\%$.
-For the same benchmark, the discretized UF$^2$ result used here differs
-from the analytical spectrum by $0.343\%$.
-The comparison is intended as an implementation and convention check,
-rather than as a general accuracy ranking between the two numerical
-methods.
+$\epsilon_{\mathrm{val}}=7.33\times10^{-6}$, corresponding to a
+relative discrepancy of $0.000733\%$. For the same benchmark, the
+discretized UF$^2$ result used here differs from the analytical
+spectrum by $0.343\%$. The UF$^2$ calculation samples each Gaussian
+pulse with 25 points over a $6\sigma$ temporal window
+($\Delta t=0.25\sigma$) and uses an 801-point coherence-delay grid
+spanning $-100\sigma$ to $100\sigma$ with
+$\Delta\tau=0.25\sigma$. The comparison is intended as an
+implementation and convention check, rather than as a general accuracy
+ranking between the two numerical methods.
 
 Increasing the pulse separation to $T=8\sigma$ reduces the PULSUS
 discrepancy to $1.70\times10^{-8}$.
@@ -74,7 +77,7 @@ itself.
 The resulting spectra and pointwise discrepancies are shown in
 Fig.~\ref{fig:external_validation}.
 
-\begin{figure}[t]
+\begin{figure*}[t]
     \centering
     \includegraphics[
         width=\textwidth
@@ -94,9 +97,8 @@ Fig.~\ref{fig:external_validation}.
     (d) Pointwise discrepancy between UF$^2$ and the analytical result,
     shown as
     $\log_{10}(|\Delta S|/\max|S_{\mathrm{Smallwood}}|)$;
-    the relative $L_2$ discrepancy is $0.343\%$.
-    (e) Corresponding discrepancy for PULSUS Model B, with relative
-    $L_2$ error $0.000733\%$.
+    the relative Frobenius discrepancy is $0.343\%$.
+    (e) Corresponding discrepancy for PULSUS Model B, with relative Frobenius discrepancy $0.000733\%$.
     The frequency axes are expressed in units of the characteristic
     frequency $\omega_0$.
     The analytical result is converted to the PULSUS Fourier convention
@@ -104,7 +106,7 @@ Fig.~\ref{fig:external_validation}.
     normalization or phase factor.
     }
     \label{fig:external_validation}
-\end{figure}
+\end{figure*}
 
 \subsection{Internal Consistency of Spectral Evaluation}
 \label{sec:validation_internal}
@@ -156,6 +158,14 @@ a separate spectroscopic approximation.
 
 \subsection{Targeted Frequency Sampling}
 \label{sec:validation_sampling}
+
+Sparse and nonuniform sampling strategies have previously been explored
+as routes to reduce the experimental or computational cost of
+multidimensional spectroscopy
+\cite{Almeida2012CompressedSampling,Roeding2017SparseSampling}.
+Here we use a simple targeted-coordinate strategy to demonstrate the
+computational flexibility of the arbitrary-point PULSUS interface,
+rather than to introduce a new spectral reconstruction method.
 
 The arbitrary-coordinate interface also permits the spectral sampling
 pattern to be adapted to the region in which the response carries
@@ -223,7 +233,7 @@ the full complex response.
 The corresponding spectra and sampling patterns are shown in
 Fig.~\ref{fig:targeted_sampling}.
 
-\begin{figure}[t]
+\begin{figure*}[t]
     \centering
     \includegraphics[
         width=\textwidth
@@ -260,7 +270,7 @@ Fig.~\ref{fig:targeted_sampling}.
     Sec.~\ref{sec:software_points}.
     }
     \label{fig:targeted_sampling}
-\end{figure}
+\end{figure*}
 
 The advantage of redistributing the sampling coordinates persists over
 a range of sampling budgets, as shown in
@@ -276,11 +286,13 @@ $6.2\times$ in the number of evaluated spectral coordinates and
 $1.8\times$ in wall-clock time.
 The targeted separable strategy gives intermediate performance,
 showing that the gain arises progressively as the coordinate budget is
-concentrated toward the spectrally active region.
-These factors are specific to the present model and reconstruction
-procedure and are not intended as universal performance bounds.
+concentrated toward the spectrally active region. The timing
+measurements were performed on a 15-inch MacBook Air equipped with an
+Apple M5 processor and 16~GB of unified memory. These factors are
+specific to the present model and reconstruction procedure and are not
+intended as universal performance bounds.
 
-\begin{figure}[t]
+\begin{figure*}[t]
     \centering
     \includegraphics[
         width=\textwidth
@@ -310,4 +322,4 @@ procedure and are not intended as universal performance bounds.
     reconstruction strategy.
     }
     \label{fig:sampling_efficiency}
-\end{figure}
+\end{figure*}
