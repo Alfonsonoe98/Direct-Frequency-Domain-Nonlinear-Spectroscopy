@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pulsus-spec"
-version = "0.1.1"
+version = "0.2.0"
 description = "Pulse-dressed Liouvillian Spectroscopy Using Superoperators"
 readme = "README.md"
 requires-python = ">=3.10"
