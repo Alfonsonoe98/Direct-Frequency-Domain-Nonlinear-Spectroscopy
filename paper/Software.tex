@@ -124,27 +124,26 @@ matrix multiplication.
 The waiting-time propagator $e^{\mathcal{L}T}$ is also constructed only
 once for a given waiting time.
 
-The frequency-domain resolvents are applied through linear solves rather
-than by explicitly forming the inverse matrix.
-For each requested frequency, PULSUS solves
+The frequency-domain resolvents are applied through
+linear solves rather than by explicitly forming the inverse
+matrix. For each requested frequency, PULSUS solves
 %
 \begin{equation}
-\left[
-(\eta-i\omega)I-\mathcal{L}
-\right]
-|x\rangle\rangle
+[(\eta-i\omega)I-\mathcal{L}]|x\rangle\rangle
 =
-|b\rangle\rangle ,
+|b\rangle\rangle,
 \label{eq:software_resolvent_solve}
 \end{equation}
 %
-Here $\eta>0$ is the finite numerical realization of the retarded
-$0^{+}$ prescription introduced in Sec.~\ref{sec:direct_frequency};
+so that
+$|x\rangle\rangle=G_{\eta}(\omega)|b\rangle\rangle$.
+
+Here $\eta>0$ is the finite numerical realization of the
+retarded $0^{+}$ prescription introduced in Sec.~\ref{sec:frequency_response};
 the values used in the calculations below are chosen sufficiently small
 that the physical linewidths are determined by $\mathcal{L}$ rather
 than by $\eta$.
 
-so that $|x\rangle\rangle=G_{\eta}(\omega)|b\rangle\rangle$.
 On the detection side, the corresponding transposed linear system is
 solved to construct the action of
 $\langle\langle\mu|G_{\eta}(\omega_3)$ without explicitly evaluating
