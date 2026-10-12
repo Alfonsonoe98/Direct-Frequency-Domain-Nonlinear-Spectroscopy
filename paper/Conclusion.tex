@@ -60,3 +60,28 @@ more general pulse-shape- and pathway-oriented frameworks by providing
 a compact direct-frequency-domain route in which spectral sampling and
 physical approximations can be controlled explicitly within a common
 response formulation.
+
+The practical implication of the regime map is that the
+impulsive-RWA limit should not be regarded as automatically controlled
+at pulse durations typical of contemporary two-dimensional electronic
+spectroscopy. Recent experiments employ pulses in the $\sim 10$--$20$
+fs range, including measurements using approximately $12$ fs and
+$21$ fs pulses
+\cite{Timmer2023Plasmon,RojasGatjens2023ManyExciton}.
+In the present coupled-dimer benchmark, these durations fall within
+the portion of the scanned pulse-duration range where finite-pulse
+corrections can become substantial and the impulsive-RWA approximation
+can differ markedly from the complete finite-pulse response. For example, at
+$J=40~\mathrm{meV}$ and an intensity FWHM of $20~\mathrm{fs}$, the
+nonrephasing and rephasing discrepancies reach $161.25\%$ and
+$153.98\%$, respectively. These numerical values are specific to the
+present model and should not be transferred quantitatively to a given
+experiment. They nevertheless demonstrate that finite-pulse dynamics,
+finite bandwidth, and the molecular-interaction content removed by the
+RWA can introduce systematic changes large enough to alter the
+quantitative interpretation of a measured spectrum. Consequently,
+comparison of experimental multidimensional spectra with microscopic
+models requires testing these approximations rather than assuming that
+the impulsive-RWA limit is accurate. PULSUS provides such a test by
+placing the complete finite-pulse response and its RWA, short-pulse,
+and impulsive reductions within a common computational framework.
