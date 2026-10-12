@@ -430,9 +430,11 @@ The optimized implementation reproduces the original point-by-point calculations
 
 ## Validation
 
-PULSUS is tested against independently validated coupled-dimer calculations, frozen reference spectra, and explicit time-domain propagation.
+PULSUS is tested against analytical finite-pulse results, independently
+implemented time-domain propagation, frozen reference spectra, and internal
+cross-checks between independent spectral-evaluation interfaces.
 
-For the finite-pulse development benchmark at
+For the complete-interaction finite-pulse benchmark at
 
 \[
 \sigma=1.25,
@@ -442,30 +444,36 @@ T=20,
 \eta=0.02,
 \]
 
-the production finite-pulse calculation gives complex spectral-shape discrepancies relative to an explicit finite-pulse time-domain ODE calculation of approximately
+explicit third-order perturbative time-domain propagation retaining the full
+interaction superoperator gives complex spectral-shape discrepancies relative
+to the direct frequency-domain finite-pulse calculation of approximately
 
 \[
-0.61\%
+0.0586\%
 \quad \text{(NR)}
 \]
 
 and
 
 \[
-0.64\%
-\quad \text{(R)}.
+0.0582\%
+\quad \text{(R)}
 \]
 
-For comparison:
+for a transform window of \(t_{\max}=160\).
 
-| Model | NR error | R error |
-| --- | ---: | ---: |
-| Finite-width PULSUS | 0.61% | 0.64% |
-| Short-pulse RWA | 5.51% | 5.81% |
-| Impulsive RWA | 9.60% | 9.83% |
+For the nonrephasing branch, extending the transform window to
+\(t_{\max}=200\) reduces the discrepancy further to approximately
 
-These values characterize this development benchmark and are not universal accuracy bounds.
+\[
+0.0083\%,
+\]
 
+consistent with the remaining difference being dominated by finite numerical
+transform-window effects.
+
+The corresponding optimal global complex scale factors at
+\(t_{\max}=160\) differ from unity by less than \(4\times10^{-6}\).
 
 ## Time-domain versus frequency-domain validation
 
@@ -486,7 +494,7 @@ These comparisons independently validate the time/frequency sign and transform c
 
 ## Test suite
 
-The current test suite contains **63 passing unit and regression tests** covering:
+The current test suite contains **67 passing unit and regression tests** covering:
 
 - Liouville-space vectorization and superoperators
 - Lindblad Liouvillian construction
@@ -568,6 +576,7 @@ PULSUS `v0.2.0` assumes:
 - finite-dimensional quantum systems
 - time-independent Liouvillian dynamics
 - Markovian Lindblad evolution
+- stationary preparation for the standard finite-pulse formulation
 - electric-dipole light-matter coupling
 - Gaussian finite-duration pulses for the finite-pulse frequency-domain formulation
 - temporally ordered, separated pulses
@@ -588,6 +597,7 @@ pulsus.SpectroscopySystem
 pulsus.GaussianPulse
 
 pulsus.finite_pulse_spectrum
+pulsus.finite_pulse_points
 pulsus.impulsive_spectrum
 pulsus.short_pulse_rwa_spectrum
 pulsus.impulsive_rwa_spectrum
@@ -616,11 +626,21 @@ Additional lower-level response, Liouville-space, resolvent, and pulse-dressing 
 ├── tests/               unit and regression tests
 ├── examples/            usage and validation examples
 ├── notebooks/           numerical validation notebooks
-├── figures/             manuscript figures
+├── figures/             generated validation and development figures
 ├── results/             benchmark results
-├── main.tex             manuscript / technical development
-├── references.bib       bibliography
+├── paper/               manuscript source
+│   ├── main.tex
+│   ├── references.bib
+│   └── figures/
 └── literature_notes.md  literature notes
 ```
+
+## Citation
+
+If you use PULSUS in your research, please cite the software release:
+
+> Castillo-Gonzalez, Alfonso. *PULSUS: Pulse-dressed Liouvillian Spectroscopy Using Superoperators*. Version 0.2.0, Zenodo, 2026. https://doi.org/10.5281/zenodo.23253040
+
+Citation metadata is also provided in [`CITATION.cff`](CITATION.cff).
 
 PULSUS is under active development.

@@ -506,7 +506,22 @@ description considered in this work.
 \label{sec:finite_pulse}
 
 We now include the temporal envelopes and carrier frequencies of the
-three laser pulses. For pulse $j$, we introduce the local time coordinate
+three laser pulses. 
+The finite-pulse construction developed below additionally assumes
+time-translation invariance of the unperturbed response. A sufficient
+condition is that the state defining the response prior to the pulse
+sequence is stationary under the field-free Liouvillian,
+%
+\begin{equation}
+\mathcal{L}|\rho_0\rangle\rangle=0.
+\label{eq:stationary_initial_state}
+\end{equation}
+%
+Under this condition, the unperturbed response depends only on
+interaction-time differences and the local pulse coordinates introduced
+below. All finite-pulse calculations reported in this work use such
+stationary initial states.
+For pulse $j$, we introduce the local time coordinate
 %
 \begin{equation}
 u_j = t-\tau_j,
@@ -907,7 +922,7 @@ Large $\chi_{\mathrm{RWA}}$ corresponds to many carrier oscillations
 within the pulse envelope and favors dynamical suppression of
 counter-rotating contributions, whereas sufficiently small
 $\chi_{\mathrm{RWA}}$ indicates that the RWA may fail
-\cite{Smallwood2017FinitePulse}.
+\cite{Smallwood2017FinitePulse,Tan2026RWA}.
 
 The conventional short-pulse RWA description therefore occupies an
 intermediate timescale regime that can be summarized schematically as

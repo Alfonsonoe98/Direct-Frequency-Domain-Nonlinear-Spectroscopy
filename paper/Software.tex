@@ -3,13 +3,36 @@
 
 The formulation developed in Sec.~\ref{sec:theory} is implemented in
 PULSUS, a Python package for direct frequency-domain spectroscopy of
-open quantum systems.
-The software separates the specification of the molecular system,
-laser pulses, and requested spectral coordinates from the numerical
-evaluation of the response.
-Both the complete light--matter interaction and the controlled
-approximations introduced above are exposed through a common
-Liouville-space representation.
+open quantum systems. PULSUS provides both first- and third-order
+response calculations; the present work focuses on the third-order
+multidimensional formulation. The software separates the specification
+of the molecular system, laser pulses, and requested spectral coordinates
+from the numerical evaluation of the response. Both the complete
+light--matter interaction and the controlled approximations introduced
+above are exposed through a common Liouville-space representation.
+
+\subsection{Computational Scope}
+
+PULSUS is designed for calculations in which the spectral frequencies
+themselves are the desired numerical coordinates, particularly when
+only selected regions of a multidimensional spectrum are required or
+when finite-pulse and rotating-wave approximations must be compared
+within a common response formulation. The same response engine can
+therefore be used for complete Cartesian grids, irregular coordinate
+sets, local spectral refinement, and controlled comparisons among the
+finite-pulse full-interaction, finite-pulse RWA, short-pulse RWA, and
+impulsive-RWA descriptions.
+
+The present finite-pulse implementation is specialized to Gaussian
+pulse envelopes, a time-independent field-free Liouvillian, and the
+separated-pulse regime described in Sec.~\ref{sec:theory}. PULSUS
+therefore complements, rather than replaces, approaches designed for
+arbitrary sampled pulse shapes, strongly overlapping pulses, general
+high-order pathway generation, or large-scale sparse and matrix-free
+representations. Its present focus is a compact direct-frequency-domain
+treatment in which finite-pulse dynamics, spectral-coordinate
+selection, and the physical approximations entering the response can
+be controlled explicitly.
 
 \subsection{System and Pulse Representation}
 \label{sec:software_system}
@@ -25,6 +48,11 @@ column-stacking convention of Sec.~\ref{sec:theory}.
 If no initial state is stored with the system, one may instead be
 supplied when a response is evaluated; the stationary state of
 $\mathcal{L}$ can also be obtained directly from the system object.
+
+The API permits an initial density matrix to be supplied explicitly;
+however, the separated-pulse finite-pulse formulation used in this work
+assumes the stationary preparation of
+Eq.~\eqref{eq:stationary_initial_state}.
 
 Calculations employing the molecular rotating-wave approximation
 additionally require the positive- and negative-frequency components

@@ -115,6 +115,113 @@ Fig.~\ref{fig:external_validation}.
     \label{fig:external_validation}
 \end{figure*}
 
+\subsection{Full-Interaction Time-Domain Benchmark}
+\label{sec:validation_fullV_ode}
+
+The analytical Smallwood comparison above validates the conventional
+finite-pulse rephasing sector represented by Model B. We therefore
+perform a separate numerical benchmark of the complete-interaction
+finite-pulse formulation, Model A, against an explicit time-domain
+perturbative propagation.
+
+For a fixed field-sign signature
+$\mathbf{s}=(s_1,s_2,s_3)$, the reference calculation propagates the
+third-order hierarchy
+%
+\begin{align}
+\frac{d}{dt}|\rho^{(0)}\rangle\rangle
+&=
+\mathcal{L}|\rho^{(0)}\rangle\rangle ,
+\\
+\frac{d}{dt}|\rho^{(1)}\rangle\rangle
+&=
+\mathcal{L}|\rho^{(1)}\rangle\rangle
++
+E_1^{(s_1)}(t)
+V|\rho^{(0)}\rangle\rangle ,
+\\
+\frac{d}{dt}|\rho^{(2)}\rangle\rangle
+&=
+\mathcal{L}|\rho^{(2)}\rangle\rangle
++
+E_2^{(s_2)}(t)
+V|\rho^{(1)}\rangle\rangle ,
+\\
+\frac{d}{dt}|\rho^{(3)}\rangle\rangle
+&=
+\mathcal{L}|\rho^{(3)}\rangle\rangle
++
+E_3^{(s_3)}(t)
+V|\rho^{(2)}\rangle\rangle .
+\end{align}
+%
+The complete interaction superoperator
+$V=V_{+}+V_{-}$ is retained at every order, and the third-order
+polarization is evaluated as
+%
+\begin{equation}
+P^{(3)}(t)
+=
+\langle\langle\mu|\rho^{(3)}(t)\rangle\rangle .
+\end{equation}
+%
+The nonrephasing and rephasing contributions are selected only through
+the field signatures $(+,-,+)$ and $(-,+,+)$, respectively. The
+time-domain propagation therefore does not use the analytical
+Liouvillian pulse-dressing operators $F_j$ employed by Model A.
+
+The resulting polarization is Fourier transformed using the same
+frequency convention and convergence parameter as the direct
+frequency-domain calculation.
+The spectral-shape discrepancy is evaluated after removal of a single
+global complex scale factor,
+%
+\begin{equation}
+\epsilon_{\mathrm{FD/ODE}}
+=
+\frac{
+\left\|
+S_{\mathrm{ODE}}
+-
+\alpha S_{\mathrm{FD}}
+\right\|_F
+}{
+\left\|
+S_{\mathrm{ODE}}
+\right\|_F
+},
+\end{equation}
+%
+where $\alpha$ minimizes the numerator.
+For $\sigma=1.25$ and $T=20$, corresponding to a pulse-center
+separation of $T/\sigma=16$ and therefore a well-separated-pulse
+regime, and with $\eta=0.02$ in the dimensionless units of this
+benchmark, increasing the Fourier window to $t_{\max}=160$ gives relative spectral-shape
+discrepancies of
+%
+\begin{equation}
+\epsilon_{\mathrm{FD/ODE}}^{\mathrm{NR}}
+=
+0.0586\%,
+\qquad
+\epsilon_{\mathrm{FD/ODE}}^{\mathrm{R}}
+=
+0.0582\%.
+\end{equation}
+%
+For the nonrephasing branch, extending the Fourier window further to
+$t_{\max}=200$ reduces the discrepancy to $0.0083\%$, consistent with
+the remaining difference being dominated by finite numerical
+transform-window effects.
+
+The corresponding optimal global complex scale factors differ from
+unity by less than $4\times10^{-6}$, showing that the agreement is not
+obtained through an appreciable fitted amplitude or phase correction.
+
+This comparison provides an independent numerical check of the
+full-interaction finite-pulse implementation and complements the
+analytical Model-B benchmark above.
+
 \subsection{Internal Consistency of Spectral Evaluation}
 \label{sec:validation_internal}
 

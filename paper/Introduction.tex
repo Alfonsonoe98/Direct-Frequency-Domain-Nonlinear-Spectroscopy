@@ -34,7 +34,7 @@ Leng2017FinitePulseWidth}.
 For sufficiently broadband fields, the spectral suppression of
 counter-rotating light--matter processes can become less effective,
 allowing non-RWA contributions to become appreciable
-\cite{Smallwood2017FinitePulse}.
+\cite{Smallwood2017FinitePulse,Tan2026RWA}.
 Consequently, the validity of the impulsive and rotating-wave
 approximations must ultimately be assessed relative to the molecular and
 optical timescales of the system under study.
@@ -59,40 +59,53 @@ Automated diagram generation further provides a systematic treatment
 of the additional temporal orderings that arise when pulses overlap
 \cite{RoseKrich2021DiagramGenerator}.
 Open-source packages such as QuDPy and QDT provide complementary
-frameworks for constructing and evaluating multidimensional optical
-response functions
+pathway-oriented and response-function frameworks for constructing
+multidimensional optical signals
 \cite{shah2023qudpy,Kenneweg2024QDT}.
 
-The present work addresses a different but complementary computational
-organization of the problem.
-We consider whether the coherence-frequency coordinates can be
-evaluated directly, without first constructing a two-dimensional
-time-domain interferogram, while retaining molecular evolution during
-finite Gaussian pulse envelopes and, when required, the complete
-light--matter interaction.
-The treatment remains perturbative in the optical field; strong-field
-and nonperturbative two-dimensional spectroscopy constitute a distinct
-regime that has been considered elsewhere
+The present work targets a complementary computational regime in which
+the spectral coordinates themselves are the requested numerical
+objects. Rather than constructing a multidimensional time-domain
+interferogram and subsequently transforming it, we seek to evaluate
+selected coherence frequencies directly while retaining molecular
+evolution during finite Gaussian pulse envelopes. The objective is not
+only to calculate a spectrum, but also to expose, within one
+formulation, the consequences of successively introducing the
+rotating-wave, short-pulse, and impulsive approximations.
+
+Here we introduce PULSUS, a Python implementation of a direct
+frequency-domain Liouville-space formulation for spectroscopy of open
+quantum systems. Coherence-frequency intervals are represented through
+Liouvillian resolvents, while finite Gaussian pulses are incorporated
+through operator-valued functions of the field-free Liouvillian.
+The response can therefore be evaluated directly on Cartesian
+frequency grids or at arbitrary paired spectral coordinates, without
+requiring a uniform delay-domain sampling grid. For third-order
+spectroscopy, the complete interaction superoperator may be retained,
+including molecular-interaction sequences discarded by the conventional
+RWA, while the finite-pulse RWA, short-pulse RWA, and impulsive-RWA
+descriptions arise as controlled reductions of the same computational
+framework.
+
+This organization is particularly useful when only selected regions of
+a multidimensional spectrum are required, or when the validity of the
+usual pulse and rotating-wave approximations is itself part of the
+question. PULSUS is therefore complementary to finite-pulse convolution
+and pathway-oriented approaches: it sacrifices arbitrary pulse-shape
+generality in the present Gaussian formulation in exchange for analytic
+finite-pulse Liouvillian dressing and direct evaluation at the requested
+spectral coordinates. The treatment remains perturbative in the optical
+field; strong-field and nonperturbative two-dimensional spectroscopy
+constitute a distinct regime that has been considered elsewhere
 \cite{
 AndaCole2021BeyondPerturbative,
 BressanVanThor2021IntenseFields}.
 
-Here we introduce PULSUS, a Python implementation of a direct
-frequency-domain Liouville-space formulation for multidimensional
-spectroscopy of open quantum systems.
-The coherence-frequency intervals are represented through Liouvillian
-resolvents, while finite Gaussian pulses are incorporated through
-operator-valued functions of the field-free Liouvillian.
-This construction permits the response to be evaluated directly on
-either Cartesian frequency grids or arbitrary sets of paired spectral
-coordinates.
-The complete interaction superoperator may be retained, while the RWA,
-short-pulse, and impulsive limits arise as controlled reductions of the
-same formulation.
-
 We validate the finite-pulse implementation against the analytical
-Gaussian-pulse benchmark of Smallwood \textit{et al.} and verify
-agreement between Cartesian-grid and arbitrary-coordinate evaluations.
+Gaussian-pulse benchmark of Smallwood \textit{et al.}, benchmark the
+complete-interaction Model A independently against explicit
+time-domain perturbative propagation, and verify agreement between
+Cartesian-grid and arbitrary-coordinate evaluations.
 We then demonstrate targeted spectral sampling in which the evaluated
 frequency coordinates are concentrated toward regions containing
 significant spectral weight.

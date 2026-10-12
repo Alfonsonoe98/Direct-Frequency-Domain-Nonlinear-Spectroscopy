@@ -2,74 +2,61 @@
 \label{sec:conclusions}
 
 We have developed PULSUS, a direct frequency-domain framework for
-multidimensional spectroscopy of open quantum systems that retains
-finite pulse duration and, when required, the complete light--matter
-interaction beyond the rotating-wave approximation.
-The method combines Liouville-space resolvents with operator-valued
-Gaussian pulse dressing, allowing the excitation and detection
-frequency coordinates to be evaluated directly without first
-constructing a time-domain interferogram.
-The same formulation generates a controlled hierarchy ranging from the
-full finite-pulse response to the conventional impulsive-RWA limit.
+spectroscopy of open quantum systems. The method combines
+Liouville-space resolvents with operator-valued Gaussian pulse dressing,
+allowing requested excitation and detection frequencies to be evaluated
+directly without first constructing a multidimensional time-domain
+interferogram. For third-order spectroscopy, the complete
+light--matter interaction may be retained, while the finite-pulse RWA,
+short-pulse RWA, and impulsive-RWA descriptions arise as controlled
+reductions of the same formulation.
 
-The finite-pulse implementation was validated against the analytical
-Gaussian-pulse benchmark of Smallwood \textit{et al.}, yielding a
-relative discrepancy of $7.33\times10^{-6}$ at
-$T=2\pi\sigma$ and approaching the analytical result still more closely
-as the pulse separation is increased.
-Independent Cartesian-grid and arbitrary-coordinate implementations
-agree at numerical precision.
-The latter permits spectra to be evaluated only at requested
-$(\omega_1,\omega_3)$ pairs and therefore provides a natural interface
-for targeted spectral sampling.
-For the coupled-dimer benchmark considered here, redistributing the
-sampling budget toward the spectrally active region reduced the number
-of evaluated coordinates required for approximately $10\%$
-reconstruction error by a factor of about $6.2$, with a corresponding
-wall-clock reduction of about $1.8$.
-These numerical gains are model and reconstruction dependent, but
-demonstrate the utility of treating arbitrary spectral coordinates as
-first-class computational objects.
+The finite-pulse implementation was tested through complementary
+benchmarks. For the conventional rephasing sector, PULSUS reproduces
+the analytical Gaussian-pulse benchmark of Smallwood \textit{et al.}
+with a relative discrepancy of $7.33\times10^{-6}$ at
+$T=2\pi\sigma$, with the residual decreasing as the pulse separation
+is increased. The complete-interaction Model A was independently
+compared with explicit time-domain perturbative propagation, yielding
+spectral-shape discrepancies of $0.0586\%$ and $0.0582\%$ for the
+nonrephasing and rephasing responses, respectively, at the common
+converged transform window. Cartesian-grid and arbitrary-coordinate
+evaluations additionally agree to numerical precision.
+
+Treating spectral coordinates as first-class computational objects
+provides a natural route to selective sampling. In the coupled-dimer
+benchmark, concentrating the coordinate budget toward the spectrally
+active region reduced the number of evaluated points required for
+approximately $10\%$ reconstruction error by a factor of about $6.2$,
+with a corresponding wall-clock reduction of about $1.8$. These gains
+depend on the model and reconstruction procedure, but demonstrate that
+direct evaluation can avoid computing large regions of frequency space
+that are not required by the analysis.
 
 The controlled hierarchy
-$A\rightarrow B\rightarrow C\rightarrow D$
-also makes it possible to separate physically distinct sources of
-error in the conventional impulsive-RWA description.
-For the coupled dimer, the $A-B$ comparison isolates non-rotating-wave
-contributions, $B-C$ isolates molecular evolution occurring during the
-pulse envelopes, and $C-D$ isolates the remaining finite-bandwidth
-effect.
-The resulting regime map shows that these errors dominate in different
-pulse-duration ranges.
-Very short pulses suppress in-pulse molecular evolution but can expose
-counter-rotating pathways, whereas long pulses enhance both molecular
-evolution during the interaction and finite-bandwidth effects.
-Consequently, the total impulsive-RWA error is nonmonotonic and is
-minimized in an intermediate regime rather than in the shortest-pulse
-limit.
+$A\rightarrow B\rightarrow C\rightarrow D$ also provides a direct
+diagnostic of the physical approximations entering a calculated
+spectrum. For the coupled dimer, the RWA, in-pulse molecular dynamics,
+and finite spectral bandwidth dominate in different regions of pulse
+duration and coupling strength, producing a nonmonotonic total
+impulsive-RWA error. In the ultrashort-pulse stress-test regime, the
+dominant nonrephasing correction discarded by the RWA is traced to the
+molecular-interaction sequence
+$\mathbf{m}=(+,+,-)$, whose contribution grows with electronic
+coupling. This illustrates that PULSUS can be used not only to quantify
+the failure of an approximation, but also to identify the
+molecular-interaction content responsible for it.
 
-For the nonrephasing response, the short-pulse breakdown of the RWA
-can be traced to specific molecular-interaction sequences within the
-complete interaction. In the present model, the dominant discarded
-contribution is the sequence $\mathbf{m}=(+,+,-)$. This contribution
-vanishes in the uncoupled limit and grows with electronic coupling,
-reaching approximately 45\% of the conventional RWA molecular sequence
-$\mathbf{m}_{\mathrm{NR}}=(+,-,+)$ at $J=40$~meV for a pulse intensity
-FWHM of 0.10~fs.
-The result illustrates that RWA validity is controlled not only by the
-pulse duration relative to the carrier period, but also by the
-molecular couplings that determine which counter-rotating pathways are
-activated.
-
-The present formulation assumes a time-independent field-free
-Liouvillian and temporally separated pulses, with the finite-pulse
-results developed here specialized to Gaussian envelopes.
-Within these conditions, PULSUS provides a direct route from an
-open-system molecular model to finite-pulse multidimensional spectra
-while retaining explicit control over the approximations normally
-introduced in constructing the signal.
-This combination of direct spectral evaluation, selective frequency
-sampling, and approximation-resolved analysis provides a practical
-framework for determining when the impulsive rotating-wave description
-is reliable and when the neglected finite-pulse or non-rotating-wave
-physics must be retained.
+The current implementation provides first- and third-order response
+calculations and, for the finite-pulse treatment developed here, assumes
+a time-independent field-free Liouvillian, stationary preparation,
+temporally separated pulses, and Gaussian pulse envelopes. Within this
+scope, PULSUS is particularly useful when selected spectral coordinates
+rather than complete delay grids are the desired computational objects,
+when molecular evolution during finite Gaussian pulses must be retained,
+or when the validity of RWA, short-pulse, and impulsive approximations
+is itself part of the spectroscopic question. It therefore complements
+more general pulse-shape- and pathway-oriented frameworks by providing
+a compact direct-frequency-domain route in which spectral sampling and
+physical approximations can be controlled explicitly within a common
+response formulation.
