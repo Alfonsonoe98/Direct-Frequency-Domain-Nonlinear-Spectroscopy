@@ -78,31 +78,42 @@ only to calculate a spectrum, but also to expose, within one
 formulation, the consequences of successively introducing the
 rotating-wave, short-pulse, and impulsive approximations.
 
-Here we introduce PULSUS, a Python implementation of a direct
-frequency-domain Liouville-space formulation for spectroscopy of open
-quantum systems. Coherence-frequency intervals are represented through
-Liouvillian resolvents, while finite Gaussian pulses are incorporated
-through operator-valued functions of the field-free Liouvillian.
-The response can therefore be evaluated directly on Cartesian
-frequency grids or at arbitrary paired spectral coordinates, without
-requiring a uniform delay-domain sampling grid. For third-order
-spectroscopy, the complete interaction superoperator may be retained,
-including molecular-interaction sequences discarded by the conventional
-RWA, while the finite-pulse RWA, short-pulse RWA, and impulsive-RWA
-descriptions arise as controlled reductions of the same computational
-framework.
+Here we introduce a direct frequency-domain Liouville-space
+framework that combines three complementary elements. First,
+finite Gaussian pulses are incorporated through analytic
+operator-valued functions of the field-free Liouvillian, retaining
+molecular evolution during the pulse envelopes. Second, the
+response is evaluated directly at Cartesian grids or arbitrary
+paired spectral coordinates, without first constructing a uniform
+delay-domain interferogram. Third, the complete molecular
+interaction and its finite-pulse RWA, short-pulse RWA, and
+impulsive-RWA reductions are placed within a single controlled
+hierarchy, allowing the physical consequences of each approximation
+to be isolated.
 
-This organization is particularly useful when only selected regions of
-a multidimensional spectrum are required, or when the validity of the
-usual pulse and rotating-wave approximations is itself part of the
-question. PULSUS is therefore complementary to finite-pulse convolution
+PULSUS is the Python implementation of this framework and supports
+both first- and third-order response calculations. The present work
+focuses on the third-order multidimensional formulation, where the
+method combines analytic finite-pulse Liouvillian dressing, direct
+spectral-coordinate evaluation, and controlled comparison of the
+approximations entering the nonlinear response.
+
+This organization is particularly useful when only selected regions
+of a multidimensional spectrum are required, or when the validity of
+the usual pulse and rotating-wave approximations is itself part of the
+question. The present finite-pulse formulation treats finite-duration,
+Gaussian pulses in the separated-pulse regime, where the chronological
+ordering of the interactions remains well defined. Strongly overlapping
+pulse sequences can introduce additional temporal orderings and response
+pathways and therefore lie outside the present formulation.
+
+Within this scope, PULSUS is complementary to finite-pulse convolution
 and pathway-oriented approaches: it sacrifices arbitrary pulse-shape
-generality in the present Gaussian formulation in exchange for analytic
-finite-pulse Liouvillian dressing and direct evaluation at the requested
-spectral coordinates. The treatment remains perturbative in the optical
-field; strong-field and nonperturbative two-dimensional spectroscopy
-constitute a distinct regime that has been considered elsewhere
-\cite{
+and pulse-overlap generality in exchange for analytic finite-pulse
+Liouvillian dressing and direct evaluation at the requested spectral
+coordinates. The treatment remains perturbative in the optical field;
+strong-field and nonperturbative two-dimensional spectroscopy constitute
+a distinct regime that has been considered elsewhere~\cite{
 AndaCole2021BeyondPerturbative,
 BressanVanThor2021IntenseFields}.
 

@@ -502,13 +502,23 @@ V_{s_1}
 \label{eq:general_impulsive_rwa}
 \end{equation}
 
-The complete interaction of Eq.~\eqref{eq:V_decomposition} contains
-interaction sequences that are discarded by the RWA. This distinction
-will be used below to define a controlled hierarchy of approximations:
-the full finite-pulse response retains the complete $V$, whereas the
-impulsive RWA response of
-Eq.~\eqref{eq:general_impulsive_rwa} constitutes the most reduced
-description considered in this work.
+The complete interaction of Eq.~(24) contains molecular-interaction
+sequences that are discarded by the RWA. It is useful here to
+distinguish two notions that coincide in the conventional RWA
+description but become separate once the complete interaction is
+retained. The sign tuple $\mathbf{s}$ specifies the selected
+positive- or negative-frequency component of each applied field and
+therefore labels the phase-matched field-sign sector. Within the RWA,
+that field-sign choice selects the corresponding sequence of molecular
+operators $V_{s_j}$, as in Eq.~(30). Beyond the RWA, however, fixing
+$\mathbf{s}$ does not restrict the molecular interaction to that single
+raising/lowering sequence.
+
+This distinction will be used below to define a controlled hierarchy
+of approximations: the full finite-pulse response retains the complete
+molecular interaction $V=V_{+}+V_{-}$ within a fixed field-sign sector,
+whereas the impulsive-RWA response of Eq.~(30) constitutes the most
+reduced description considered in this work.
 
 \subsection{Finite-Pulse Liouvillian Dressing}
 \label{sec:finite_pulse}
@@ -742,10 +752,17 @@ F_1^{(s_1)}
 %
 where the frequency arguments of the $F_j$ are those defined in
 Eqs.~\eqref{eq:F1}--\eqref{eq:F3}. We refer to
-Eq.~\eqref{eq:model_A} as \emph{Model A}. The field signs select the
-phase-matched field contribution, while the complete interaction
-superoperator $V=V_{+}+V_{-}$ is retained at each molecular
-interaction.
+Eq.~\eqref{eq:model_A} as \emph{Model A}. The field-sign signature $\mathbf{s}=(s_1,s_2,s_3)$ selects the
+phase-matched field contribution through the corresponding
+positive- and negative-frequency components of the three pulses.
+Importantly, this selection is distinct from the molecular
+raising/lowering content of the response. In Model A, each molecular
+interaction retains the complete superoperator
+$V=V_{+}+V_{-}$, so a fixed field-sign sector contains the sum over
+all molecular raising/lowering sequences allowed by the complete
+interaction. Thus, ``full interaction'' here refers to the molecular
+interaction content and does not imply a sum over different
+field-sign or phase-matching sectors.
 
 To isolate the effect of the rotating-wave approximation while
 retaining the same finite-pulse dressing, we additionally define

@@ -24,14 +24,18 @@ converged transform window. Cartesian-grid and arbitrary-coordinate
 evaluations additionally agree to numerical precision.
 
 Treating spectral coordinates as first-class computational objects
-provides a natural route to selective sampling. In the coupled-dimer
-benchmark, concentrating the coordinate budget toward the spectrally
-active region reduced the number of evaluated points required for
-approximately $10\%$ reconstruction error by a factor of about $6.2$,
-with a corresponding wall-clock reduction of about $1.8$. These gains
-depend on the model and reconstruction procedure, but demonstrate that
-direct evaluation can avoid computing large regions of frequency space
-that are not required by the analysis.
+provides a natural route to selective sampling. The principal capability
+demonstrated here is not the particular reconstruction algorithm, but
+the ability of the PULSUS response engine to evaluate an arbitrary
+requested coordinate set directly without constructing the enclosing
+Cartesian product. In the coupled-dimer benchmark, concentrating the
+coordinate budget toward the spectrally active region reduced the number
+of evaluated points required for approximately 10\% reconstruction error
+by a factor of about 6.2, with a corresponding wall-clock reduction of
+about 1.8. These numerical gains depend on the model, sampling pattern,
+and reconstruction procedure, but illustrate how direct spectral
+evaluation can avoid computing regions of frequency space that are not
+required by the analysis.
 
 The controlled hierarchy
 $A\rightarrow B\rightarrow C\rightarrow D$ also provides a direct
@@ -48,9 +52,11 @@ the failure of an approximation, but also to identify the
 molecular-interaction content responsible for it.
 
 The current implementation provides first- and third-order response
-calculations and, for the finite-pulse treatment developed here, assumes
-a time-independent field-free Liouvillian, stationary preparation,
-temporally separated pulses, and Gaussian pulse envelopes. Within this
+calculations. The finite-pulse treatment developed here specifically
+assumes a time-independent field-free Liouvillian, stationary
+preparation, Gaussian pulse envelopes, and sufficiently separated pulses
+so that additional temporal orderings associated with pulse overlap need
+not be included. Within this
 scope, PULSUS is particularly useful when selected spectral coordinates
 rather than complete delay grids are the desired computational objects,
 when molecular evolution during finite Gaussian pulses must be retained,
@@ -61,27 +67,27 @@ a compact direct-frequency-domain route in which spectral sampling and
 physical approximations can be controlled explicitly within a common
 response formulation.
 
-The practical implication of the regime map is that the
-impulsive-RWA limit should not be regarded as automatically controlled
-at pulse durations typical of contemporary two-dimensional electronic
-spectroscopy. Recent experiments employ pulses in the $\sim 10$--$20$
-fs range, including measurements using approximately $12$ fs and
-$21$ fs pulses
-\cite{Timmer2023Plasmon,RojasGatjens2023ManyExciton}.
-In the present coupled-dimer benchmark, these durations fall within
-the portion of the scanned pulse-duration range where finite-pulse
-corrections can become substantial and the impulsive-RWA approximation
-can differ markedly from the complete finite-pulse response. For example, at
-$J=40~\mathrm{meV}$ and an intensity FWHM of $20~\mathrm{fs}$, the
-nonrephasing and rephasing discrepancies reach $161.25\%$ and
-$153.98\%$, respectively. These numerical values are specific to the
-present model and should not be transferred quantitatively to a given
-experiment. They nevertheless demonstrate that finite-pulse dynamics,
-finite bandwidth, and the molecular-interaction content removed by the
-RWA can introduce systematic changes large enough to alter the
-quantitative interpretation of a measured spectrum. Consequently,
-comparison of experimental multidimensional spectra with microscopic
-models requires testing these approximations rather than assuming that
-the impulsive-RWA limit is accurate. PULSUS provides such a test by
-placing the complete finite-pulse response and its RWA, short-pulse,
-and impulsive reductions within a common computational framework.
+The practical implication of the regime map is that pulse duration
+alone does not establish the validity of the impulsive-RWA
+approximation. Contemporary two-dimensional electronic spectroscopy
+experiments commonly employ pulses in the $\sim 10$--$20$~fs range,
+including measurements using approximately 12~fs and 21~fs
+pulses~\cite{Timmer2023Plasmon,RojasGatjens2023ManyExciton}.
+In the present coupled-dimer benchmark, this portion of the
+pulse-duration range can exhibit substantial finite-pulse corrections;
+for example, at $J=40$~meV and an intensity FWHM of 20~fs, the
+nonrephasing and rephasing discrepancies reach 161.25\% and 153.98\%,
+respectively.
+
+These numerical values are specific to the present model and should
+not be interpreted as implying that conventional calculations for
+10--20~fs experiments are generally inaccurate. Rather, the accuracy
+of the impulsive-RWA description depends jointly on the pulse duration
+and bandwidth, molecular energy splittings and couplings, optical
+carrier frequency, relaxation and dephasing scales, and the spectral
+region being probed. The relevant approximations must therefore be
+tested relative to the molecular and optical timescales of the system
+under study rather than inferred from pulse duration alone. PULSUS
+provides such a test by placing the complete finite-pulse response and
+its RWA, short-pulse, and impulsive reductions within a common
+computational framework.

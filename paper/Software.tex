@@ -23,6 +23,34 @@ sets, local spectral refinement, and controlled comparisons among the
 finite-pulse full-interaction, finite-pulse RWA, short-pulse RWA, and
 impulsive-RWA descriptions.
 
+The computational advantage of the direct frequency-domain formulation
+depends on the requested spectral representation. For a Cartesian grid
+containing $N_1$ excitation frequencies and $N_3$ detection frequencies,
+the frequency-dependent Liouville-space objects are constructed only
+along the two individual axes, requiring work associated with
+$N_1+N_3$ distinct frequencies rather than independently rebuilding
+the complete response at all $N_1N_3$ spectral coordinates. The final
+Cartesian spectrum is obtained by contracting the resulting left- and
+right-hand objects. For an arbitrary set of $K$ requested spectral
+coordinates containing $N_1^{\mathrm{u}}$ unique excitation frequencies
+and $N_3^{\mathrm{u}}$ unique detection frequencies, only those
+$N_1^{\mathrm{u}}+N_3^{\mathrm{u}}$ frequency-dependent objects are
+constructed, followed by $K$ pairwise contractions.
+
+Consequently, PULSUS is expected to be most useful when the desired
+observable consists of selected or irregular spectral coordinates, or
+when repeated calculations are required at a restricted set of
+frequencies. In these cases, the method avoids constructing a complete
+delay-domain interferogram and avoids evaluating the Cartesian product
+of spectral coordinates that were not requested. This advantage is
+complementary to approaches such as UF$^2$, which efficiently treat
+general sampled pulse envelopes through time-domain Fourier
+convolution. The relative computational cost therefore depends on the
+Liouville-space dimension, pulse representation, number and structure
+of the requested spectral coordinates, and the degree to which
+frequency-dependent objects can be reused; no general performance
+ordering between the methods is implied here.
+
 The present finite-pulse implementation is specialized to Gaussian
 pulse envelopes, a time-independent field-free Liouvillian, and the
 separated-pulse regime described in Sec.~\ref{sec:theory}. PULSUS

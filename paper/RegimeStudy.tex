@@ -315,6 +315,14 @@ contribution to the nonrephasing signal is the molecular sequence
 \mathbf{m}=(+,+,-).
 \end{equation}
 %
+The $0.10$~fs pulse considered here is deliberately used as a
+diagnostic stress test of the RWA rather than as a representative
+pulse duration for contemporary two-dimensional electronic
+spectroscopy. Its purpose is to expose the molecular-interaction
+content that emerges when carrier-cycle averaging becomes ineffective
+and the counter-rotating contributions are no longer strongly
+suppressed.
+
 At a pulse intensity FWHM of 0.10~fs, its Frobenius norm is
 approximately 37\% of the conventional RWA molecular sequence
 $\mathbf{m}_{\mathrm{NR}}=(+,-,+)$ for $J=20$~meV and approximately
@@ -389,8 +397,8 @@ connect the available Liouville-space pathways.
     the rephasing response.
     Columns correspond to pulse intensity FWHM values of
     $0.10~\mathrm{fs}$, $0.70~\mathrm{fs}$, and
-    $20.0~\mathrm{fs}$, representing the short-pulse RWA-sensitive,
-    intermediate high-accuracy, and long-pulse finite-pulse regimes,
+    $20.0~\mathrm{fs}$, representing the diagnostic ultrashort RWA-stress-test, intermediate
+high-accuracy, and long-pulse finite-pulse regimes,
     respectively.
     The color scale shows the pointwise difference
 $|S_D-S_A|/\max|S_A|$.
@@ -524,17 +532,29 @@ $J=40~\mathrm{meV}$.
 Three pulse durations sample the short-pulse, intermediate, and
 long-pulse regimes identified in Fig.~\ref{fig:regime_map}.
 
-At $\tau_{\mathrm{FWHM}}=0.10~\mathrm{fs}$, the nonrephasing response
-is strongly affected, with a total relative discrepancy of
-$42.20\%$, whereas the rephasing response remains close to the
-full calculation at $0.99\%$.
-At the intermediate duration
-$\tau_{\mathrm{FWHM}}=0.70~\mathrm{fs}$, both pathways lie in the
-high-accuracy region, with discrepancies of approximately $0.94\%$.
-By contrast, at
-$\tau_{\mathrm{FWHM}}=20~\mathrm{fs}$, the impulsive approximation
-fails strongly for both pathways, giving discrepancies of
-$161.25\%$ and $153.98\%$ for NR and R, respectively.
+At $\tau_{\mathrm{FWHM}}=0.10$~fs, the nonrephasing response is
+strongly affected, with a total relative discrepancy of 42.20\%,
+whereas the rephasing response remains close to the full calculation
+at 0.99\%. At the intermediate duration
+$\tau_{\mathrm{FWHM}}=0.70$~fs, both pathways lie in the
+high-accuracy region, with discrepancies of approximately 0.94\%.
+By contrast, at $\tau_{\mathrm{FWHM}}=20$~fs, the impulsive
+approximation fails strongly for both pathways, giving discrepancies
+of 161.25\% and 153.98\% for NR and R, respectively.
+
+These values are relative Frobenius discrepancies and are not bounded
+above by 100\%; they compare the norm of the complex spectral
+difference with the norm of the full Model-A spectrum. The large
+long-pulse values therefore should not be interpreted as
+probability-like percentage errors. As seen in Fig.~6, the discrepancy
+extends across the spectrally active region, indicating substantial
+redistribution of spectral amplitude and line shape rather than an
+isolated local deviation. Because the error metric is evaluated using
+the full complex spectrum, phase differences also contribute to the
+reported norm, although Fig.~6 visualizes the magnitude of the
+pointwise spectral difference. We do not separately decompose the
+total discrepancy into amplitude and phase contributions here.
+
 The total approximation error is therefore both nonmonotonic in pulse
 duration and pathway dependent.
 
