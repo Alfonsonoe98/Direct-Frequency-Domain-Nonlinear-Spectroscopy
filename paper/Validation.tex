@@ -29,13 +29,14 @@ Model A.
 The spectral coordinates are identified as
 $\omega_1=\omega_\tau$ and $\omega_3=\omega_t$.
 Because the two calculations employ different Fourier and response
-normalizations, the analytical Smallwood result is converted to the
-PULSUS convention through the fixed relation
+normalizations, we denote the analytical reference spectrum by
+$S_{\mathrm{ana}}$ and convert it to the PULSUS convention through
+the fixed relation
 %
 \begin{equation}
 S_{\mathrm{PULSUS}}
 =
--i\,2\pi\,S_{\mathrm{Smallwood}} .
+-i\,2\pi\,S_{\mathrm{ana}} .
 \label{eq:smallwood_conversion}
 \end{equation}
 %
@@ -89,21 +90,21 @@ Fig.~\ref{fig:external_validation}.
     \includegraphics[
         width=\textwidth
     ]{
-        02_external_validation/Figure02_external_validation.pdf
+        02_external_validation/Figure02_external_validation.png
     }
 
     \caption{
     External validation of the finite-pulse implementation against the
     analytical Gaussian-pulse benchmark of Smallwood \textit{et al.}
     at waiting time $T=2\pi\sigma$.
-    (a) Magnitude of the analytical Smallwood spectrum.
+    (a) Magnitude of the analytical reference spectrum.
     (b) Corresponding UF$^2$ result.
     (c) PULSUS Model B finite-pulse RWA result.
     The spectra in panels (a)--(c) are normalized by the maximum
     magnitude of the analytical spectrum.
     (d) Pointwise discrepancy between UF$^2$ and the analytical result,
     shown as
-    $\log_{10}(|\Delta S|/\max|S_{\mathrm{Smallwood}}|)$;
+$\log_{10}(|\Delta S|/\max|S_{\mathrm{ana}}|)$;
     the relative Frobenius discrepancy is $0.343\%$.
     (e) Corresponding discrepancy for PULSUS Model B, with relative Frobenius discrepancy $0.000733\%$.
     The frequency axes are expressed in units of the characteristic
