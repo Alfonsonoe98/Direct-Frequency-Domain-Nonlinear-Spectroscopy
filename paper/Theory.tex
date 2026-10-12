@@ -237,7 +237,25 @@ G(\omega)
 \label{eq:resolvent}
 \end{equation}
 %
-where $0^{+}$ specifies the retarded boundary condition. Equivalently,
+where $0^{+}$ specifies the retarded boundary condition.
+In numerical calculations, the infinitesimal $0^{+}$ is replaced by a
+finite positive regularization parameter $\eta$,
+%
+\begin{equation}
+G_{\eta}(\omega)
+=
+\left[
+(\eta-i\omega)I-\mathcal{L}
+\right]^{-1}.
+\label{eq:regularized_resolvent}
+\end{equation}
+%
+Unless an additional phenomenological broadening is intentionally
+introduced through $\eta$, it is chosen sufficiently small to act only
+as a numerical representation of the causal $0^{+}$ prescription.
+Physical relaxation and dephasing are instead included directly through
+the dissipative terms in $\mathcal{L}$.
+Equivalently,
 %
 \begin{equation}
 G(\omega)
@@ -301,7 +319,7 @@ $|b\rangle\rangle$, one may instead solve
 %
 \begin{equation}
 \left[
-(0^{+}-i\omega)I-\mathcal{L}
+(\eta-i\omega)I-\mathcal{L}
 \right]
 |x\rangle\rangle
 =
