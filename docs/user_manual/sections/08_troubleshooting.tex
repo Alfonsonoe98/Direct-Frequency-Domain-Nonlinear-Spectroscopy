@@ -1,0 +1,96 @@
+\section{Troubleshooting and practical recipes}
+\label{sec:troubleshooting}
+
+\subsection{Installation and environment}
+\begin{description}[style=nextline]
+\item[\texttt{ModuleNotFoundError: No module named 'pulsus'}]
+Activate the intended environment and install with
+\texttt{python -m pip install pulsus-spec}. Print
+\texttt{sys.executable} and \texttt{pulsus.\_\_file\_\_} to identify the
+interpreter and source actually used. Avoid naming your own script
+\texttt{pulsus.py}, which can shadow the package.
+\item[Notebook imports a different version.]
+Select the kernel belonging to the spectroscopy environment. If needed,
+install \texttt{ipykernel} in that environment and register it:
+\par\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=shell]
+python -m pip install ipykernel
+python -m ipykernel install --user --name pulsus --display-name "Python (PULSUS)"
+\end{lstlisting}
+\end{minipage}\par
+Restart the selected kernel after updating a package already imported there.
+\item[An example cannot import \texttt{dimer\_model} or \texttt{common}.]
+The older development examples may use \texttt{src/dimer\_model.py}, which is
+not an installed public PULSUS module. This manual's first example is
+self-contained. Run examples~02--05 as scripts from the checkout, keeping
+their \texttt{common.py} helper beside them; do not copy those scripts alone
+and expect the helper to come from PyPI.
+\end{description}
+
+\subsection{States and operators}
+\begin{description}[style=nextline]
+\item[\texttt{An initial state must be supplied ...}]
+Computing \texttt{rho\_ss = system.stationary\_state()} does not populate
+\texttt{system.rho0}. Pass \texttt{rho0=rho\_ss} to the calculation, or assign
+a suitable initial state when constructing the system. A call-level
+\texttt{rho0} overrides the stored state.
+\item[\texttt{RWA calculations require dipole\_plus and dipole\_minus ...}]
+Supply both matrices to \texttt{SpectroscopySystem}. Check
+$\mu=\mu_++\mu_-$ and, for a Hermitian dipole, $\mu_-=\mu_+^\dagger$.
+The package does not infer the decomposition from $H$ automatically.
+\item[Stationary state is ambiguous or appears unphysical.]
+The eigenvector-based routine chooses the eigenvalue closest to zero. A
+generator with multiple stationary states does not specify a unique
+preparation. Check trace, Hermiticity, eigenvalues and residual, then supply
+the state that represents the experiment. Adding arbitrary relaxation solely
+to force uniqueness changes the physical model.
+\item[Relaxation is much faster or slower than expected.]
+Collapse operators contain the square root of a rate. Using $\gamma A$
+where $\sqrt{\gamma}A$ was intended changes the dissipative rate to a quantity
+proportional to $\gamma^2$. Also check that $H/\hbar$, rates, angular
+frequencies and time parameters use compatible units.
+\end{description}
+
+\Needspace{12\baselineskip}
+\subsection{Coordinates, amplitudes and plotting}
+\begin{description}[style=nextline]
+\item[The rephasing signal is absent on a positive excitation axis.]
+The calculation uses negative \texttt{omega1} for the standard R sector.
+\texttt{pathway="R"} selects interaction signs but does not flip coordinates.
+Calculate on the negative axis, then display against $-\omega_1$ if desired.
+\item[A spectrum appears transposed.]
+Grid outputs have shape $(N_3,N_1)$, with detection on rows. Use unequal
+axis lengths to diagnose orientation. Pair coordinates with
+\texttt{finite\_pulse\_points}; do not reshape its $(N,)$ output into a
+Cartesian grid unless you explicitly constructed and ordered that grid.
+\item[Changing \texttt{pathway} has no effect.]
+Check whether an explicit \texttt{signature} is also supplied. That tuple
+overrides the pathway alias. Also distinguish full impulsive functions,
+which do not have a pathway argument, from sector-selecting RWA functions.
+\item[The plotted sign or amplitude is surprising.]
+The response is complex. Choose \texttt{real}, \texttt{imag} or \texttt{abs}
+deliberately and record the phase and normalization conventions. The plotter
+defaults to the real component without normalization. Negative signed
+components are valid. Normalizing each plot separately removes absolute
+amplitude information and is unsuitable for amplitude-error comparisons.
+\item[Very narrow pulses give a small signal.]
+At fixed peak field, each Gaussian signed-component area scales as
+$E_0\sigma$. Narrowing the pulse therefore also reduces its area. If the
+purpose is an impulsive-limit comparison at fixed area, adjust $E_0$
+consistently rather than comparing unlike field strengths.
+\item[Values are nonfinite or unexpectedly large.]
+Check input units, pulse widths, physical rates and stationarity first.
+The Gaussian dressing contains matrix exponentials; extreme parameter
+choices can expose numerical conditioning or fall outside the separated-pulse
+regime. Start from the validated small example and change one parameter at a
+time. Do not hide nonfinite values by normalizing or clipping the plot.
+\end{description}
+
+\subsection{Prepare a custom model}
+Begin with a small truncated Hamiltonian, a dipole in the same basis and
+physically justified collapse operators. Verify state preparation and a
+linear spectrum before building a large third-order grid. For an electronic
+or vibronic RWA calculation, define the raising/lowering decomposition in
+the intended excitation manifolds. Then compare approximations on identical
+coordinates using a documented pulse-amplitude convention.

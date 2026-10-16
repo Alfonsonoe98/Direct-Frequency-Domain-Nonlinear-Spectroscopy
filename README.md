@@ -7,6 +7,10 @@ PULSUS is a Python package for direct frequency-domain spectroscopy of open quan
 PULSUS `v0.2.0` focuses on linear and third-order spectroscopy with time-independent Markovian Liouvillian dynamics, including finite Gaussian pulses, impulsive limits, rotating-wave approximations, arbitrary field-sign sectors, and complementary impulsive time-domain calculations.
 
 
+## Documentation
+
+Start with the [installation and quick start](docs/quickstart.md), including a complete example that works with the pip package. The [user manual (PDF)](docs/user_manual/PULSUS_User_Manual.pdf) explains systems, pulses, linear and third-order models, coordinate conventions, and troubleshooting. The [API reference](docs/api.md) covers all public functions and exact signatures. See [documentation build instructions](docs/README.md) to compile the PDF locally; Overleaf is optional.
+
 ## Core idea
 
 For a field-free Liouvillian
@@ -66,11 +70,12 @@ PULSUS can also accept explicitly supplied initial density matrices for calculat
 
 ## Third-order spectroscopy
 
-PULSUS currently provides four principal third-order models:
+PULSUS currently provides five principal third-order models:
 
 | Function | Pulse treatment | Light-matter interaction |
 | --- | --- | --- |
 | `finite_pulse_spectrum` | finite Gaussian pulses | full interaction |
+| `finite_pulse_rwa_spectrum` | finite Gaussian pulses | RWA |
 | `impulsive_spectrum` | impulsive | full interaction |
 | `short_pulse_rwa_spectrum` | Gaussian spectral envelopes | RWA |
 | `impulsive_rwa_spectrum` | impulsive | RWA |
@@ -175,6 +180,7 @@ S_NR = pulsus.finite_pulse_spectrum(
     T=20.0,
     eta=0.02,
     pathway="NR",
+    rho0=rho_ss,
 )
 ```
 
@@ -260,6 +266,7 @@ S = pulsus.finite_pulse_spectrum(
     T=20.0,
     eta=0.02,
     signature=signature,
+    rho0=rho_ss,
 )
 ```
 
@@ -598,6 +605,7 @@ pulsus.GaussianPulse
 
 pulsus.finite_pulse_spectrum
 pulsus.finite_pulse_points
+pulsus.finite_pulse_rwa_spectrum
 pulsus.impulsive_spectrum
 pulsus.short_pulse_rwa_spectrum
 pulsus.impulsive_rwa_spectrum

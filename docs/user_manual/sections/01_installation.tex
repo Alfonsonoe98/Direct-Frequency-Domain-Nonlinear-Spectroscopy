@@ -1,0 +1,21 @@
+\section{Installation}
+\label{sec:installation}
+
+PULSUS requires Python~3.10 or newer. Install the package with:
+\begin{lstlisting}[style=shell]
+pip install pulsus-spec
+\end{lstlisting}
+Then import it in Python:
+\begin{lstlisting}[style=python]
+import pulsus
+\end{lstlisting}
+The package name is \texttt{pulsus-spec}; the Python import name is
+\texttt{pulsus}. NumPy, SciPy, Matplotlib and QuTiP are installed as
+dependencies. The first example works in a Python script or a notebook, without
+cloning the GitHub repository.
+
+This manual describes version~0.2.0. To install that specific version, use
+\texttt{pip install "pulsus-spec==0.2.0"}.
+
+If you already have a repository checkout and want to use its local source,
+run \texttt{pip install -e .} from its root directory instead.

@@ -1,0 +1,97 @@
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{textcomp}
+\usepackage{needspace}
+\usepackage{etoolbox}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{placeins}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{pulsusblue}{HTML}{174D73}
+\definecolor{codebackground}{HTML}{F5F7F9}
+\lstdefinestyle{base}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebackground},
+  frame=single,rulecolor=\color{black!15},
+  columns=fullflexible,keepspaces=true,
+  showstringspaces=false,upquote=true,breaklines=true,
+  breakatwhitespace=false,tabsize=4,
+  aboveskip=0.8em,belowskip=0.8em,
+  xleftmargin=0.4em,xrightmargin=0.4em,
+  framexleftmargin=0.35em,framexrightmargin=0.35em,
+  captionpos=b
+}
+\lstdefinestyle{python}{style=base,language=Python,
+  keywordstyle=\color{pulsusblue}\bfseries,
+  commentstyle=\color{black!55},stringstyle=\color{teal!65!black}}
+\lstdefinestyle{shell}{style=base,language={}}
+\setlist{itemsep=0.15em,topsep=0.3em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.3em}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PULSUS User Manual}
+\fancyhead[R]{\small Software 0.2.0}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\pretocmd{\section}{\Needspace{12\baselineskip}}{}{}
+\pretocmd{\subsection}{\Needspace{7\baselineskip}}{}{}
+\hypersetup{pdftitle={PULSUS User Manual},
+  pdfauthor={Alfonso Castillo-Gonzalez},
+  pdfsubject={Installation, tutorials and API reference for PULSUS 0.2.0}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{1.0in}
+{\color{pulsusblue}\Huge\bfseries PULSUS\par}
+\vspace{0.2in}
+{\LARGE User Manual\par}
+\vspace{0.3in}
+{\large Pulse-dressed Liouvillian Spectroscopy Using Superoperators\par}
+\vspace{0.7in}
+{\large Alfonso Castillo-Gonzalez\par}
+\vspace{0.15in}
+Manual version 0.3\quad\textbullet\quad Software version 0.2.0\par
+October 15, 2026\par
+\vfill
+\end{titlepage}
+
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_installation}
+\FloatBarrier
+\input{sections/02_quickstart}
+\FloatBarrier
+\input{sections/00_introduction}
+\FloatBarrier
+\input{sections/03_systems_pulses}
+\FloatBarrier
+\input{sections/04_linear}
+\FloatBarrier
+\input{sections/05_third_order}
+\FloatBarrier
+\input{sections/06_coordinates_time_domain}
+\FloatBarrier
+\input{sections/07_validation}
+\FloatBarrier
+\input{sections/08_troubleshooting}
+\clearpage
+\input{sections/09_api_reference}
+\end{document}

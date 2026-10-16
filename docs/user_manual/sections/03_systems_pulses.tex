@@ -1,0 +1,201 @@
+\section{Defining systems, initial states, and pulses}
+\label{sec:systems}
+
+\subsection{The system object}
+
+\texttt{SpectroscopySystem} groups the Hamiltonian, detection dipole,
+Lindblad collapse operators, and optional initial state. Its constructor is
+\par\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=python]
+system = pulsus.SpectroscopySystem(
+    H, dipole, collapse_ops=None, rho0=None, hbar=1.0,
+    dipole_plus=None, dipole_minus=None,
+)
+\end{lstlisting}
+\end{minipage}\par
+The first two arguments are required. For Hilbert-space dimension $d$,
+\texttt{H} and \texttt{dipole} must be dense $d\times d$ matrices. Supply the
+same dimensions for each collapse operator, the initial density matrix, and
+the two optional dipole components. NumPy arrays and nested Python lists
+are suitable inputs; SciPy sparse matrices are not a supported input format
+in this release. The implementation converts matrices to complex NumPy
+arrays and constructs dense superoperators of size $d^2\times d^2$.
+
+The field-free equation of motion is
+\begin{equation}
+ \dot\rho=-\frac{i}{\hbar}[H,\rho]
+ +\sum_k\left(C_k\rho C_k^\dagger
+ -\frac{1}{2}\{C_k^\dagger C_k,\rho\}\right).
+\end{equation}
+The interaction superoperator uses
+$\mathcal V\rho=(i/\hbar)[\mu,\rho]$. The sign and Fourier conventions are
+therefore already built into PULSUS; do not insert additional factors of
+$i$ into a spectrum simply to match an assumed plotting convention.
+
+The object exposes \texttt{H}, \texttt{dipole}, \texttt{collapse\_ops},
+\texttt{rho0}, \texttt{hbar}, and \texttt{d}. Its precomputed
+\texttt{L} and \texttt{V} are the field-free and full interaction
+superoperators. When dipole components are supplied, \texttt{V\_plus} and
+\texttt{V\_minus} are constructed as well. Rebuild the object when changing
+the Hamiltonian, dipole, dissipation, or $\hbar$: editing an attribute does
+not automatically recompute the corresponding superoperators.
+
+\subsection{Collapse operators contain their rates}
+
+For a decay channel with rate $\gamma$ and lowering operator $a$, supply
+$C=\sqrt{\gamma}\,a$, rather than $\gamma a$. The dissipator is quadratic in
+$C$. The dimer tutorial also includes excitation with occupation parameter
+$\bar n$:
+\par\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=python]
+gamma = 0.05
+nbar = 0.05
+collapse_ops = [
+    np.sqrt(gamma * (nbar + 1.0)) * a,
+    np.sqrt(gamma * nbar) * a.conj().T,
+    np.sqrt(gamma * (nbar + 1.0)) * b,
+    np.sqrt(gamma * nbar) * b.conj().T,
+]
+\end{lstlisting}
+\end{minipage}\par
+Here $a$ and $b$ act on their respective sites in the full tensor-product
+space. A single-site $2\times2$ collapse operator cannot be inserted into
+the four-state dimer without the tensor-product extension. These local
+excitation and decay terms define the model's bath; their stationary state
+should not be assumed to equal a Gibbs state of an arbitrary coupled
+Hamiltonian.
+
+\subsection{Choose one consistent unit system}
+
+PULSUS does not convert units. All arguments must be consistent with the
+equations above. In the tutorial, $\hbar=1$: Hamiltonian entries,
+\texttt{omega\_L}, \texttt{omega1}, \texttt{omega3}, \texttt{eta}, and
+decay rates use inverse model-time units; \texttt{sigma}, \texttt{T}, and
+time axes use the corresponding model-time unit. Frequencies are angular
+frequencies, not cycles per unit time.
+
+For energies in eV and times in fs, one consistent choice is
+\par\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=python]
+hbar_eV_fs = 0.6582119569
+system = pulsus.SpectroscopySystem(
+    H=H_eV,
+    dipole=dipole,
+    collapse_ops=collapse_ops_per_sqrt_fs,
+    hbar=hbar_eV_fs,
+)
+omega_L = photon_energy_eV / hbar_eV_fs
+omega_axis = energy_axis_eV / hbar_eV_fs
+\end{lstlisting}
+\end{minipage}\par
+In this convention, \texttt{sigma} and \texttt{T} are in fs and
+\texttt{eta} and $\gamma$ are in fs$^{-1}$. A population lifetime
+$\tau$ gives $\gamma=1/\tau$ in the chosen time unit. Include
+$\sqrt\gamma$ in each collapse operator once. The code divides Hamiltonian
+and interaction commutators by $\hbar$; it does not divide the Lindblad
+dissipator by $\hbar$. Do not apply an extra $1/\hbar$ to rates that already
+have inverse-time units. The product of dipole and field amplitude must
+also have energy units if absolute physical polarization amplitudes are
+required. The illustrative examples use model dipoles and fields.
+
+\subsection{The state before the first pulse}
+
+\texttt{rho0} is the system's density matrix immediately before the first
+interaction. Its diagonal entries give populations; its off-diagonal
+entries describe coherences. For a $d$-state model, supply a complex
+$d\times d$ matrix with trace one.
+
+The tutorials start from a stationary state: a state that does not change
+under the Hamiltonian and dissipation before the pulses arrive. Calculate
+that state once, then pass it to the spectrum calculation:
+\par\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=python]
+rho_ss = system.stationary_state()
+S = pulsus.finite_pulse_spectrum(
+    system=system,
+    pulse1=pulse, pulse2=pulse, pulse3=pulse,
+    omega1=omega1, omega3=omega3, T=20.0, eta=0.02,
+    pathway="NR", rho0=rho_ss,
+)
+\end{lstlisting}
+\end{minipage}\par
+
+The method returns the matrix; it does not assign
+\texttt{system.rho0}. An explicit \texttt{rho0} in a function call takes
+priority over a state stored in the system. If neither is supplied,
+PULSUS raises an error rather than choosing a state for you.
+
+The standard finite-pulse formulation assumes stationary preparation.
+For a model with several possible stationary states, choose the state
+that matches the intended preparation. The solver returns one stationary
+candidate and does not determine whether it is unique.
+
+\subsection{Dipole components for the rotating-wave approximation}
+
+Full-interaction calculations require only \texttt{dipole}. RWA
+calculations additionally require both \texttt{dipole\_plus} and
+\texttt{dipole\_minus}. PULSUS does not infer them from \texttt{H}.
+For the excitation-conserving dimer in the first tutorial,
+\par\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=python]
+dipole_plus = a.conj().T + b.conj().T
+dipole_minus = dipole_plus.conj().T
+dipole = dipole_plus + dipole_minus
+system = pulsus.SpectroscopySystem(
+    H=H, dipole=dipole, collapse_ops=collapse_ops,
+    hbar=1.0, dipole_plus=dipole_plus,
+    dipole_minus=dipole_minus,
+)
+rho_ss = system.stationary_state()
+\end{lstlisting}
+\end{minipage}\par
+The raising/lowering definition must match the physical transition
+structure of the user's model. A matrix that happens to be triangular in
+an arbitrary basis is not automatically its positive-frequency dipole.
+The RWA functions use \texttt{V\_plus} for field sign $+1$ and
+\texttt{V\_minus} for sign $-1$; detection still uses the full dipole.
+
+\subsection{GaussianPulse and pulse duration}
+
+\par\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=python]
+pulse = pulsus.GaussianPulse(
+    omega_L=1.10, sigma=1.25, E0=1.0, phase=0.0,
+)
+\end{lstlisting}
+\end{minipage}\par
+
+\texttt{omega\_L} is the carrier angular frequency and \texttt{sigma}
+is the temporal width of the field envelope. Both are required.
+\texttt{E0} is the peak field amplitude (default 1.0), and
+\texttt{phase} is in radians (default 0.0). To change pulse parameters,
+create a new \texttt{GaussianPulse}.
+
+PULSUS uses the field envelope $\exp[-t^2/(2\sigma^2)]$.
+If a pulse duration is given as a full width at half maximum (FWHM),
+convert it to \texttt{sigma} before creating the pulse:
+\begin{equation}
+ \sigma=\frac{\mathrm{FWHM}_{E}}{2\sqrt{2\ln2}}
+       \simeq\frac{\mathrm{FWHM}_{E}}{2.355},
+ \qquad
+ \sigma=\frac{\mathrm{FWHM}_{I}}{2\sqrt{\ln2}}
+       \simeq\frac{\mathrm{FWHM}_{I}}{1.665}.
+\end{equation}
+Here $E$ means the \emph{field-amplitude envelope} and $I$ means the
+\emph{intensity envelope}, proportional to the squared field envelope.
+Use the formula matching the stated duration; neither FWHM is
+\texttt{sigma} itself. Larger \texttt{sigma} gives a longer pulse with a
+narrower frequency bandwidth.
+
+When changing the duration, keeping \texttt{E0} fixed keeps the peak
+field fixed. The pulse area then changes with \texttt{sigma}. To compare
+fixed envelope areas instead, choose $E_0\propto1/\sigma$. Finite-pulse
+and short-pulse results include field-amplitude factors; impulsive
+molecular responses do not. Normalizing each plot separately removes
+those amplitude differences from the display.

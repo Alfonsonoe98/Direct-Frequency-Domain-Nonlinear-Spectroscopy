@@ -1,0 +1,24 @@
+\section{Practical checks}
+\label{sec:validation}
+
+Before increasing the size of a calculation, check these four choices:
+\begin{description}
+\item[Units.] Use one time unit throughout. Frequencies, decay rates and
+\texttt{eta} are in its inverse; pulse widths and delays are in that unit.
+With physical Hamiltonian energies, use the matching value of $\hbar$.
+\item[Initial state.] Pass the intended density matrix explicitly.
+For stationary preparation, use \texttt{rho0=rho\_ss} after computing
+\texttt{rho\_ss = system.stationary\_state()}.
+\item[Frequency grid.] Start with a small grid, then reduce the spacing
+around peaks until their shape and amplitude stop changing appreciably.
+The result is indexed as \texttt{S[omega3\_index, omega1\_index]}.
+\item[Convergence parameter.] Use a small positive \texttt{eta} to ensure
+causal-transform convergence. Reduce it while refining the frequency grid
+until its added broadening no longer materially changes the features of
+interest and the linear solves remain stable. Check unnormalized complex
+responses so normalization does not hide amplitude changes.
+\end{description}
+
+Detailed checks of the implementation and time--frequency comparisons
+are kept separately in \path{docs/VALIDATION.md} and
+\path{docs/advanced_notes.md}.

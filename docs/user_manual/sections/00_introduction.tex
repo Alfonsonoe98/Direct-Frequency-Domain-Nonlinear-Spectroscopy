@@ -1,0 +1,37 @@
+\section{Scientific scope}
+\label{sec:introduction}
+
+PULSUS calculates linear and third-order response functions for open
+quantum systems. It evaluates frequency-domain spectra directly from the
+field-free Liouvillian, so a time-domain interferogram is not needed first.
+
+\subsection{Supported systems}
+Provide the Hamiltonian, dipole and collapse operators as finite matrices.
+The package supports coupled electronic models and other systems that can
+be represented in a finite basis. For a Hilbert-space dimension $d$, each
+operator is $d\times d$ and the dense Liouvillian is $d^2\times d^2$.
+The matrix size therefore sets the computational cost; selected-coordinate
+calculations reduce the number of spectral points evaluated.
+
+\subsection{Assumptions of the finite-pulse calculation}
+The standard finite-pulse formulation uses a time-independent Markovian
+Lindblad generator, electric-dipole coupling, Gaussian pulses with ordered,
+separated interactions, and a stationary initial state under the field-free
+Liouvillian. Use \texttt{system.stationary\_state()} to obtain that state and
+pass it explicitly as \texttt{rho0}. Although several functions accept
+other density matrices, accepting a matrix does not establish the validity
+of the standard finite-pulse formula for a nonstationary preparation.
+
+The public time-domain functions implement impulsive interactions.
+Finite-duration driven time propagation, non-Markovian dynamics,
+time-dependent field-free generators, and automatic construction of
+molecular Hamiltonians or dipole components are outside the documented
+production interface.
+
+\subsection{Calculation workflow}
+\begin{enumerate}
+\item Construct the system in a consistent unit system and prepare its state.
+\item Define Gaussian pulses for a finite-pulse or short-pulse model.
+\item Select a response model, R/NR convention, waiting time and frequency axes.
+\item Calculate the complex response and display the desired component.
+\end{enumerate}

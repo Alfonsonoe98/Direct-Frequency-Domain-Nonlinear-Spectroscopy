@@ -1,0 +1,134 @@
+\section{Function guide}
+\label{sec:api-reference}
+
+The functions below cover most everyday calculations. API means
+\emph{application programming interface}: the public classes and
+functions you call from Python. The complete reference, including
+less frequently used utilities and every exact signature, is in
+\path{docs/api.md}.
+
+\subsection{The functions you will use most}
+
+\begin{tabular}{@{}p{0.39\linewidth}p{0.56\linewidth}@{}}
+\toprule
+\textbf{Function or class} & \textbf{When to use it} \\
+\midrule
+\texttt{SpectroscopySystem} & Define the Hamiltonian, dipole, dissipation
+and optional initial state. \\
+\texttt{GaussianPulse} & Set a Gaussian pulse's carrier frequency, temporal
+width, amplitude and phase. \\
+\texttt{system.stationary\_state()} & Obtain a stationary initial density
+matrix; pass it as \texttt{rho0} in the calculation. \\
+\texttt{*\_spectrum} & Calculate the frequency array you will normally
+plot: a 1D linear spectrum or a 2D third-order spectrum. \\
+\texttt{plot\_spectrum} & Display a 2D spectrum. Use ordinary Matplotlib
+commands for 1D linear spectra. \\
+\texttt{finite\_pulse\_points} & Calculate selected frequency pairs
+without building a full 2D grid. \\
+\bottomrule
+\end{tabular}
+
+\subsection{What do signal, spectrum, and response mean?}
+
+Choose a model prefix, such as \texttt{finite\_pulse} or
+\texttt{impulsive\_rwa}; its suffix tells you how to supply inputs
+and what is returned:
+\begin{description}
+\item[\texttt{\_spectrum}.] Use a system object and frequency arrays.
+The result is a complex array: \texttt{(N,)} for linear spectroscopy,
+or \texttt{(N3, N1)} for third order.
+\item[\texttt{\_signal}.] Use a system object and a single frequency
+coordinate. The result is one complex number. Use this for one peak or
+one selected pair rather than a complete plot.
+\item[\texttt{\_response}.] Supply the Liouvillian, interaction and
+detection matrices directly. The result is one complex number.
+These functions are useful when working directly with superoperators;
+most users can use \texttt{\_signal} or \texttt{\_spectrum} instead.
+\item[\texttt{\_time\_signal}.] Supply delay-time arrays instead of
+frequencies. The result is a complex time-domain array. All such functions
+in this version use impulsive interactions.
+\end{description}
+
+These are interface names: \texttt{signal} does not add a detector model.
+For example, the finite-pulse NR response can be evaluated at one pair
+or across a full Cartesian grid:
+\par\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=python]
+value = pulsus.finite_pulse_signal(
+    system, pulse, pulse, pulse, 1.24, 1.24,
+    T=20.0, eta=0.02, pathway="NR", rho0=rho_ss,
+)  # one complex number
+S = pulsus.finite_pulse_spectrum(
+    system, pulse, pulse, pulse, omega1, omega3,
+    T=20.0, eta=0.02, pathway="NR", rho0=rho_ss,
+)  # shape (len(omega3), len(omega1))
+\end{lstlisting}
+\end{minipage}\par
+
+\clearpage
+\subsection{Common calling patterns}
+
+The three third-order Gaussian-pulse models use the same arguments:
+\par\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=python]
+finite_pulse_spectrum(
+    system, pulse1, pulse2, pulse3, omega1, omega3, T, eta,
+    pathway="NR", rho0=None, signature=None)
+finite_pulse_rwa_spectrum(
+    system, pulse1, pulse2, pulse3, omega1, omega3, T, eta,
+    pathway="NR", rho0=None, signature=None)
+short_pulse_rwa_spectrum(
+    system, pulse1, pulse2, pulse3, omega1, omega3, T, eta,
+    pathway="NR", rho0=None, signature=None)
+\end{lstlisting}
+\end{minipage}\par
+The impulsive models take no pulse object:
+\par\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=python]
+impulsive_spectrum(
+    system, omega1, omega3, T, eta, rho0=None)
+impulsive_rwa_spectrum(
+    system, omega1, omega3, T, eta,
+    pathway="NR", rho0=None, signature=None)
+\end{lstlisting}
+\end{minipage}\par
+Replacing \texttt{\_spectrum} with \texttt{\_signal} in any of these
+five names keeps the arguments but requires scalar frequencies.
+\texttt{finite\_pulse\_points} uses the finite-pulse signature with
+paired arrays of equal length and returns an \texttt{(N,)} array.
+
+For linear spectroscopy, the four spectrum functions are
+\par\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=python]
+finite_pulse_linear_spectrum(
+    system, pulse, omega, eta, sign=1, rho0=None)
+short_pulse_linear_rwa_spectrum(
+    system, pulse, omega, eta, sign=1, rho0=None)
+impulsive_linear_spectrum(system, omega, eta, rho0=None)
+impulsive_linear_rwa_spectrum(
+    system, omega, eta, sign=1, rho0=None)
+\end{lstlisting}
+\end{minipage}\par
+Here \texttt{omega} is one 1D axis. Replacing \texttt{\_spectrum} with
+\texttt{\_signal} takes one frequency and returns one complex number.
+There is no separate finite-pulse linear RWA family in PULSUS 0.2.0.
+
+For a 2D result, the plotting helper returns Matplotlib objects:
+\par\noindent
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[style=python]
+fig, ax, contour = pulsus.plot_spectrum(
+    omega1, omega3, S, component="imag", normalize=True,
+)
+plt.show()
+\end{lstlisting}
+\end{minipage}\par
+Use \texttt{component="real"}, \texttt{"imag"}, or \texttt{"abs"}.
+Normalization scales only the displayed component; it does not modify
+\texttt{S}. Refer to Section~\ref{sec:time-domain} for time-domain
+functions and to \path{docs/api.md} for lower-level response functions,
+Liouville-space utilities, resolvents, and Gaussian dressing functions.
