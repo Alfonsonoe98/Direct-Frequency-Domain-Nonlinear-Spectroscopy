@@ -125,4 +125,4 @@ For the full impulsive model, use `pulsus.impulsive_spectrum` and also omit `pat
 
 For linear spectroscopy, use `finite_pulse_linear_spectrum`, `short_pulse_linear_rwa_spectrum`, `impulsive_linear_spectrum` or `impulsive_linear_rwa_spectrum`. These return a complex array on one frequency axis.
 
-Read the [function guide](api.md) to choose grid, single-coordinate and selected-coordinate calculations. The [user manual](user_manual/main.tex) explains system construction, units, pulses and model conventions.
+Read the [function guide](api.md) to choose grid, single-coordinate and selected-coordinate calculations. The [user manual (PDF)](user_manual/PULSUS_User_Manual.pdf) explains system construction, units, pulses and model conventions.

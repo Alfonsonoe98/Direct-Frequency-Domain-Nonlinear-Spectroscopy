@@ -7,6 +7,20 @@ PULSUS is a Python package for direct frequency-domain spectroscopy of open quan
 PULSUS `v0.2.0` focuses on linear and third-order spectroscopy with time-independent Markovian Liouvillian dynamics, including finite Gaussian pulses, impulsive limits, rotating-wave approximations, arbitrary field-sign sectors, and complementary impulsive time-domain calculations.
 
 
+## Installation
+
+PULSUS requires **Python 3.10 or newer**. Install the released package from PyPI with:
+
+```bash
+pip install pulsus-spec
+```
+
+The PyPI distribution is named `pulsus-spec`, while the Python package is imported as:
+
+```python
+import pulsus
+```
+
 ## Documentation
 
 Start with the [installation and quick start](docs/quickstart.md), including a complete example that works with the pip package. The [user manual (PDF)](docs/user_manual/PULSUS_User_Manual.pdf) explains systems, pulses, linear and third-order models, coordinate conventions, and troubleshooting. The [API reference](docs/api.md) covers all public functions and exact signatures. See [documentation build instructions](docs/README.md) to compile the PDF locally; Overleaf is optional.
@@ -15,25 +29,25 @@ Start with the [installation and quick start](docs/quickstart.md), including a c
 
 For a field-free Liouvillian
 
-\[
+$$
 \mathcal{L},
-\]
+$$
 
 PULSUS evaluates frequency-domain propagation using resolvent actions
 
-\[
+$$
 G_\eta(\omega)
 =
 \left[
 (\eta-i\omega)I-\mathcal{L}
 \right]^{-1},
-\]
+$$
 
 without explicitly constructing the matrix inverse.
 
 Finite Gaussian pulses are represented by Liouvillian dressing operators. For example,
 
-\[
+$$
 F_1^{(s)}
 =
 C e^{is\Phi}
@@ -44,28 +58,28 @@ C e^{is\Phi}
 +i(\omega_1-s\omega_L)I
 \right)^2
 \right].
-\]
+$$
 
 The production finite-pulse implementation uses the physical field-free Liouvillian inside the pulse dressing,
 
-\[
+$$
 F_j = F_j(\mathcal{L}),
-\]
+$$
 
-while the resolvents may use a small positive broadening parameter \(\eta\).
+while the resolvents may use a small positive broadening parameter $\eta$.
 
 
 ## Standard finite-pulse assumption
 
 The standard finite-pulse formulation assumes that the state immediately before the pulse sequence is stationary under the field-free Liouvillian,
 
-\[
+$$
 \mathcal{L}|\rho_0\rangle\rangle = 0.
-\]
+$$
 
 For dissipative systems this is typically the stationary state of the Liouvillian.
 
-PULSUS can also accept explicitly supplied initial density matrices for calculations where this assumption is not desired.
+Pass an initial density matrix explicitly with `rho0`. For the standard finite-pulse formulation, use a state stationary under the field-free Liouvillian; accepting a nonstationary array does not establish the validity of the formula for arbitrary preparation.
 
 
 ## Third-order spectroscopy
@@ -84,9 +98,9 @@ The impulsive approximation and the rotating-wave approximation are treated as d
 
 In particular,
 
-\[
+$$
 \sigma \rightarrow 0
-\]
+$$
 
 for the full finite-pulse theory approaches the impulsive **full-interaction** response, not automatically the impulsive RWA response.
 
@@ -103,35 +117,9 @@ pulsus.impulsive_linear_rwa_spectrum
 ```
 
 
-## Installation
-
-Install the released package from PyPI with:
-
-```bash
-pip install pulsus-spec
-```
-
-The PyPI distribution is named `pulsus-spec`, while the Python package is imported as:
-
-```python
-import pulsus
-```
-
-For development from the repository source:
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install -e ".[dev]"
-```
-
-Run the test suite with:
-
-```bash
-pytest -q
-```
-
 ## Basic usage
+
+The snippets below show the calculation steps and assume that the model matrices and time arrays have already been defined. For a complete example that runs with the pip package, start with [your first spectrum](docs/quickstart.md#your-first-spectrum).
 
 A spectroscopy model is defined using `SpectroscopySystem`:
 
@@ -192,11 +180,11 @@ The returned complex array has shape:
 
 with convention
 
-\[
+$$
 S[j,i]
 =
 S(\omega_{3,j},\omega_{1,i}).
-\]
+$$
 
 
 ## Rephasing and nonrephasing convention
@@ -205,27 +193,27 @@ PULSUS uses signed first-coherence frequencies.
 
 For the nonrephasing sector,
 
-\[
+$$
 \omega_1>0,
-\]
+$$
 
 with field-sign signature
 
-\[
+$$
 (+,-,+).
-\]
+$$
 
 For the rephasing sector,
 
-\[
+$$
 \omega_1<0,
-\]
+$$
 
 with field-sign signature
 
-\[
+$$
 (-,+,+).
-\]
+$$
 
 For example:
 
@@ -243,11 +231,11 @@ PULSUS is not restricted to R and NR pathways.
 
 Any third-order signature
 
-\[
+$$
 (s_1,s_2,s_3),
 \qquad
 s_j=\pm1,
-\]
+$$
 
 can be supplied explicitly.
 
@@ -284,13 +272,13 @@ remain available for the standard nonrephasing and rephasing sectors.
 
 For the tested coupled-dimer model, the field-sign sectors satisfy
 
-\[
+$$
 S_{(-s_1,-s_2,-s_3)}
 (-\omega_1,-\omega_3)
 =
 S_{(s_1,s_2,s_3)}
 (\omega_1,\omega_3)^*
-\]
+$$
 
 to floating-point precision.
 
@@ -301,15 +289,15 @@ This groups the eight possible signatures into four sign-reversed conjugate pair
 
 Full-interaction calculations require only the total dipole operator
 
-\[
+$$
 \mu.
-\]
+$$
 
 RWA calculations additionally require a decomposition
 
-\[
+$$
 \mu = \mu_+ + \mu_-.
-\]
+$$
 
 For example:
 
@@ -337,6 +325,7 @@ R_t = pulsus.impulsive_linear_rwa_time_signal(
     system=system,
     times=times,
     sign=+1,
+    rho0=rho_ss,
 )
 ```
 
@@ -349,6 +338,7 @@ R_t3_t1 = pulsus.impulsive_third_order_rwa_time_signal(
     t3=t3,
     T=20.0,
     pathway="NR",
+    rho0=rho_ss,
 )
 ```
 
@@ -366,12 +356,13 @@ P, components = pulsus.impulsive_pathway_polarization(
     pulse_times=(5.0, 15.0, 35.0),
     signature=(+1, -1, +1),
     return_components=True,
+    rho0=rho_ss,
 )
 ```
 
 The resulting polarization is piecewise associated with the perturbative state active between pulses:
 
-\[
+$$
 P_{\mathrm{path}}(t)
 =
 \begin{cases}
@@ -384,7 +375,7 @@ P^{(2)}(t),
 P^{(3)}(t),
 & t\ge\tau_3.
 \end{cases}
-\]
+$$
 
 This is the polarization of the **selected pathway**, not the total physical polarization from all perturbative orders and all field-sign sectors.
 
@@ -420,17 +411,17 @@ Two-dimensional spectrum calculations exploit the separable dependence on the ex
 
 For a third-order response, the grid can be written schematically as
 
-\[
+$$
 S_{ji}=L_jR_i,
-\]
+$$
 
-where \(R_i\) contains the \(\omega_1\)-dependent operations and \(L_j\) contains the \(\omega_3\)-dependent operations.
+where $R_i$ contains the $\omega_1$-dependent operations and $L_j$ contains the $\omega_3$-dependent operations.
 
 This avoids repeating expensive matrix exponentials and resolvent solves independently at every pair
 
-\[
+$$
 (\omega_1,\omega_3).
-\]
+$$
 
 The optimized implementation reproduces the original point-by-point calculations to floating-point precision.
 
@@ -443,58 +434,58 @@ cross-checks between independent spectral-evaluation interfaces.
 
 For the complete-interaction finite-pulse benchmark at
 
-\[
+$$
 \sigma=1.25,
 \qquad
 T=20,
 \qquad
 \eta=0.02,
-\]
+$$
 
 explicit third-order perturbative time-domain propagation retaining the full
 interaction superoperator gives complex spectral-shape discrepancies relative
 to the direct frequency-domain finite-pulse calculation of approximately
 
-\[
+$$
 0.0586\%
 \quad \text{(NR)}
-\]
+$$
 
 and
 
-\[
+$$
 0.0582\%
 \quad \text{(R)}
-\]
+$$
 
-for a transform window of \(t_{\max}=160\).
+for a transform window of $t_{\max}=160$.
 
 For the nonrephasing branch, extending the transform window to
-\(t_{\max}=200\) reduces the discrepancy further to approximately
+$t_{\max}=200$ reduces the discrepancy further to approximately
 
-\[
+$$
 0.0083\%,
-\]
+$$
 
 consistent with the remaining difference being dominated by finite numerical
 transform-window effects.
 
 The corresponding optimal global complex scale factors at
-\(t_{\max}=160\) differ from unity by less than \(4\times10^{-6}\).
+$t_{\max}=160$ differ from unity by less than $4\times10^{-6}$.
 
 ## Time-domain versus frequency-domain validation
 
 For impulsive linear RWA response, numerical time propagation followed by an FFT agrees with the direct frequency-domain resolvent calculation with a relative complex error of approximately
 
-\[
+$$
 0.0035\%.
-\]
+$$
 
 For impulsive third-order NR response, two-dimensional time propagation followed by a 2D FFT agrees with the direct frequency-domain result with a relative complex error of approximately
 
-\[
+$$
 0.015\%.
-\]
+$$
 
 These comparisons independently validate the time/frequency sign and transform conventions used in PULSUS.
 
@@ -522,56 +513,72 @@ The current test suite contains **67 passing unit and regression tests** coverin
 - time-domain pathway polarization
 
 
+## Development
+
+For development from the repository source:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e ".[dev]"
+```
+
+Run the test suite with:
+
+```bash
+pytest -q
+```
+
 ## Examples
 
-The `examples/` directory contains the current development and validation examples.
+Start with the [user-manual tutorials](examples/manual/) for complete usage examples. The other programs in `examples/` provide development and validation examples.
 
 ### Main examples
 
-`01_finite_pulse_dimer.py`
+[01_finite_pulse_dimer.py](examples/01_finite_pulse_dimer.py)
 
 Builds the coupled dimer and calculates finite-pulse NR and R spectra through the PULSUS API.
 
-`03_reproduce_figure6.py`
+[03_reproduce_figure6.py](examples/03_reproduce_figure6.py)
 
 Compares finite-pulse, short-pulse RWA, and impulsive RWA spectra.
 
-`06_all_third_order_signatures.py`
+[06_all_third_order_signatures.py](examples/06_all_third_order_signatures.py)
 
 Calculates all eight third-order field-sign sectors and checks the sign-reversed conjugation relation.
 
-`09_linear_td_fft_vs_fd.py`
+[09_linear_td_fft_vs_fd.py](examples/09_linear_td_fft_vs_fd.py)
 
 Validates impulsive linear time-domain propagation and FFT against the direct frequency-domain resolvent calculation.
 
-`10_third_order_td_fft_vs_fd.py`
+[10_third_order_td_fft_vs_fd.py](examples/10_third_order_td_fft_vs_fd.py)
 
 Validates third-order NR time-domain propagation and a 2D FFT against the direct frequency-domain calculation.
 
-`11_impulsive_polarization_traces.py`
+[11_impulsive_polarization_traces.py](examples/11_impulsive_polarization_traces.py)
 
 Visualizes the selected impulsive pathway in laboratory time and separates first-, second-, and third-order polarization stages.
 
 
 ### Validation and diagnostic examples
 
-`02_compare_notebook04.py`
+[02_compare_notebook04.py](examples/02_compare_notebook04.py)
 
 Compares the production finite-pulse implementation with frozen explicit-ODE validation data.
 
-`04_linear_response_comparison.py`
+[04_linear_response_comparison.py](examples/04_linear_response_comparison.py)
 
 Compares full-interaction and RWA linear spectra.
 
-`05_linear_rwa_quadratures.py`
+[05_linear_rwa_quadratures.py](examples/05_linear_rwa_quadratures.py)
 
 Examines real and imaginary quadratures of the linear full-interaction and RWA responses.
 
-`07_full_vs_rwa_signatures.py`
+[07_full_vs_rwa_signatures.py](examples/07_full_vs_rwa_signatures.py)
 
 Compares finite-pulse full-interaction and short-pulse RWA results across third-order signatures.
 
-`08_approximation_ladder.py`
+[08_approximation_ladder.py](examples/08_approximation_ladder.py)
 
 Separates the effects of the full-interaction, RWA, short-pulse, and impulsive approximations.
 
@@ -632,10 +639,15 @@ Additional lower-level response, Liouville-space, resolvent, and pulse-dressing 
 ├── src/
 │   └── pulsus/          PULSUS source code
 ├── tests/               unit and regression tests
+├── docs/                quick start, function guide, and advanced notes
+│   └── user_manual/     published PDF, LaTeX source, and figures
 ├── examples/            usage and validation examples
+│   └── manual/          runnable user-manual tutorials
 ├── notebooks/           numerical validation notebooks
 ├── figures/             generated validation and development figures
 ├── results/             benchmark results
+├── notes/
+│   └── technical_notes/ theoretical notes
 ├── paper/               manuscript source
 │   ├── main.tex
 │   ├── references.bib

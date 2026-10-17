@@ -5,7 +5,7 @@ These documents describe the public API and examples for PULSUS 0.2.0.
 - Start with the [quick start](quickstart.md): install the package and calculate a spectrum from a complete example.
 - Read the [function guide and full reference](api.md) for the common functions, inputs, and return values.
 - Use [advanced notes](advanced_notes.md) for optional time-transform and numerical details.
-- Build the [LaTeX user manual](user_manual/main.tex) for a tutorial and reference PDF.
+- Read the [user manual (PDF)](user_manual/PULSUS_User_Manual.pdf) for tutorials and reference material. The [LaTeX source](user_manual/main.tex) is available for documentation maintenance.
 - Read the [validation record](VALIDATION.md) for the checks and environment used.
 - Run the [first tutorial script](../examples/manual/01_first_spectrum.py) from the repository root.
 
@@ -18,6 +18,7 @@ docs/
   api.md
   advanced_notes.md
   user_manual/
+    PULSUS_User_Manual.pdf  # published, ready-to-read manual
     main.tex
     render_figures.py      # maintainer-only figure generation
     sections/
@@ -47,6 +48,14 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
 
 The resulting PDF is `docs/user_manual/build/main.pdf`. On macOS, open it with `open build/main.pdf`; on Linux use `xdg-open build/main.pdf`; on Windows open the file in your PDF viewer. The `build/` directory is ignored by Git.
 
+After reviewing the rebuilt PDF, refresh the published copy from `docs/user_manual/`:
+
+```bash
+cp build/main.pdf PULSUS_User_Manual.pdf
+```
+
+Commit this published PDF with any changes to the manual source or figures. Keep the temporary files in `build/` untracked.
+
 LaTeX is needed only to build the PDF. It is not needed to install PULSUS or run its Python examples. A notebook environment is also optional.
 
 ## Updating examples and documentation
@@ -55,6 +64,7 @@ LaTeX is needed only to build the PDF. It is not needed to install PULSUS or run
 2. Run `python docs/user_manual/render_figures.py` from the repository root to regenerate PDF figures. User-facing examples display plots with `plt.show()` and do not save files.
 3. Edit the corresponding Markdown and LaTeX explanations. Public function signatures should match `src/pulsus/`.
 4. Build and inspect the PDF, including every code block and figure.
-5. Review `git diff` before committing documentation and tutorial changes.
+5. Copy the reviewed `build/main.pdf` to `PULSUS_User_Manual.pdf`.
+6. Review `git diff` before committing the documentation, tutorials, and published PDF together.
 
 For changes to scientific implementations, run the applicable tests as well. Installing the `dev` extra and running the complete test suite are useful for contributors; neither is a prerequisite for a user's first spectrum.
