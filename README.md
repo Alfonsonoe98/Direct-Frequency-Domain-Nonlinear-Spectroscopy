@@ -29,25 +29,25 @@ Start with the [installation and quick start](docs/quickstart.md), including a c
 
 For a field-free Liouvillian
 
-$$
+```math
 \mathcal{L},
-$$
+```
 
 PULSUS evaluates frequency-domain propagation using resolvent actions
 
-$$
+```math
 G_\eta(\omega)
 =
 \left[
 (\eta-i\omega)I-\mathcal{L}
 \right]^{-1},
-$$
+```
 
 without explicitly constructing the matrix inverse.
 
 Finite Gaussian pulses are represented by Liouvillian dressing operators. For example,
 
-$$
+```math
 F_1^{(s)}
 =
 C e^{is\Phi}
@@ -58,13 +58,13 @@ C e^{is\Phi}
 +i(\omega_1-s\omega_L)I
 \right)^2
 \right].
-$$
+```
 
 The production finite-pulse implementation uses the physical field-free Liouvillian inside the pulse dressing,
 
-$$
+```math
 F_j = F_j(\mathcal{L}),
-$$
+```
 
 while the resolvents may use a small positive broadening parameter $\eta$.
 
@@ -73,9 +73,9 @@ while the resolvents may use a small positive broadening parameter $\eta$.
 
 The standard finite-pulse formulation assumes that the state immediately before the pulse sequence is stationary under the field-free Liouvillian,
 
-$$
+```math
 \mathcal{L}|\rho_0\rangle\rangle = 0.
-$$
+```
 
 For dissipative systems this is typically the stationary state of the Liouvillian.
 
@@ -98,9 +98,9 @@ The impulsive approximation and the rotating-wave approximation are treated as d
 
 In particular,
 
-$$
+```math
 \sigma \rightarrow 0
-$$
+```
 
 for the full finite-pulse theory approaches the impulsive **full-interaction** response, not automatically the impulsive RWA response.
 
@@ -180,11 +180,11 @@ The returned complex array has shape:
 
 with convention
 
-$$
+```math
 S[j,i]
 =
 S(\omega_{3,j},\omega_{1,i}).
-$$
+```
 
 
 ## Rephasing and nonrephasing convention
@@ -193,27 +193,27 @@ PULSUS uses signed first-coherence frequencies.
 
 For the nonrephasing sector,
 
-$$
+```math
 \omega_1>0,
-$$
+```
 
 with field-sign signature
 
-$$
+```math
 (+,-,+).
-$$
+```
 
 For the rephasing sector,
 
-$$
+```math
 \omega_1<0,
-$$
+```
 
 with field-sign signature
 
-$$
+```math
 (-,+,+).
-$$
+```
 
 For example:
 
@@ -231,11 +231,11 @@ PULSUS is not restricted to R and NR pathways.
 
 Any third-order signature
 
-$$
+```math
 (s_1,s_2,s_3),
 \qquad
 s_j=\pm1,
-$$
+```
 
 can be supplied explicitly.
 
@@ -272,13 +272,13 @@ remain available for the standard nonrephasing and rephasing sectors.
 
 For the tested coupled-dimer model, the field-sign sectors satisfy
 
-$$
+```math
 S_{(-s_1,-s_2,-s_3)}
 (-\omega_1,-\omega_3)
 =
 S_{(s_1,s_2,s_3)}
 (\omega_1,\omega_3)^*
-$$
+```
 
 to floating-point precision.
 
@@ -289,15 +289,15 @@ This groups the eight possible signatures into four sign-reversed conjugate pair
 
 Full-interaction calculations require only the total dipole operator
 
-$$
+```math
 \mu.
-$$
+```
 
 RWA calculations additionally require a decomposition
 
-$$
+```math
 \mu = \mu_+ + \mu_-.
-$$
+```
 
 For example:
 
@@ -362,7 +362,7 @@ P, components = pulsus.impulsive_pathway_polarization(
 
 The resulting polarization is piecewise associated with the perturbative state active between pulses:
 
-$$
+```math
 P_{\mathrm{path}}(t)
 =
 \begin{cases}
@@ -375,7 +375,7 @@ P^{(2)}(t),
 P^{(3)}(t),
 & t\ge\tau_3.
 \end{cases}
-$$
+```
 
 This is the polarization of the **selected pathway**, not the total physical polarization from all perturbative orders and all field-sign sectors.
 
@@ -411,17 +411,17 @@ Two-dimensional spectrum calculations exploit the separable dependence on the ex
 
 For a third-order response, the grid can be written schematically as
 
-$$
+```math
 S_{ji}=L_jR_i,
-$$
+```
 
 where $R_i$ contains the $\omega_1$-dependent operations and $L_j$ contains the $\omega_3$-dependent operations.
 
 This avoids repeating expensive matrix exponentials and resolvent solves independently at every pair
 
-$$
+```math
 (\omega_1,\omega_3).
-$$
+```
 
 The optimized implementation reproduces the original point-by-point calculations to floating-point precision.
 
@@ -434,38 +434,38 @@ cross-checks between independent spectral-evaluation interfaces.
 
 For the complete-interaction finite-pulse benchmark at
 
-$$
+```math
 \sigma=1.25,
 \qquad
 T=20,
 \qquad
 \eta=0.02,
-$$
+```
 
 explicit third-order perturbative time-domain propagation retaining the full
 interaction superoperator gives complex spectral-shape discrepancies relative
 to the direct frequency-domain finite-pulse calculation of approximately
 
-$$
+```math
 0.0586\%
 \quad \text{(NR)}
-$$
+```
 
 and
 
-$$
+```math
 0.0582\%
 \quad \text{(R)}
-$$
+```
 
 for a transform window of $t_{\max}=160$.
 
 For the nonrephasing branch, extending the transform window to
 $t_{\max}=200$ reduces the discrepancy further to approximately
 
-$$
+```math
 0.0083\%,
-$$
+```
 
 consistent with the remaining difference being dominated by finite numerical
 transform-window effects.
@@ -477,15 +477,15 @@ $t_{\max}=160$ differ from unity by less than $4\times10^{-6}$.
 
 For impulsive linear RWA response, numerical time propagation followed by an FFT agrees with the direct frequency-domain resolvent calculation with a relative complex error of approximately
 
-$$
+```math
 0.0035\%.
-$$
+```
 
 For impulsive third-order NR response, two-dimensional time propagation followed by a 2D FFT agrees with the direct frequency-domain result with a relative complex error of approximately
 
-$$
+```math
 0.015\%.
-$$
+```
 
 These comparisons independently validate the time/frequency sign and transform conventions used in PULSUS.
 
