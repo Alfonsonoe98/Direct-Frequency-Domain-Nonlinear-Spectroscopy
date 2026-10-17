@@ -8,7 +8,7 @@ PULSUS requires **Python 3.10 or newer**.
 pip install pulsus-spec
 ```
 
-The package name is `pulsus-spec`; import it in Python as `pulsus`. The first example below works with the released **0.2.0** package. To install that version specifically, use `pip install "pulsus-spec==0.2.0"`. The optional plotting section at the end describes additions in the **unreleased 0.3.0 development checkout**.
+The package name is `pulsus-spec`; import it in Python as `pulsus`. This guide targets **0.3.0**. The linear plotter and optional figure-export arguments require 0.3.0 or newer; upgrade an older installation with `pip install --upgrade pulsus-spec`, or install this checkout with `python -m pip install -e .` from the repository root. The first spectrum below also works with 0.2.0.
 
 ## Your first spectrum
 
@@ -127,13 +127,7 @@ For linear spectroscopy, use `finite_pulse_linear_spectrum`, `short_pulse_linear
 
 Read the [function guide](api.md) to choose grid, single-coordinate and selected-coordinate calculations. The [user manual (PDF)](user_manual/PULSUS_User_Manual.pdf) explains system construction, units, pulses and model conventions.
 
-## Optional: new plotting helpers in the development version
-
-The repository currently contains **0.3.0.dev0**, an unreleased development version. Its linear plotter and figure-export options are not available from `pip install pulsus-spec` yet. To try them, install the checkout with this command from the repository root:
-
-```bash
-python -m pip install -e .
-```
+## Plot a linear spectrum and optionally save a figure
 
 After running the first example above, reuse its `system`, `pulse`, and `rho_ss` to calculate and plot a linear spectrum:
 

@@ -1,6 +1,6 @@
-# PULSUS 0.3.0 development API reference
+# PULSUS 0.3.0 API reference
 
-This reference describes the repository's **unreleased 0.3.0 development checkout** (`0.3.0.dev0`). Install this source from the repository root with `python -m pip install -e .`, then `import pulsus`. The released PyPI distribution is still **0.2.0**, installed with `python -m pip install "pulsus-spec==0.2.0"`; it does not include `plot_linear_spectrum` or the plotters' `savepath`/`dpi` arguments. Follow [the quick start](quickstart.md) for a complete first calculation that also works with the released package.
+Install the distribution with `pip install pulsus-spec`, then `import pulsus`. This reference describes **0.3.0**. The linear plotter and optional figure-export arguments require 0.3.0 or newer; upgrade an older installation or install this checkout with `python -m pip install -e .` from the repository root. Follow [the quick start](quickstart.md) for a complete first calculation.
 
 All names below are available as `pulsus.NAME` in this checkout. The root module imports **58 names**, while its `__all__` contains **56**. `finite_pulse_rwa_response` and `finite_pulse_rwa_signal` are importable explicitly but omitted from `__all__` in this source version. Thus `import pulsus` or explicit imports expose them; `from pulsus import *` omits them. This reference records the existing discrepancy.
 
@@ -545,7 +545,7 @@ RWA wrappers require both system dipole components. The result is `gaussian_spec
 
 ## 5. Plot linear and third-order spectra
 
-The linear helper and both helpers' `savepath`/`dpi` arguments are **unreleased additions for 0.3.0**, available after installing this source checkout. Neither helper calls `plt.show()` or closes the figure. Omit `savepath` to save nothing; pass a PNG or PDF filename to export the figure immediately. The filename extension selects the format, and the destination directory must exist. `dpi` sets raster export resolution; PDF curves and text remain vector graphics where supported.
+Version 0.3.0 adds the linear helper and both helpers' `savepath`/`dpi` arguments. Neither helper calls `plt.show()` or closes the figure. Omit `savepath` to save nothing; pass a PNG or PDF filename to export the figure immediately. The filename extension selects the format, and the destination directory must exist. `dpi` sets raster export resolution; PDF curves and text remain vector graphics where supported.
 
 Both helpers return Matplotlib objects for customization. You can still call `plt.show()` and `fig.savefig(...)` yourself, including after modifying axes or adding curves. Figure export does not save the underlying complex numerical spectrum.
 

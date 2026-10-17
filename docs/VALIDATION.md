@@ -1,6 +1,6 @@
 # Documentation and package validation record
 
-Manual version 0.4, targeting the PULSUS 0.3.0.dev0 development candidate. Prepared October 17, 2026.
+Manual version 0.5, targeting PULSUS 0.3.0. Prepared October 17, 2026.
 
 ## Checks completed
 
@@ -8,12 +8,12 @@ Manual version 0.4, targeting the PULSUS 0.3.0.dev0 development candidate. Prepa
 - A wheel and source distribution were built in isolation. The wheel and its dependencies were installed in a fresh virtual environment; the complete suite also passed against the installed wheel. The existing test-only `dimer_model.py` fixture was supplied separately, without placing the source package on the import path.
 - The 46 plotting cases include component values, normalization and zero responses, input preservation, axes reuse, optional PNG/PDF export, actual raster DPI, continued editing and saving, and compatibility with existing 2D positional calls.
 - All five scripts in `examples/manual/` ran against the installed wheel from an empty working folder. They displayed figures through the usual `plt.show()` call and wrote no files by default.
-- All quick-start Python blocks, the README plotting examples, and the API overlay/export example were executed in their documented context.
+- All quick-start Python blocks, both complete README examples, and the API overlay/export example were executed in their documented context.
 - The maintainer renderer regenerated the linear-comparison figure without point markers. The other four manual figures were preserved because their calculations and presentation did not change.
 - The Markdown reference covers all 58 root-imported names and matching plotting signatures. The two pre-existing omissions from `__all__` remain documented; this release candidate adds the new plotter without unrelated export changes.
-- All 89 local Markdown links resolve. LaTeX compilation completed without undefined references or overfull boxes, and all 26 rendered pages were visually reviewed.
+- All 109 checked Markdown links resolve to existing local or repository targets. The shortened README preserves the original 24 display equations and scientific benchmarks in [method notes](method_notes.md). LaTeX compilation completed without undefined references or overfull boxes, and all 26 rendered pages were visually reviewed.
 
-These checks verify implementation and documentation consistency. They do not establish physical convergence for arbitrary systems or approximation regimes. This is a development build, not a new PyPI release.
+These checks verify implementation and documentation consistency. They do not establish physical convergence for arbitrary systems or approximation regimes. They were performed on the prepared 0.3.0 distributions before publication; verification of the published PyPI artifacts is a separate release step.
 
 ## Environment
 
@@ -21,7 +21,7 @@ Python 3.11.4
 
 | Package | Version |
 |---|---|
-| pulsus-spec | 0.3.0.dev0 |
+| pulsus-spec | 0.3.0 |
 | numpy | 2.4.6 |
 | scipy | 1.17.1 |
 | matplotlib | 3.11.2 |
@@ -30,7 +30,7 @@ Python 3.11.4
 
 ## Repeating the checks
 
-From the repository root in the editable development environment:
+From the repository root with the checkout installed:
 
 ```bash
 python -m pytest -q

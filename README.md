@@ -1,257 +1,84 @@
 # PULSUS
 
-**PULSUS**: **PU**lse-dressed **L**iouvillian **S**pectroscopy **U**sing **S**uperoperators.
+**PU**lse-dressed **L**iouvillian **S**pectroscopy **U**sing **S**uperoperators.
 
-PULSUS is a Python package for direct frequency-domain spectroscopy of open quantum systems using Liouville-space superoperators.
+PULSUS calculates linear and third-order spectra of open quantum systems directly
+in the frequency domain. It supports finite Gaussian pulses, full and rotating-wave
+interactions, impulsive limits, and selected spectral coordinates.
 
-PULSUS `v0.2.0` focuses on linear and third-order spectroscopy with time-independent Markovian Liouvillian dynamics, including finite Gaussian pulses, impulsive limits, rotating-wave approximations, arbitrary field-sign sectors, and complementary impulsive time-domain calculations.
+## Install
 
-
-## Installation
-
-PULSUS requires **Python 3.10 or newer**. Install the released package from PyPI with:
+Requires **Python 3.10 or newer**:
 
 ```bash
 pip install pulsus-spec
 ```
 
-The PyPI distribution is named `pulsus-spec`, while the Python package is imported as:
-
-```python
-import pulsus
-```
-
-This checkout is the **unreleased 0.3.0 development version** (`0.3.0.dev0`). The new linear plotter and figure-export options below require installing this checkout from the repository root:
+Import the package as `pulsus`. The first example below works with **0.2.0 or
+newer**. The linear plotter and optional figure export require **0.3.0 or
+newer**. To install from a cloned checkout instead of PyPI, run this from the
+repository root:
 
 ```bash
 python -m pip install -e .
 ```
 
-The released PyPI package remains **0.2.0** until the next release; the main quick-start example works with that release.
-
 ## Documentation
 
-Start with the [installation and quick start](docs/quickstart.md), including a complete example that works with the pip package. The [user manual (PDF)](docs/user_manual/PULSUS_User_Manual.pdf) explains systems, pulses, linear and third-order models, coordinate conventions, and troubleshooting. The [API reference](docs/api.md) covers all public functions and exact signatures. See [documentation build instructions](docs/README.md) to compile the PDF locally; Overleaf is optional.
+- [Quick start](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/docs/quickstart.md): install, run a first calculation, and choose a model.
+- [User manual (PDF)](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/docs/user_manual/PULSUS_User_Manual.pdf): systems, pulses, units, and complete tutorials.
+- [API reference](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/docs/api.md): public functions and their arguments.
+- [Method and validation notes](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/docs/method_notes.md): scientific conventions, implementation details, and benchmark results.
+- [Examples](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/tree/main/examples/manual) and [documentation source/build instructions](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/docs/README.md). Overleaf is optional.
 
-## Core idea
+## Your first spectrum
 
-For a field-free Liouvillian
-
-```math
-\mathcal{L},
-```
-
-PULSUS evaluates frequency-domain propagation using resolvent actions
-
-```math
-G_\eta(\omega)
-=
-\left[
-(\eta-i\omega)I-\mathcal{L}
-\right]^{-1},
-```
-
-without explicitly constructing the matrix inverse.
-
-Finite Gaussian pulses are represented by Liouvillian dressing operators. For example,
-
-```math
-F_1^{(s)}
-=
-C e^{is\Phi}
-\exp\left[
-\frac{\sigma^2}{2}
-\left(
-\mathcal{L}
-+i(\omega_1-s\omega_L)I
-\right)^2
-\right].
-```
-
-The production finite-pulse implementation uses the physical field-free Liouvillian inside the pulse dressing,
-
-```math
-F_j = F_j(\mathcal{L}),
-```
-
-while the resolvents may use a small positive broadening parameter $\eta$.
-
-
-## Standard finite-pulse assumption
-
-The standard finite-pulse formulation assumes that the state immediately before the pulse sequence is stationary under the field-free Liouvillian,
-
-```math
-\mathcal{L}|\rho_0\rangle\rangle = 0.
-```
-
-For dissipative systems this is typically the stationary state of the Liouvillian.
-
-Pass an initial density matrix explicitly with `rho0`. For the standard finite-pulse formulation, use a state stationary under the field-free Liouvillian; accepting a nonstationary array does not establish the validity of the formula for arbitrary preparation.
-
-
-## Third-order spectroscopy
-
-PULSUS currently provides five principal third-order models:
-
-| Function | Pulse treatment | Light-matter interaction |
-| --- | --- | --- |
-| `finite_pulse_spectrum` | finite Gaussian pulses | full interaction |
-| `finite_pulse_rwa_spectrum` | finite Gaussian pulses | RWA |
-| `impulsive_spectrum` | impulsive | full interaction |
-| `short_pulse_rwa_spectrum` | Gaussian spectral envelopes | RWA |
-| `impulsive_rwa_spectrum` | impulsive | RWA |
-
-The impulsive approximation and the rotating-wave approximation are treated as distinct approximations.
-
-In particular,
-
-```math
-\sigma \rightarrow 0
-```
-
-for the full finite-pulse theory approaches the impulsive **full-interaction** response, not automatically the impulsive RWA response.
-
-
-## Linear spectroscopy
-
-The corresponding linear-response calculations are available through:
+Copy this complete example into a notebook or Python file. It uses only the
+installed package and its dependencies, displays a finite-pulse nonrephasing
+spectrum of two coupled sites, and saves no files.
 
 ```python
-pulsus.finite_pulse_linear_spectrum
-pulsus.impulsive_linear_spectrum
-pulsus.short_pulse_linear_rwa_spectrum
-pulsus.impulsive_linear_rwa_spectrum
-```
-
-
-## Basic usage
-
-The snippets below show the calculation steps and assume that the model matrices and time arrays have already been defined. For a complete example that runs with the pip package, start with [your first spectrum](docs/quickstart.md#your-first-spectrum).
-
-A spectroscopy model is defined using `SpectroscopySystem`:
-
-```python
+import matplotlib.pyplot as plt
+import numpy as np
 import pulsus
 
+# Use consistent model units with hbar = 1.
+# Build two coupled two-level sites.
+identity = np.eye(2, dtype=complex)
+lower = np.array([[0, 1], [0, 0]], dtype=complex)
+a = np.kron(identity, lower)
+b = np.kron(lower, identity)
+H = (
+    1.0 * (a.conj().T @ a)
+    + 1.2 * (b.conj().T @ b)
+    + 0.1 * (a.conj().T @ b + b.conj().T @ a)
+)
+dipole_plus = a.conj().T + b.conj().T
+dipole_minus = dipole_plus.conj().T
+dipole = dipole_plus + dipole_minus
+
+gamma = 0.05
+nbar = 0.05
+collapse_ops = [
+    np.sqrt(gamma * (nbar + 1)) * a,
+    np.sqrt(gamma * nbar) * a.conj().T,
+    np.sqrt(gamma * (nbar + 1)) * b,
+    np.sqrt(gamma * nbar) * b.conj().T,
+]
 system = pulsus.SpectroscopySystem(
     H=H,
-    dipole=mu,
+    dipole=dipole,
     collapse_ops=collapse_ops,
+    hbar=1.0,
+    dipole_plus=dipole_plus,
+    dipole_minus=dipole_minus,
 )
-```
-
-The stationary state can be obtained from:
-
-```python
 rho_ss = system.stationary_state()
-```
 
-A Gaussian pulse is specified by its carrier frequency, temporal width, amplitude, and phase:
-
-```python
-pulse = pulsus.GaussianPulse(
-    omega_L=1.10,
-    sigma=1.25,
-    E0=1.0,
-    phase=0.0,
-)
-```
-
-A finite-pulse nonrephasing spectrum can then be evaluated directly:
-
-```python
-import numpy as np
-
-omega1 = np.linspace(0.7, 1.5, 81)
-omega3 = np.linspace(0.7, 1.5, 81)
-
-S_NR = pulsus.finite_pulse_spectrum(
-    system=system,
-    pulse1=pulse,
-    pulse2=pulse,
-    pulse3=pulse,
-    omega1=omega1,
-    omega3=omega3,
-    T=20.0,
-    eta=0.02,
-    pathway="NR",
-    rho0=rho_ss,
-)
-```
-
-The returned complex array has shape:
-
-```text
-(len(omega3), len(omega1))
-```
-
-with convention
-
-```math
-S[j,i]
-=
-S(\omega_{3,j},\omega_{1,i}).
-```
-
-
-## Rephasing and nonrephasing convention
-
-PULSUS uses signed first-coherence frequencies.
-
-For the nonrephasing sector,
-
-```math
-\omega_1>0,
-```
-
-with field-sign signature
-
-```math
-(+,-,+).
-```
-
-For the rephasing sector,
-
-```math
-\omega_1<0,
-```
-
-with field-sign signature
-
-```math
-(-,+,+).
-```
-
-For example:
-
-```python
-omega1_NR = np.linspace(0.7, 1.5, 81)
-omega1_R = -omega1_NR
-```
-
-The rephasing spectrum may be displayed against the positive spectroscopic excitation coordinate `-omega1_R`, but the calculation itself uses signed negative first-coherence frequencies.
-
-
-## Arbitrary field-sign sectors
-
-PULSUS is not restricted to R and NR pathways.
-
-Any third-order signature
-
-```math
-(s_1,s_2,s_3),
-\qquad
-s_j=\pm1,
-```
-
-can be supplied explicitly.
-
-For example:
-
-```python
-signature = (+1, +1, +1)
-
+# Define the pulse and frequency axes, then calculate the spectrum.
+pulse = pulsus.GaussianPulse(omega_L=1.10, sigma=1.25, E0=1.0)
+omega1 = np.linspace(0.7, 1.5, 31)
+omega3 = np.linspace(0.7, 1.5, 31)
 S = pulsus.finite_pulse_spectrum(
     system=system,
     pulse1=pulse,
@@ -261,451 +88,105 @@ S = pulsus.finite_pulse_spectrum(
     omega3=omega3,
     T=20.0,
     eta=0.02,
-    signature=signature,
-    rho0=rho_ss,
-)
-```
-
-The aliases
-
-```python
-pathway="NR"
-pathway="R"
-```
-
-remain available for the standard nonrephasing and rephasing sectors.
-
-
-## Sign-reversed conjugation symmetry
-
-For the tested coupled-dimer model, the field-sign sectors satisfy
-
-```math
-S_{(-s_1,-s_2,-s_3)}
-(-\omega_1,-\omega_3)
-=
-S_{(s_1,s_2,s_3)}
-(\omega_1,\omega_3)^*
-```
-
-to floating-point precision.
-
-This groups the eight possible signatures into four sign-reversed conjugate pairs.
-
-
-## Full interaction and RWA
-
-Full-interaction calculations require only the total dipole operator
-
-```math
-\mu.
-```
-
-RWA calculations additionally require a decomposition
-
-```math
-\mu = \mu_+ + \mu_-.
-```
-
-For example:
-
-```python
-system = pulsus.SpectroscopySystem(
-    H=H,
-    dipole=mu,
-    collapse_ops=collapse_ops,
-    dipole_plus=mu_plus,
-    dipole_minus=mu_minus,
-)
-```
-
-PULSUS currently requires this decomposition to be supplied explicitly rather than inferring it automatically.
-
-
-## Time-domain calculations
-
-PULSUS also provides impulsive time-domain response functions.
-
-For linear spectroscopy:
-
-```python
-R_t = pulsus.impulsive_linear_rwa_time_signal(
-    system=system,
-    times=times,
-    sign=+1,
-    rho0=rho_ss,
-)
-```
-
-For third-order spectroscopy:
-
-```python
-R_t3_t1 = pulsus.impulsive_third_order_rwa_time_signal(
-    system=system,
-    t1=t1,
-    t3=t3,
-    T=20.0,
     pathway="NR",
     rho0=rho_ss,
 )
-```
 
-These provide a complementary time-domain representation of the same impulsive Liouvillian dynamics used in the direct frequency-domain formulation.
-
-
-## Pathway polarization in laboratory time
-
-A selected RWA pathway can also be followed through the sequence of three impulsive interactions:
-
-```python
-P, components = pulsus.impulsive_pathway_polarization(
-    system=system,
-    times=times,
-    pulse_times=(5.0, 15.0, 35.0),
-    signature=(+1, -1, +1),
-    return_components=True,
-    rho0=rho_ss,
-)
-```
-
-The resulting polarization is piecewise associated with the perturbative state active between pulses:
-
-```math
-P_{\mathrm{path}}(t)
-=
-\begin{cases}
-0,
-& t<\tau_1,\\
-P^{(1)}(t),
-& \tau_1\le t<\tau_2,\\
-P^{(2)}(t),
-& \tau_2\le t<\tau_3,\\
-P^{(3)}(t),
-& t\ge\tau_3.
-\end{cases}
-```
-
-This is the polarization of the **selected pathway**, not the total physical polarization from all perturbative orders and all field-sign sectors.
-
-
-## Complex spectra and plotting
-
-PULSUS retains the complete complex response.
-
-A 2D spectrum can be plotted with:
-
-```python
-import matplotlib.pyplot as plt
-
-fig, ax, contour = pulsus.plot_spectrum(
+# Display the normalized imaginary component.
+pulsus.plot_spectrum(
     omega1=omega1,
     omega3=omega3,
-    spectrum=S_NR,
+    spectrum=S,
     component="imag",
     normalize=True,
+    title="Finite-pulse nonrephasing dimer spectrum",
+    xlabel=r"$\omega_1$ (inverse time units)",
+    ylabel=r"$\omega_3$ (inverse time units)",
 )
 plt.show()
 ```
 
-Supported displayed components are:
+![Finite-pulse nonrephasing dimer spectrum](https://raw.githubusercontent.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/main/docs/user_manual/figures/first_nr_spectrum.png)
 
-- `"real"`
-- `"imag"`
-- `"abs"`
+`S[j, i]` corresponds to `omega3[j]` and `omega1[i]`. All quantities use
+consistent model units with `hbar=1`; `sigma` is the Gaussian **field-envelope**
+standard deviation. `eta` ensures convergence of the causal transform and adds
+broadening: reduce it and refine the frequency grid until the result is stable.
 
-Normalization is optional and disabled by default.
+## Available models
 
-The **unreleased 0.3.0 development version** adds a matching linear plotter. Using the system, pulse, and stationary state defined above:
+The rotating-wave approximation (RWA) and impulsive approximation can be chosen
+separately. The principal third-order grid functions are:
+
+| Function | Pulse treatment | Interaction |
+|---|---|---|
+| `finite_pulse_spectrum` | Finite Gaussian pulses | Full |
+| `finite_pulse_rwa_spectrum` | Finite Gaussian pulses | RWA |
+| `short_pulse_rwa_spectrum` | Gaussian spectral envelopes | RWA |
+| `impulsive_rwa_spectrum` | Impulsive | RWA |
+| `impulsive_spectrum` | Impulsive | Full |
+
+For linear spectra, use `finite_pulse_linear_spectrum`,
+`short_pulse_linear_rwa_spectrum`, `impulsive_linear_rwa_spectrum`, or
+`impulsive_linear_spectrum`. Functions return complex numerical responses;
+plotting is a separate step. See the [model guide](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/docs/quickstart.md#choose-a-model)
+for the arguments to keep or omit when switching models.
+
+## Plotting and optional export in 0.3.0
+
+Using `system`, `pulse`, and `rho_ss` from the first example:
 
 ```python
 omega = np.linspace(0.7, 1.5, 401)
 S_linear = pulsus.finite_pulse_linear_spectrum(
-    system=system,
-    pulse=pulse,
-    omega=omega,
-    eta=0.02,
-    rho0=rho_ss,
+    system=system, pulse=pulse, omega=omega, eta=0.02, rho0=rho_ss,
 )
 fig, ax, line = pulsus.plot_linear_spectrum(
-    omega=omega,
-    spectrum=S_linear,
-    component="imag",
-    normalize=True,
+    omega, S_linear, component="imag", normalize=True,
     title="Finite-pulse linear spectrum",
 )
 plt.show()
 ```
 
-The linear plotter draws a line without markers by default. Pass `ax=ax` to overlay another spectrum, and use Matplotlib line options such as `label`, `color`, and `linestyle` to distinguish curves. Normalization uses the selected component's maximum absolute value and leaves the complex input unchanged.
+`plot_linear_spectrum` draws a line without markers by default. Both plotters
+support `component="real"`, `"imag"`, or `"abs"`, optional normalization,
+`savepath="spectrum.png"` or `"spectrum.pdf"`, and `dpi=300`. They return
+editable Matplotlib objects without calling `plt.show()` or closing the figure.
+Omitting `savepath` saves nothing. You can modify `ax` and then call
+`fig.savefig(...)` and `plt.show()`.
+See the [plotting reference](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/docs/api.md#5-plot-linear-and-third-order-spectra)
+for overlays and all options.
 
-Both plotters in the development version accept `savepath="spectrum.png"` or `savepath="spectrum.pdf"`, with optional `dpi=300`; the filename extension chooses the format. The destination directory must already exist. Omitting `savepath` saves no file. These functions create figures without calling `plt.show()` or closing them. You can modify the returned objects and save the finished figure afterward:
+## Physical scope
 
-```python
-ax.set_title("My customized linear spectrum")
-fig.savefig("linear_spectrum.pdf", bbox_inches="tight")
-plt.show()
-```
-
-These exports save the figure, rather than the underlying complex numerical spectrum. When composing several curves or panels, save after completing the entire figure. See the [plotting reference](docs/api.md#5-plot-linear-and-third-order-spectra) for both signatures.
-
-
-## Numerical implementation
-
-Two-dimensional spectrum calculations exploit the separable dependence on the excitation and detection frequencies.
-
-For a third-order response, the grid can be written schematically as
-
-```math
-S_{ji}=L_jR_i,
-```
-
-where $R_i$ contains the $\omega_1$-dependent operations and $L_j$ contains the $\omega_3$-dependent operations.
-
-This avoids repeating expensive matrix exponentials and resolvent solves independently at every pair
-
-```math
-(\omega_1,\omega_3).
-```
-
-The optimized implementation reproduces the original point-by-point calculations to floating-point precision.
-
-
-## Validation
-
-PULSUS is tested against analytical finite-pulse results, independently
-implemented time-domain propagation, frozen reference spectra, and internal
-cross-checks between independent spectral-evaluation interfaces.
-
-For the complete-interaction finite-pulse benchmark at
-
-```math
-\sigma=1.25,
-\qquad
-T=20,
-\qquad
-\eta=0.02,
-```
-
-explicit third-order perturbative time-domain propagation retaining the full
-interaction superoperator gives complex spectral-shape discrepancies relative
-to the direct frequency-domain finite-pulse calculation of approximately
-
-```math
-0.0586\%
-\quad \text{(NR)}
-```
-
-and
-
-```math
-0.0582\%
-\quad \text{(R)}
-```
-
-for a transform window of $t_{\max}=160$.
-
-For the nonrephasing branch, extending the transform window to
-$t_{\max}=200$ reduces the discrepancy further to approximately
-
-```math
-0.0083\%,
-```
-
-consistent with the remaining difference being dominated by finite numerical
-transform-window effects.
-
-The corresponding optimal global complex scale factors at
-$t_{\max}=160$ differ from unity by less than $4\times10^{-6}$.
-
-## Time-domain versus frequency-domain validation
-
-For impulsive linear RWA response, numerical time propagation followed by an FFT agrees with the direct frequency-domain resolvent calculation with a relative complex error of approximately
-
-```math
-0.0035\%.
-```
-
-For impulsive third-order NR response, two-dimensional time propagation followed by a 2D FFT agrees with the direct frequency-domain result with a relative complex error of approximately
-
-```math
-0.015\%.
-```
-
-These comparisons independently validate the time/frequency sign and transform conventions used in PULSUS.
-
-
-## Test suite
-
-The current test suite contains **108 passing unit and regression tests** covering:
-
-- Liouville-space vectorization and superoperators
-- Lindblad Liouvillian construction
-- stationary states
-- resolvent actions
-- Gaussian pulse dressing
-- pulse-integral identities
-- linear response
-- third-order response
-- R and NR sign conventions
-- arbitrary field-sign signatures
-- finite-pulse, impulsive, short-pulse, and RWA models
-- two-dimensional spectrum construction
-- optimized versus point-by-point evaluation
-- plotting and array orientation
-- frozen finite-pulse regression data
-- impulsive time-domain propagation
-- time-domain pathway polarization
-
+The formulation uses finite-dimensional systems, electric-dipole coupling, and a
+time-independent Markovian Lindblad Liouvillian. Standard finite-pulse
+calculations assume a stationary initial state and temporally ordered,
+separated Gaussian pulses. RWA calculations require explicit raising and lowering
+dipole components. Impulsive time-domain response functions are also available;
+finite-duration driven time propagation is not part of the public API.
 
 ## Development
 
-For development from the repository source:
+From a cloned repository:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
 python -m pip install -e ".[dev]"
-```
-
-Run the test suite with:
-
-```bash
 pytest -q
 ```
 
-## Examples
+The suite includes 108 unit and regression tests. See the
+[method and validation notes](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/docs/method_notes.md#validation)
+for scientific benchmarks and the [changelog](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/CHANGELOG.md)
+for release changes. Maintainers can follow the
+[release checklist](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/docs/release_checklist.md)
+to publish a new version.
 
-Start with the [user-manual tutorials](examples/manual/) for complete usage examples. The other programs in `examples/` provide development and validation examples.
+## Citation and license
 
-### Main examples
+The archived 0.2.0 release can be cited as:
 
-[01_finite_pulse_dimer.py](examples/01_finite_pulse_dimer.py)
+> Castillo-Gonzalez, Alfonso. *PULSUS: Pulse-dressed Liouvillian Spectroscopy Using Superoperators*. Version 0.2.0, Zenodo, 2026. [doi:10.5281/zenodo.23253040](https://doi.org/10.5281/zenodo.23253040).
 
-Builds the coupled dimer and calculates finite-pulse NR and R spectra through the PULSUS API.
-
-[03_reproduce_figure6.py](examples/03_reproduce_figure6.py)
-
-Compares finite-pulse, short-pulse RWA, and impulsive RWA spectra.
-
-[06_all_third_order_signatures.py](examples/06_all_third_order_signatures.py)
-
-Calculates all eight third-order field-sign sectors and checks the sign-reversed conjugation relation.
-
-[09_linear_td_fft_vs_fd.py](examples/09_linear_td_fft_vs_fd.py)
-
-Validates impulsive linear time-domain propagation and FFT against the direct frequency-domain resolvent calculation.
-
-[10_third_order_td_fft_vs_fd.py](examples/10_third_order_td_fft_vs_fd.py)
-
-Validates third-order NR time-domain propagation and a 2D FFT against the direct frequency-domain calculation.
-
-[11_impulsive_polarization_traces.py](examples/11_impulsive_polarization_traces.py)
-
-Visualizes the selected impulsive pathway in laboratory time and separates first-, second-, and third-order polarization stages.
-
-
-### Validation and diagnostic examples
-
-[02_compare_notebook04.py](examples/02_compare_notebook04.py)
-
-Compares the production finite-pulse implementation with frozen explicit-ODE validation data.
-
-[04_linear_response_comparison.py](examples/04_linear_response_comparison.py)
-
-Compares full-interaction and RWA linear spectra.
-
-[05_linear_rwa_quadratures.py](examples/05_linear_rwa_quadratures.py)
-
-Examines real and imaginary quadratures of the linear full-interaction and RWA responses.
-
-[07_full_vs_rwa_signatures.py](examples/07_full_vs_rwa_signatures.py)
-
-Compares finite-pulse full-interaction and short-pulse RWA results across third-order signatures.
-
-[08_approximation_ladder.py](examples/08_approximation_ladder.py)
-
-Separates the effects of the full-interaction, RWA, short-pulse, and impulsive approximations.
-
-
-## Current scope
-
-PULSUS `v0.2.0` assumes:
-
-- finite-dimensional quantum systems
-- time-independent Liouvillian dynamics
-- Markovian Lindblad evolution
-- stationary preparation for the standard finite-pulse formulation
-- electric-dipole light-matter coupling
-- Gaussian finite-duration pulses for the finite-pulse frequency-domain formulation
-- temporally ordered, separated pulses
-- linear and third-order response
-- full-interaction and RWA calculations
-- arbitrary third-order field-sign signatures
-- impulsive time-domain propagation
-
-Finite-duration driven time-domain propagation is not currently part of the public production API.
-
-
-## Public API philosophy
-
-The principal user-facing objects and functions are:
-
-```python
-pulsus.SpectroscopySystem
-pulsus.GaussianPulse
-
-pulsus.finite_pulse_spectrum
-pulsus.finite_pulse_points
-pulsus.finite_pulse_rwa_spectrum
-pulsus.impulsive_spectrum
-pulsus.short_pulse_rwa_spectrum
-pulsus.impulsive_rwa_spectrum
-
-pulsus.finite_pulse_linear_spectrum
-pulsus.impulsive_linear_spectrum
-pulsus.short_pulse_linear_rwa_spectrum
-pulsus.impulsive_linear_rwa_spectrum
-
-pulsus.impulsive_linear_time_signal
-pulsus.impulsive_third_order_rwa_time_signal
-pulsus.impulsive_pathway_polarization
-
-pulsus.plot_spectrum
-pulsus.plot_linear_spectrum  # unreleased; requires the development checkout
-```
-
-Additional lower-level response, Liouville-space, resolvent, and pulse-dressing functions remain available for advanced calculations and validation.
-
-
-## Repository structure
-
-```text
-.
-├── src/
-│   └── pulsus/          PULSUS source code
-├── tests/               unit and regression tests
-├── docs/                quick start, function guide, and advanced notes
-│   └── user_manual/     published PDF, LaTeX source, and figures
-├── examples/            usage and validation examples
-│   └── manual/          runnable user-manual tutorials
-├── notebooks/           numerical validation notebooks
-├── figures/             generated validation and development figures
-├── results/             benchmark results
-├── notes/
-│   └── technical_notes/ theoretical notes
-├── paper/               manuscript source
-│   ├── main.tex
-│   ├── references.bib
-│   └── figures/
-└── literature_notes.md  literature notes
-```
-
-## Citation
-
-If you use PULSUS in your research, please cite the software release:
-
-> Castillo-Gonzalez, Alfonso. *PULSUS: Pulse-dressed Liouvillian Spectroscopy Using Superoperators*. Version 0.2.0, Zenodo, 2026. https://doi.org/10.5281/zenodo.23253040
-
-Citation metadata is also provided in [`CITATION.cff`](CITATION.cff).
-
-PULSUS is under active development.
+See [CITATION.cff](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/CITATION.cff) for citation metadata.
+PULSUS is distributed under the [BSD 3-Clause license](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/LICENSE).
