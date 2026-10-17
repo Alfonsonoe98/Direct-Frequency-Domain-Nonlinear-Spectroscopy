@@ -33,7 +33,7 @@ from .linear import (
     short_pulse_linear_rwa_spectrum,
 )
 
-from .plotting import plot_spectrum
+from .plotting import plot_linear_spectrum, plot_spectrum
 
 from .system import SpectroscopySystem
 
@@ -114,6 +114,7 @@ __all__ = [
     "impulsive_signal",
     "impulsive_spectrum",
     "plot_spectrum",
+    "plot_linear_spectrum",
     "impulsive_linear_response",
     "finite_pulse_linear_response",
     "impulsive_linear_rwa_response",
