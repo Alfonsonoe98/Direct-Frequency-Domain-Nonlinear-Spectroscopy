@@ -7,9 +7,9 @@ authors:
   - given-names: "Alfonso"
     family-names: "Castillo-Gonzalez"
 
-version: "0.2.0"
-date-released: 2026-10-09
-doi: "10.5281/zenodo.23253040"
+version: "0.3.0"
+date-released: 2026-10-17
+doi: "10.5281/zenodo.23432503"
 
 license: "BSD-3-Clause"
 

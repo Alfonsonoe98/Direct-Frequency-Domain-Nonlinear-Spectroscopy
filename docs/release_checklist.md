@@ -1,6 +1,8 @@
 # Publishing PULSUS 0.3.0
 
-The plotting release is prepared in [pull request #1](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/pull/1), from `feature/linear-plotting` into `main`. Package metadata must say `0.3.0` before tagging. A merge into `main` does **not** publish to PyPI: publishing the GitHub release triggers `.github/workflows/release.yml`.
+PULSUS 0.3.0 was published on October 17, 2026, after [pull request #1](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/pull/1) merged into `main`. It is available on [PyPI](https://pypi.org/project/pulsus-spec/0.3.0/) and archived on [Zenodo](https://doi.org/10.5281/zenodo.23432503).
+
+The commands below record that completed release. For a future release, substitute its new version, branch, pull request, and release notes. A merge into `main` does **not** publish to PyPI: publishing the GitHub release triggers `.github/workflows/release.yml`.
 
 ## Before merging
 
@@ -47,6 +49,6 @@ Publishing the GitHub release starts **Publish to PyPI** in the repository's Act
 
 1. Check the [PyPI release page](https://pypi.org/project/pulsus-spec/0.3.0/) and install the published package in a fresh environment with `python -m pip install "pulsus-spec==0.3.0"`.
 2. Run a linear and a two-dimensional plotting example from that installed package, including optional figure export.
-3. Check the actual Zenodo archive for the new release before updating citation metadata. `CITATION.cff` currently identifies the archived 0.2.0 release; keep its DOI associated with 0.2.0 until the new archive identifier is available.
+3. Check the actual Zenodo archive for each new release before updating the README and `CITATION.cff`. The version-specific DOI for 0.3.0 is `10.5281/zenodo.23432503`; the all-versions concept DOI is `10.5281/zenodo.22755139`. Cite the version actually used for reproducible calculations.
 
 The tag and release refer to the reviewed `main` commit. Subsequent documentation or citation corrections should be committed normally without moving that tag.

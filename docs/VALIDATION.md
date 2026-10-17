@@ -10,10 +10,18 @@ Manual version 0.5, targeting PULSUS 0.3.0. Prepared October 17, 2026.
 - All five scripts in `examples/manual/` ran against the installed wheel from an empty working folder. They displayed figures through the usual `plt.show()` call and wrote no files by default.
 - All quick-start Python blocks, both complete README examples, and the API overlay/export example were executed in their documented context.
 - The maintainer renderer regenerated the linear-comparison figure without point markers. The other four manual figures were preserved because their calculations and presentation did not change.
-- The Markdown reference covers all 58 root-imported names and matching plotting signatures. The two pre-existing omissions from `__all__` remain documented; this release candidate adds the new plotter without unrelated export changes.
+- The Markdown reference covers all 58 root-imported names and matching plotting signatures. The two pre-existing omissions from `__all__` remain documented; this release adds the new plotter without unrelated export changes.
 - All 109 checked Markdown links resolve to existing local or repository targets. The shortened README preserves the original 24 display equations and scientific benchmarks in [method notes](method_notes.md). LaTeX compilation completed without undefined references or overfull boxes, and all 26 rendered pages were visually reviewed.
 
 These checks verify implementation and documentation consistency. They do not establish physical convergence for arbitrary systems or approximation regimes. They were performed on the prepared 0.3.0 distributions before publication; verification of the published PyPI artifacts is a separate release step.
+
+## Published release verification
+
+On October 17, 2026, the GitHub publication workflow completed successfully for tag `v0.3.0`, commit `e1989ad3b262ef2e46ac968682bc4ecfbd0c358c`. [PyPI](https://pypi.org/project/pulsus-spec/0.3.0/) provides the wheel and source distribution; [Zenodo](https://doi.org/10.5281/zenodo.23432503) archives the release.
+
+A new isolated environment installed `pulsus-spec==0.3.0` from PyPI, rather than the source checkout or locally built wheel. All ten installed Python source files match the tagged release. A two-level-system calculation produced finite linear and 2D responses. Both plotters saved nothing by default, returned editable figures, and exported valid PNG/PDF files through their optional arguments and through later `fig.savefig(...)` calls. The linear plotter had no markers by default.
+
+The version DOI is `10.5281/zenodo.23432503`. The all-versions concept DOI is `10.5281/zenodo.22755139`; Zenodo's public metadata identifies the archived version as `v0.3.0`, published October 17, 2026.
 
 ## Environment
 

@@ -184,9 +184,12 @@ to publish a new version.
 
 ## Citation and license
 
-The archived 0.2.0 release can be cited as:
+The archived 0.3.0 release can be cited as:
 
-> Castillo-Gonzalez, Alfonso. *PULSUS: Pulse-dressed Liouvillian Spectroscopy Using Superoperators*. Version 0.2.0, Zenodo, 2026. [doi:10.5281/zenodo.23253040](https://doi.org/10.5281/zenodo.23253040).
+> Castillo-Gonzalez, Alfonso. *PULSUS: Pulse-dressed Liouvillian Spectroscopy Using Superoperators*. Version 0.3.0, Zenodo, 2026. [doi:10.5281/zenodo.23432503](https://doi.org/10.5281/zenodo.23432503).
+
+For reproducibility, cite the archived version used in your calculations.
+To refer to PULSUS across all versions, use the [concept DOI](https://doi.org/10.5281/zenodo.22755139), which resolves to the latest archived release.
 
 See [CITATION.cff](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/CITATION.cff) for citation metadata.
 PULSUS is distributed under the [BSD 3-Clause license](https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/LICENSE).
