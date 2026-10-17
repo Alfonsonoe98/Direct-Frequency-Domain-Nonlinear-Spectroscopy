@@ -1,44 +1,42 @@
-# Documentation validation record
+# Documentation and package validation record
 
-Manual version 0.3, targeting PULSUS 0.2.0. Prepared October 15, 2026.
+Manual version 0.4, targeting the PULSUS 0.3.0.dev0 development candidate. Prepared October 17, 2026.
 
-## Scope of the checks
+## Checks completed
 
-- The existing repository suite passed: **67 tests**.
-- All five scripts in `examples/manual/` completed. They display figures with `plt.show()`; the separate maintainer renderer regenerated all five PDF figures.
-- Executable Python blocks in the usage chapters were checked in their stated tutorial context. Signature-only blocks are reference material; physical-unit templates were supplied with consistent example inputs for the check.
-- The complete Python block in `docs/quickstart.md` ran by importing the bundled `pulsus_spec-0.2.0-py3-none-any.whl`, independently of the repository package helpers. The wheel's package modules match the supplied source.
-- The selected-point example agreed with the corresponding Cartesian grid entries to a maximum absolute difference of about `2.3e-13`.
-- The API Markdown reference contains all 57 root-imported names and source-matched signatures. Two of these are omitted from the release's `__all__`; the documentation records this without changing library code.
-- LaTeX compilation and rendered-page review were used to check the PDF.
+- The complete source-checkout suite passed: **108 tests**.
+- A wheel and source distribution were built in isolation. The wheel and its dependencies were installed in a fresh virtual environment; the complete suite also passed against the installed wheel. The existing test-only `dimer_model.py` fixture was supplied separately, without placing the source package on the import path.
+- The 46 plotting cases include component values, normalization and zero responses, input preservation, axes reuse, optional PNG/PDF export, actual raster DPI, continued editing and saving, and compatibility with existing 2D positional calls.
+- All five scripts in `examples/manual/` ran against the installed wheel from an empty working folder. They displayed figures through the usual `plt.show()` call and wrote no files by default.
+- All quick-start Python blocks, the README plotting examples, and the API overlay/export example were executed in their documented context.
+- The maintainer renderer regenerated the linear-comparison figure without point markers. The other four manual figures were preserved because their calculations and presentation did not change.
+- The Markdown reference covers all 58 root-imported names and matching plotting signatures. The two pre-existing omissions from `__all__` remain documented; this release candidate adds the new plotter without unrelated export changes.
+- All 89 local Markdown links resolve. LaTeX compilation completed without undefined references or overfull boxes, and all 26 rendered pages were visually reviewed.
 
-The package-only check used the local wheel with the existing environment's dependencies. It was not a fresh download/install from PyPI, and no claim of a fully isolated dependency installation is made. Passing these checks does not establish physical convergence for a different system or approximation regime.
+These checks verify implementation and documentation consistency. They do not establish physical convergence for arbitrary systems or approximation regimes. This is a development build, not a new PyPI release.
 
-## Environment used
+## Environment
 
 Python 3.11.4
 
 | Package | Version |
 |---|---|
-| pulsus-spec | 0.2.0 |
+| pulsus-spec | 0.3.0.dev0 |
 | numpy | 2.4.6 |
 | scipy | 1.17.1 |
-| matplotlib | 3.11.1 |
+| matplotlib | 3.11.2 |
 | qutip | 5.3.1 |
 | pytest | 9.1.1 |
 
-## Repeat the checks
+## Repeating the checks
 
-From the repository root in an active editable development environment:
+From the repository root in the editable development environment:
 
 ```bash
 python -m pytest -q
-python examples/manual/01_first_spectrum.py
-python examples/manual/02_linear_models.py
-python examples/manual/03_third_order_models.py
-python examples/manual/04_selected_points.py
-python examples/manual/05_time_domain.py
 python docs/user_manual/render_figures.py
 cd docs/user_manual
 latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
 ```
+
+After reviewing the rebuilt PDF, copy it to `PULSUS_User_Manual.pdf` before committing the manual. The publishing steps are recorded in [the release checklist](release_checklist.md).

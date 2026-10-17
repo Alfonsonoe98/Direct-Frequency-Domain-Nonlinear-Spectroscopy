@@ -21,8 +21,10 @@ width, amplitude and phase. \\
 matrix; pass it as \texttt{rho0} in the calculation. \\
 \texttt{*\_spectrum} & Calculate the frequency array you will normally
 plot: a 1D linear spectrum or a 2D third-order spectrum. \\
-\texttt{plot\_spectrum} & Display a 2D spectrum. Use ordinary Matplotlib
-commands for 1D linear spectra. \\
+\texttt{plot\_linear\_spectrum} & Plot one component of a 1D linear spectrum;
+pass an existing axis to overlay curves. \\
+\texttt{plot\_spectrum} & Plot one component of a 2D spectrum on its
+Cartesian frequency grid. \\
 \texttt{finite\_pulse\_points} & Calculate selected frequency pairs
 without building a full 2D grid. \\
 \bottomrule
@@ -115,12 +117,22 @@ impulsive_linear_rwa_spectrum(
 \end{minipage}\par
 Here \texttt{omega} is one 1D axis. Replacing \texttt{\_spectrum} with
 \texttt{\_signal} takes one frequency and returns one complex number.
-There is no separate finite-pulse linear RWA family in PULSUS 0.2.0.
+There is no separate finite-pulse linear RWA family in this version.
 
-For a 2D result, the plotting helper returns Matplotlib objects:
+\subsection{Plot, customize and optionally save}
+\label{sec:plot-export}
+
+Both plotting helpers return Matplotlib objects. They create a figure if
+\texttt{ax} is omitted, and draw on that axis if it is supplied:
 \par\noindent
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[style=python]
+linear_spectrum = spectra["Finite pulse, full"]
+fig, ax, line = pulsus.plot_linear_spectrum(
+    omega, linear_spectrum, component="imag", normalize=True,
+)
+plt.show()
+
 fig, ax, contour = pulsus.plot_spectrum(
     omega1, omega3, S, component="imag", normalize=True,
 )
@@ -129,6 +141,37 @@ plt.show()
 \end{minipage}\par
 Use \texttt{component="real"}, \texttt{"imag"}, or \texttt{"abs"}.
 Normalization scales only the displayed component; it does not modify
-\texttt{S}. Refer to Section~\ref{sec:time-domain} for time-domain
+the complex input array. The linear helper accepts ordinary line options,
+such as \texttt{linestyle="--"}, \texttt{color="navy"} and a curve
+\texttt{label}; add \texttt{ax.legend()} when comparing labeled curves.
+Neither helper displays or saves automatically. Use \texttt{plt.show()}
+when running a script.
+
+Both helpers accept \texttt{savepath=None} and \texttt{dpi=300}.
+Omitting \texttt{savepath} writes nothing. Supply a filename to export the
+figure immediately; its extension selects the format:
+\begin{lstlisting}[style=python]
+fig, ax, line = pulsus.plot_linear_spectrum(
+    omega, linear_spectrum, component="imag",
+    savepath="linear_spectrum.png", dpi=300,
+)
+# Use savepath="linear_spectrum.pdf" for PDF output.
+\end{lstlisting}
+The same two optional arguments work with \texttt{plot\_spectrum}.
+Use an existing destination folder. The resolution controls raster
+output; PDF line work remains vector graphics.
+
+For additional curves, legends or other customization, omit
+\texttt{savepath} and export the completed figure afterward:
+\begin{lstlisting}[style=python]
+ax.set_title("My spectrum")
+fig.savefig("custom_spectrum.pdf", dpi=300, bbox_inches="tight")
+plt.show()
+\end{lstlisting}
+Saving a figure exports its visual appearance, not the complex numerical
+spectrum. The input array remains available for analysis and separate data
+storage.
+
+Refer to Section~\ref{sec:time-domain} for time-domain
 functions and to \path{docs/api.md} for lower-level response functions,
 Liouville-space utilities, resolvents, and Gaussian dressing functions.

@@ -35,7 +35,7 @@ RWA molecular response weighted by the Gaussian pulse spectrum.
 \item[\texttt{impulsive\_linear\_rwa\_spectrum}]
 RWA molecular response in the impulsive limit, without a pulse envelope.
 \end{description}
-There is no finite-pulse linear RWA function in version~0.2.0. The four
+There is no finite-pulse linear RWA function in this version. The four
 available functions have these calling patterns:
 
 \par\noindent
@@ -63,7 +63,10 @@ part on the right. Both panels contain all four models.
 For this comparison the Gaussian prefactor is set to one at zero phase.
 Each complex curve is then divided by its own maximum magnitude so that the
 figure compares shapes. These separately normalized curves do not compare
-absolute amplitudes.
+absolute amplitudes. The plotting helper uses \texttt{normalize=False}
+to retain this common scale for both components. Its optional
+\texttt{normalize=True} instead scales the selected real, imaginary or
+absolute-value component by that component's own maximum absolute value.
 
 \par\noindent
 \begin{minipage}{\linewidth}
@@ -88,15 +91,14 @@ spectra = {
 fig, axes = plt.subplots(1, 2, figsize=(10, 3.8),
                          constrained_layout=True)
 styles = ["-", "--", "-.", ":"]
-markers = ["o", "s", "^", "D"]
-for k, ((name, spectrum), style, marker) in enumerate(
-        zip(spectra.items(), styles, markers)):
-    y = spectrum / np.max(np.abs(spectrum))
-    options = dict(label=name, linestyle=style, marker=marker,
-                   markevery=(5 * k, 28), markersize=4,
-                   markerfacecolor="white", linewidth=1.1)
-    axes[0].plot(omega, y.real, **options)
-    axes[1].plot(omega, y.imag, **options)
+for (name, spectrum), style in zip(spectra.items(), styles):
+    scale = np.max(np.abs(spectrum))
+    y = spectrum / scale if scale else spectrum
+    for ax, component in zip(axes, ["real", "imag"]):
+        pulsus.plot_linear_spectrum(
+            omega, y, component=component, normalize=False,
+            ax=ax, label=name, linestyle=style, linewidth=1.1,
+        )
 for ax, component in zip(axes, ["Real", "Imaginary"]):
     ax.set_xlabel("Angular frequency (inverse model time)")
     ax.set_ylabel(component + " response / max |complex response|")
@@ -112,21 +114,35 @@ plt.show()
 \includegraphics[width=\linewidth]{figures/linear_models.png}
 \caption{Real (left) and imaginary (right) parts of the four linear models.
 All four curves are present in each panel. For these parameters their
-imaginary parts nearly overlap; line styles and markers identify the models.
+imaginary parts nearly overlap. Distinct line styles are used without markers.
 Each complex curve is normalized separately before plotting.}
 \label{fig:linear-models}
 \end{figure}
 
+\par\noindent
+\begin{minipage}{\linewidth}
 The script \path{examples/manual/02_linear_models.py} performs this complete
 comparison if you have the repository examples. Package-only users can run
 the code above after the first example.
+\end{minipage}\par
 
-\subsection{Choose what to plot}
+\subsection{Plot and customize a spectrum}
 
-Linear plotting currently uses Matplotlib; PULSUS~0.2.0 does not provide
-\texttt{plot\_linear\_spectrum}.
+For one curve, the new helper creates a figure when no \texttt{ax} is supplied:
+\begin{lstlisting}[style=python]
+fig, ax, line = pulsus.plot_linear_spectrum(
+    omega, spectra["Finite pulse, full"],
+    component="imag", normalize=True,
+)
+plt.show()
+\end{lstlisting}
+The default is a line without markers. The helper returns the Matplotlib
+figure, axes and line, so labels, colors and other details remain editable.
+It neither calls \texttt{plt.show()} nor saves a file by default.
+Section~\ref{sec:plot-export} explains optional PNG/PDF export for both
+linear and two-dimensional plots.
 
-The returned array is complex. Use \texttt{S.real}, \texttt{S.imag}, or
+The calculated spectrum is complex. Use \texttt{S.real}, \texttt{S.imag}, or
 \texttt{np.abs(S)} depending on the component you want to inspect. The
 functions do not automatically produce a phased absorption coefficient.
 Finite-pulse functions include the pulse amplitude and phase; impulsive

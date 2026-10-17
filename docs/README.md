@@ -1,6 +1,6 @@
 # PULSUS documentation
 
-These documents describe the public API and examples for PULSUS 0.2.0.
+These documents describe the repository's **unreleased PULSUS 0.3.0 development checkout** (`0.3.0.dev0`). The quick start begins with a complete example that also works with the released PyPI package, **0.2.0**. The new linear plotter and optional figure-export arguments require the development checkout until the next release.
 
 - Start with the [quick start](quickstart.md): install the package and calculate a spectrum from a complete example.
 - Read the [function guide and full reference](api.md) for the common functions, inputs, and return values.
@@ -60,7 +60,7 @@ LaTeX is needed only to build the PDF. It is not needed to install PULSUS or run
 
 ## Updating examples and documentation
 
-1. For documentation maintenance, install the checkout with `python -m pip install -e .` from its root directory.
+1. For documentation maintenance, install the checkout with `python -m pip install -e .` from its root directory. This is required for examples using unreleased plotting features; a PyPI-only 0.2.0 installation does not provide them.
 2. Run `python docs/user_manual/render_figures.py` from the repository root to regenerate PDF figures. User-facing examples display plots with `plt.show()` and do not save files.
 3. Edit the corresponding Markdown and LaTeX explanations. Public function signatures should match `src/pulsus/`.
 4. Build and inspect the PDF, including every code block and figure.
@@ -68,3 +68,5 @@ LaTeX is needed only to build the PDF. It is not needed to install PULSUS or run
 6. Review `git diff` before committing the documentation, tutorials, and published PDF together.
 
 For changes to scientific implementations, run the applicable tests as well. Installing the `dev` extra and running the complete test suite are useful for contributors; neither is a prerequisite for a user's first spectrum.
+
+Both plotting helpers return Matplotlib figures and axes. User examples display them with `plt.show()` and save nothing by default. Optional `savepath` and `dpi` arguments export a PNG or PDF figure; `fig.savefig(...)` remains available for saving after further modifications. Keep release notices in the README, quick start, reference, and PDF synchronized when the development version is published.

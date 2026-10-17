@@ -26,17 +26,15 @@ def main():
     }
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.8), constrained_layout=True)
     styles = ["-", "--", "-.", ":"]
-    markers = ["o", "s", "^", "D"]
-    for k, ((name, spectrum), style, marker) in enumerate(
-            zip(spectra.items(), styles, markers)):
+    for (name, spectrum), style in zip(spectra.items(), styles):
         assert spectrum.shape == omega.shape and np.isfinite(spectrum).all()
         scale = np.max(np.abs(spectrum))
         normalized = spectrum / scale if scale else spectrum
-        options = dict(label=name, linestyle=style, marker=marker,
-                       markevery=(5 * k, 28), markersize=4,
-                       markerfacecolor="white", linewidth=1.1)
-        axes[0].plot(omega, normalized.real, **options)
-        axes[1].plot(omega, normalized.imag, **options)
+        for ax, component in zip(axes, ["real", "imag"]):
+            pulsus.plot_linear_spectrum(
+                omega, normalized, component=component, normalize=False,
+                ax=ax, label=name, linestyle=style, linewidth=1.1,
+            )
     for ax, component in zip(axes, ["Real", "Imaginary"]):
         ax.set(xlabel=r"$\omega$ (inverse model-time units)",
                ylabel=f"{component} response / max |complex response|")

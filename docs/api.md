@@ -1,8 +1,8 @@
-# PULSUS 0.2.0 public API reference
+# PULSUS 0.3.0 development API reference
 
-This reference describes the source in the repository's PULSUS 0.2.0 checkout. Install the distribution with `python -m pip install pulsus-spec` and import it with `import pulsus`. For a version-matched installation use `python -m pip install "pulsus-spec==0.2.0"`. Follow [the quick start](quickstart.md) for a complete first calculation.
+This reference describes the repository's **unreleased 0.3.0 development checkout** (`0.3.0.dev0`). Install this source from the repository root with `python -m pip install -e .`, then `import pulsus`. The released PyPI distribution is still **0.2.0**, installed with `python -m pip install "pulsus-spec==0.2.0"`; it does not include `plot_linear_spectrum` or the plotters' `savepath`/`dpi` arguments. Follow [the quick start](quickstart.md) for a complete first calculation that also works with the released package.
 
-All names below are available as `pulsus.NAME`. The root module imports **57 names**, while its `__all__` contains **55**. `finite_pulse_rwa_response` and `finite_pulse_rwa_signal` are importable explicitly but omitted from `__all__` in this source version. Thus `import pulsus` or explicit imports expose them; `from pulsus import *` omits them. This reference records the discrepancy without changing scientific code.
+All names below are available as `pulsus.NAME` in this checkout. The root module imports **58 names**, while its `__all__` contains **56**. `finite_pulse_rwa_response` and `finite_pulse_rwa_signal` are importable explicitly but omitted from `__all__` in this source version. Thus `import pulsus` or explicit imports expose them; `from pulsus import *` omits them. This reference records the existing discrepancy.
 
 ## Most commonly used functions
 
@@ -14,7 +14,7 @@ API means **application programming interface**: the public classes and function
 | 2 | `GaussianPulse` | Define carrier frequency, temporal width, amplitude and phase |
 | 3 | `system.stationary_state()` | Obtain a stationary initial density matrix; pass it as `rho0` |
 | 4 | `*_spectrum` | Calculate a linear frequency array or a 2D third-order grid |
-| 5 | `plot_spectrum` | Display a 2D grid; use Matplotlib directly for linear spectra |
+| 5 | `plot_linear_spectrum` or `plot_spectrum` | Plot a linear array or a 2D grid; optionally export the figure |
 | Optional | `finite_pulse_points` | Evaluate selected frequency pairs without a Cartesian grid |
 
 ## Signal, spectrum, response, and time_signal
@@ -45,7 +45,7 @@ For example, `finite_pulse_signal` returns one value at scalar `omega1` and `ome
 - Every 2D spectrum has `S[j,i] = S(omega3[j], T, omega1[i])`. `finite_pulse_points` instead returns only pairs. The grid code caches separate frequency-dependent pieces; `response_grid` is the general scalar-loop alternative.
 - `GaussianPulse` supplies carrier, width, peak amplitude and phase, not pulse arrival times. Frequency-domain functions use the ordered three-interaction construction and a separate waiting time `T`; arbitrary overlapping-field simulations are outside this API.
 - The standard finite-pulse formulation assumes stationary preparation under the field-free Liouvillian. Accepting an explicitly supplied nonstationary `rho0` does not establish the formula's validity for an arbitrary prepared-state experiment. Check the scientific assumptions as well as the accepted array shapes.
-- There are five third-order frequency-domain models but only four linear models. PULSUS 0.2.0 does **not** expose a `finite_pulse_linear_rwa_*` family. Do not infer an API name by symmetry.
+- There are five third-order frequency-domain models but only four linear models. This checkout does **not** expose a `finite_pulse_linear_rwa_*` family. Do not infer an API name by symmetry.
 
 ## Parameter key
 
@@ -266,7 +266,7 @@ Evaluate the full-interaction finite-pulse model only at paired coordinates `(om
 
 **Returns:** A complex one-dimensional array of shape `(N,)`, in the original pair order.
 
-Both frequency inputs must be one-dimensional and have identical shape. These are pairs, not a Cartesian product. There is no separate RWA paired-point function in 0.2.0.
+Both frequency inputs must be one-dimensional and have identical shape. These are pairs, not a Cartesian product. There is no separate RWA paired-point function in this checkout.
 
 [Source](../src/pulsus/spectra.py#L365).
 
@@ -543,7 +543,57 @@ RWA wrappers require both system dipole components. The result is `gaussian_spec
 
 [Source](../src/pulsus/linear.py#L329).
 
-## 5. Display a third-order spectrum
+## 5. Plot linear and third-order spectra
+
+The linear helper and both helpers' `savepath`/`dpi` arguments are **unreleased additions for 0.3.0**, available after installing this source checkout. Neither helper calls `plt.show()` or closes the figure. Omit `savepath` to save nothing; pass a PNG or PDF filename to export the figure immediately. The filename extension selects the format, and the destination directory must exist. `dpi` sets raster export resolution; PDF curves and text remain vector graphics where supported.
+
+Both helpers return Matplotlib objects for customization. You can still call `plt.show()` and `fig.savefig(...)` yourself, including after modifying axes or adding curves. Figure export does not save the underlying complex numerical spectrum.
+
+### `plot_linear_spectrum`
+
+```python
+plot_linear_spectrum(
+    omega,
+    spectrum,
+    component='real',
+    normalize=False,
+    ax=None,
+    title=None,
+    xlabel='$\\omega$',
+    ylabel=None,
+    label=None,
+    savepath=None,
+    dpi=300,
+    **plot_kwargs,
+)
+```
+
+Display one component of a complex linear spectrum as a line without default markers.
+
+**Required:** `omega`, `spectrum`.
+
+**Returns:** `(fig, ax, line)`: a Figure, Axes, and Line2D.
+
+`omega` and `spectrum` must be nonempty one-dimensional arrays with matching lengths and finite values; the frequency axis must be real. The supplied frequency order and signs are preserved. `component` is `"real"`, `"imag"`, or `"abs"`. `normalize=True` divides the displayed component by its own maximum absolute value (zero remains zero); it leaves the input complex response unchanged. If `ylabel` is omitted, the helper labels the selected component and its normalization.
+
+Pass an existing `ax` to overlay curves. `label` labels the line; call `ax.legend()` to display a legend. Additional `plot_kwargs` go to Matplotlib's line plot, for example `color`, `linestyle`, `linewidth`, and optional `marker`.
+
+```python
+fig, ax, line = pulsus.plot_linear_spectrum(
+    omega, S_linear, component="imag", label="Finite pulse",
+)
+pulsus.plot_linear_spectrum(
+    omega, S_reference, component="imag", ax=ax,
+    label="Reference", linestyle="--",
+)
+ax.legend()
+fig.savefig("linear_comparison.pdf", bbox_inches="tight")
+plt.show()
+```
+
+The comparison snippet assumes calculated arrays `S_linear` and `S_reference` on the same `omega` axis and `import matplotlib.pyplot as plt`. Save after the second curve to export both.
+
+[Source](../src/pulsus/plotting.py#L212).
 
 ### `plot_spectrum`
 
@@ -561,6 +611,8 @@ plot_spectrum(
     title=None,
     xlabel='$\\omega_1$',
     ylabel='$\\omega_3$',
+    savepath=None,
+    dpi=300,
 )
 ```
 
@@ -570,7 +622,7 @@ Display one component of a complex 2D grid using Matplotlib filled contours.
 
 **Returns:** `(fig, ax, contour)`: a Figure, Axes, and QuadContourSet.
 
-`spectrum` must have shape `(len(omega3), len(omega1))`. `component` is `"real"`, `"imag"`, or `"abs"`. `normalize=True` divides only the displayed component by its own maximum absolute value (zero remains zero); it does not alter the calculated complex spectrum. Signed components use a symmetric diverging scale. This function neither phases nor constructs an absorptive spectrum, and does not save or show the figure automatically.
+`spectrum` must have shape `(len(omega3), len(omega1))`. `component` is `"real"`, `"imag"`, or `"abs"`. `normalize=True` divides only the displayed component by its own maximum absolute value (zero remains zero); it does not alter the calculated complex spectrum. Signed components use a symmetric diverging scale. This function neither phases nor constructs an absorptive spectrum. It exports the figure only when `savepath` is supplied and never calls `plt.show()`.
 
 [Source](../src/pulsus/plotting.py#L5).
 
@@ -1284,6 +1336,6 @@ The result is `gaussian_spectrum(omega, ...)` times the impulsive RWA molecular 
 
 ## Completeness and scope
 
-The 57 entries above include both classes, all high-level frequency and time routines, plotting, every root-imported low-level response, and all root-imported Liouville, resolvent, Gaussian, and signature helpers. Private underscore-prefixed implementation helpers are not part of this reference. Code in `examples/` and notebooks may define additional local helpers; those are not package-root API.
+The 58 entries above include both classes, all high-level frequency and time routines, both plotting helpers, every root-imported low-level response, and all root-imported Liouville, resolvent, Gaussian, and signature helpers. Private underscore-prefixed implementation helpers are not part of this reference. Code in `examples/` and notebooks may define additional local helpers; those are not package-root API.
 
 A source update should trigger a documentation review of `src/pulsus/__init__.py`, the function signatures, shapes, and examples. The API count here is a source audit, not a claim that all scientific regimes have been independently validated by this manual.

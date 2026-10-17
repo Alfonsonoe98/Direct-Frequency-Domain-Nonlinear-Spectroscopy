@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pulsus-spec"
-version = "0.2.0"
+version = "0.3.0.dev0"
 description = "Pulse-dressed Liouvillian Spectroscopy Using Superoperators"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -44,6 +44,11 @@ dependencies = [
     "qutip",
 ]
 
+
+[project.urls]
+Repository = "https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators"
+Documentation = "https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/blob/main/docs/README.md"
+Issues = "https://github.com/Alfonsonoe98/PULSUS-Pulse-dressed-Liouvillian-Spectroscopy-Using-Superoperators/issues"
 
 [project.optional-dependencies]
 dev = [

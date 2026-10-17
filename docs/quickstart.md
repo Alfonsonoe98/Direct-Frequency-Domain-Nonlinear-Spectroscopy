@@ -8,7 +8,7 @@ PULSUS requires **Python 3.10 or newer**.
 pip install pulsus-spec
 ```
 
-The package name is `pulsus-spec`; import it in Python as `pulsus`. This guide describes version **0.2.0**. To install that version specifically, use `pip install "pulsus-spec==0.2.0"`.
+The package name is `pulsus-spec`; import it in Python as `pulsus`. The first example below works with the released **0.2.0** package. To install that version specifically, use `pip install "pulsus-spec==0.2.0"`. The optional plotting section at the end describes additions in the **unreleased 0.3.0 development checkout**.
 
 ## Your first spectrum
 
@@ -126,3 +126,46 @@ For the full impulsive model, use `pulsus.impulsive_spectrum` and also omit `pat
 For linear spectroscopy, use `finite_pulse_linear_spectrum`, `short_pulse_linear_rwa_spectrum`, `impulsive_linear_spectrum` or `impulsive_linear_rwa_spectrum`. These return a complex array on one frequency axis.
 
 Read the [function guide](api.md) to choose grid, single-coordinate and selected-coordinate calculations. The [user manual (PDF)](user_manual/PULSUS_User_Manual.pdf) explains system construction, units, pulses and model conventions.
+
+## Optional: new plotting helpers in the development version
+
+The repository currently contains **0.3.0.dev0**, an unreleased development version. Its linear plotter and figure-export options are not available from `pip install pulsus-spec` yet. To try them, install the checkout with this command from the repository root:
+
+```bash
+python -m pip install -e .
+```
+
+After running the first example above, reuse its `system`, `pulse`, and `rho_ss` to calculate and plot a linear spectrum:
+
+```python
+omega = np.linspace(0.7, 1.5, 401)
+S_linear = pulsus.finite_pulse_linear_spectrum(
+    system=system,
+    pulse=pulse,
+    omega=omega,
+    eta=0.02,
+    rho0=rho_ss,
+)
+fig, ax, line = pulsus.plot_linear_spectrum(
+    omega=omega,
+    spectrum=S_linear,
+    component="imag",
+    normalize=True,
+    title="Finite-pulse linear spectrum",
+)
+plt.show()
+```
+
+The function draws a line without markers by default and returns the figure, axes, and line for customization. Both `plot_linear_spectrum` and `plot_spectrum` now accept optional `savepath` and `dpi` arguments:
+
+```python
+fig, ax, line = pulsus.plot_linear_spectrum(
+    omega, S_linear, component="imag",
+    savepath="linear_spectrum.png", dpi=300,
+)
+ax.set_title("My linear spectrum")
+fig.savefig("linear_spectrum.pdf", bbox_inches="tight")
+plt.show()
+```
+
+The extension selects PNG or PDF output. The optional save occurs when the helper is called; the later `fig.savefig(...)` includes subsequent modifications. Omitting `savepath` saves nothing. Neither helper calls `plt.show()` or closes the figure, and neither changes the calculated complex arrays. See the [plotting reference](api.md#5-plot-linear-and-third-order-spectra) for overlays and all options.

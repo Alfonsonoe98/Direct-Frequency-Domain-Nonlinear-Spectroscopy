@@ -21,6 +21,14 @@ The PyPI distribution is named `pulsus-spec`, while the Python package is import
 import pulsus
 ```
 
+This checkout is the **unreleased 0.3.0 development version** (`0.3.0.dev0`). The new linear plotter and figure-export options below require installing this checkout from the repository root:
+
+```bash
+python -m pip install -e .
+```
+
+The released PyPI package remains **0.2.0** until the next release; the main quick-start example works with that release.
+
 ## Documentation
 
 Start with the [installation and quick start](docs/quickstart.md), including a complete example that works with the pip package. The [user manual (PDF)](docs/user_manual/PULSUS_User_Manual.pdf) explains systems, pulses, linear and third-order models, coordinate conventions, and troubleshooting. The [API reference](docs/api.md) covers all public functions and exact signatures. See [documentation build instructions](docs/README.md) to compile the PDF locally; Overleaf is optional.
@@ -384,16 +392,19 @@ This is the polarization of the **selected pathway**, not the total physical pol
 
 PULSUS retains the complete complex response.
 
-A spectrum can be plotted with:
+A 2D spectrum can be plotted with:
 
 ```python
-pulsus.plot_spectrum(
+import matplotlib.pyplot as plt
+
+fig, ax, contour = pulsus.plot_spectrum(
     omega1=omega1,
     omega3=omega3,
     spectrum=S_NR,
     component="imag",
     normalize=True,
 )
+plt.show()
 ```
 
 Supported displayed components are:
@@ -403,6 +414,39 @@ Supported displayed components are:
 - `"abs"`
 
 Normalization is optional and disabled by default.
+
+The **unreleased 0.3.0 development version** adds a matching linear plotter. Using the system, pulse, and stationary state defined above:
+
+```python
+omega = np.linspace(0.7, 1.5, 401)
+S_linear = pulsus.finite_pulse_linear_spectrum(
+    system=system,
+    pulse=pulse,
+    omega=omega,
+    eta=0.02,
+    rho0=rho_ss,
+)
+fig, ax, line = pulsus.plot_linear_spectrum(
+    omega=omega,
+    spectrum=S_linear,
+    component="imag",
+    normalize=True,
+    title="Finite-pulse linear spectrum",
+)
+plt.show()
+```
+
+The linear plotter draws a line without markers by default. Pass `ax=ax` to overlay another spectrum, and use Matplotlib line options such as `label`, `color`, and `linestyle` to distinguish curves. Normalization uses the selected component's maximum absolute value and leaves the complex input unchanged.
+
+Both plotters in the development version accept `savepath="spectrum.png"` or `savepath="spectrum.pdf"`, with optional `dpi=300`; the filename extension chooses the format. The destination directory must already exist. Omitting `savepath` saves no file. These functions create figures without calling `plt.show()` or closing them. You can modify the returned objects and save the finished figure afterward:
+
+```python
+ax.set_title("My customized linear spectrum")
+fig.savefig("linear_spectrum.pdf", bbox_inches="tight")
+plt.show()
+```
+
+These exports save the figure, rather than the underlying complex numerical spectrum. When composing several curves or panels, save after completing the entire figure. See the [plotting reference](docs/api.md#5-plot-linear-and-third-order-spectra) for both signatures.
 
 
 ## Numerical implementation
@@ -492,7 +536,7 @@ These comparisons independently validate the time/frequency sign and transform c
 
 ## Test suite
 
-The current test suite contains **67 passing unit and regression tests** covering:
+The current test suite contains **108 passing unit and regression tests** covering:
 
 - Liouville-space vectorization and superoperators
 - Lindblad Liouvillian construction
@@ -627,6 +671,7 @@ pulsus.impulsive_third_order_rwa_time_signal
 pulsus.impulsive_pathway_polarization
 
 pulsus.plot_spectrum
+pulsus.plot_linear_spectrum  # unreleased; requires the development checkout
 ```
 
 Additional lower-level response, Liouville-space, resolvent, and pulse-dressing functions remain available for advanced calculations and validation.
